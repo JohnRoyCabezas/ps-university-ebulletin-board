@@ -22,7 +22,7 @@ class User extends Authenticatable
         'password',
         'avatar',
         'department_id',
-        'is_verified',
+        'is_verified'
     ];
 
     /**
