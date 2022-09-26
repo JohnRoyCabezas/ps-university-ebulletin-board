@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chats', function (Blueprint $table) {
+        Schema::create('role_users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('role_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('course_id')->constrained();
-            $table->string('chat');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chats');
+        Schema::dropIfExists('role_user');
     }
 };

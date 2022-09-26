@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('announcementables', function (Blueprint $table) {
+        Schema::create('threads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('announcementable_id');
-            $table->string('announcementable_type');
-            $table->string('announcement');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('announcement_id')->constrained();
+            $table->string('thread_message');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcementables');
+        Schema::dropIfExists('threads');
     }
 };

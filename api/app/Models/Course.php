@@ -30,7 +30,7 @@ class Course extends Model
         return $this->hasMany(Chat::class);
     }
 
-    public function announcementables() {
-        return $this->morphMany(Announcementable::class, 'announcementable');
+    public function announcements() {
+        return $this->morphMany(Announcement::class, 'announcements');
     }
 }
