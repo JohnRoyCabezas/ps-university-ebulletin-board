@@ -22,7 +22,7 @@ class Department extends Model
         return $this->belongsTo(College::class);
     }
 
-    public function announcementables() {
-        return $this->morphMany(Announcementable::class, 'announcementable');
+    public function announcements() {
+        return $this->morphMany(Announcement::class, 'announcements');
     }
 }

@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('announcementables', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('announcementable_id');
-            $table->string('announcementable_type');
-            $table->string('announcement');
+            $table->string('fullname');
+            $table->string('email')->unique();
+            $table->foreignId('department_id')->constrained();
+            $table->string('avatar')->nullable();
+            $table->string('password');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcementables');
+        Schema::dropIfExists('users');
     }
 };
