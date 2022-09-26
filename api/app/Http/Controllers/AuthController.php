@@ -20,8 +20,7 @@ class AuthController extends Controller
             'fullname' => ['required', 'unique:users', 'max:255'],
             'email' => ['required', 'unique:users'],
             'department_id' => ['required'],
-            'avatar' => ['max:255'],
-            'role' => ['max:255']
+            'avatar' => ['max:255']
         ]);
 
         $user = User::create([
