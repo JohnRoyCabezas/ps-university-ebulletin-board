@@ -30,7 +30,7 @@ class AuthController extends Controller
             'department_id' => $validatedData['department_id'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['email']),
-            'is_verified' => $validatedData['is_verified']
+            'is_verified' => false
         ]);
 
         RoleUser::create([
