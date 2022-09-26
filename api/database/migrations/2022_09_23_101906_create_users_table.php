@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained();
             $table->string('avatar')->nullable();
             $table->string('password');
+            $table->string('is_verified')->nullable();
             $table->timestamps();
         });
     }
