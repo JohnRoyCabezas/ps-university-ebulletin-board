@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -213,8 +214,24 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
+        DB::table('universities')->insert([
+            [
+                'university' => 'Sun* University'
+            ], 
+        ]);
         DB::table('colleges')->insert([
-            ['college' => 'Engineering'], ['college' => 'Business'], ['college' => 'Computer Science']
+            [
+                'university_id' => 1,
+                'college' => 'Engineering',
+            ],
+            [
+                'university_id' => 1,
+                'college' => 'Business'
+            ],
+            [
+                'university_id' => 1,
+                'college' => 'Computer Science'
+            ]
         ]);
         DB::table('departments')->insert([
             ['college_id' => 1, 'department' => 'Electrical Engineering'],
@@ -224,7 +241,6 @@ class DatabaseSeeder extends Seeder
             ['college_id' => 2, 'department' => 'Business Administration'],
             ['college_id' => 3, 'department' => 'Information Technology'],
             ['college_id' => 3, 'department' => 'Data Science'],
-
         ]);
 
         DB::table('courses')->insert([
@@ -244,6 +260,79 @@ class DatabaseSeeder extends Seeder
             ], [
                 'department' => 7,
                 'course' => 'Data Entry 101'
+            ],
+        ]);
+        DB::table('users')->insert([
+            [
+                'fullname' => 'Sample User',
+                'password' => Hash::make('password'),
+                'email' => 'user@ebulletin.com',
+                'department_id' => 3,
+                'avatar' => 'randomavatargenerator',
+                'is_verified' => false
+            ], 
+            [
+                'fullname' => 'admin',
+                'password' => Hash::make('password'),
+                'email' => 'admin@ebulletin.com',
+                'avatar' => 'randomavatargenerator',
+                'department_id' => null,
+                'is_verified' => false
+            ], 
+        ]);
+        DB::table('role_users')->insert([
+            [
+                'role_id' => 1,
+                'user_id' => 1
+            ], 
+            [
+                'role_id' => 2,
+                'user_id' => 2
+            ], 
+           
+        ]);
+        DB::table('announcements')->insert([
+            [
+                'announcementable_id' => 2,
+                'announcementable_type' => 'App/Models/University',
+                'user_id' => 2,
+                'announcement' => 'Classes are suspended on all levels due to special holiday celebration.'
+            ],
+            [
+                'announcementable_id' => 2,
+                'announcementable_type' => 'App/Models/University',
+                'user_id' => 2,
+                'announcement' => 'There are free food and pastries on the way for all buildings.'
+            ],
+            [
+                'announcementable_id' => 1,
+                'announcementable_type' => 'App/Models/College',
+                'user_id' => 2,
+                'announcement' => 'Enrollment is now going on. Please submit your documents to the Engineering college registrar office.'
+            ],
+            [
+                'announcementable_id' => 2,
+                'announcementable_type' => 'App/Models/College',
+                'user_id' => 2,
+                'announcement' => 'Enrollment is now going on. Please submit your documents to the Business College registrar office.'
+            ],
+            [
+                'announcementable_id' => 3,
+                'announcementable_type' => 'App/Models/Department',
+                'user_id' => 2,
+                'announcement' => 'Enrollment is now going on. Please submit your documents to the college registrar office.'
+            ],
+            [
+                'announcementable_id' => 3,
+                'announcementable_type' => 'App/Models/Course',
+                'user_id' => 2,
+                'announcement' => 'This is your CompSci instructor posting an announcement. There will be no class today for CompSci 101.'
+            ],
+            [
+                'announcementable_id' => 3,
+                'announcementable_type' => 'App/Models/Course',
+                'user_id' => 2,
+                'announcement' => 'This is your CompSci instructor posting an announcement. Please submit your projects to the Google Drive on or before October 31.'
             ],
         ]);
     }
