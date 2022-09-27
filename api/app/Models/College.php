@@ -13,11 +13,15 @@ class College extends Model
         'college'
     ];
 
+    public function university() {
+        return $this->belongsTo(University::class);
+    }
+    
     public function departments() {
         return $this->hasMany(Department::class);
     }
     
-    public function announcementables() {
-        return $this->morphMany(Announcementable::class, 'announcementable');
+    public function announcements() {
+        return $this->morphMany(Announcementable::class, 'announcements');
     }
 }
