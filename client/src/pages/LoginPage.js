@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <div>
       <NavBar />
-      <div className="relative flex flex-col justify-center overflow-hidden mt-20">
+      <div className="relative flex flex-col justify-center overflow-hidden m-20">
         <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl h-96">
           <h1 className="text-3xl font-bold text-center">LOGIN</h1>
           <form className="mt-6">
