@@ -19,11 +19,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(LOG_URL, { email, password });
-      Cookies.set('user_id', response.data.user.id);
-      Cookies.set('user_fullname', response.data.user.fullname);
-      Cookies.set('user_email', response.data.user.email);
-      Cookies.set('department_id', response.data.user.department_id);
-      Cookies.set('avatar', response.data.user.avatar);
+      Cookies.set('user', JSON.stringify(response.data.user));
       Cookies.set('token', response.data.token);
     } catch (err) {
       if (!err.response) {
