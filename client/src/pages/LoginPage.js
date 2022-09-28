@@ -72,7 +72,10 @@ const LoginPage = () => {
               <ErrMsg error={errMsg} />
             </div>
             <div className="mt-16">
-              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md hover:bg-blue-900 focus:outline-none focus:bg-blue-900">
+              <button
+                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md hover:bg-blue-900 focus:outline-none focus:bg-blue-900"
+                disabled={!email || !password ? true : false}
+              >
                 Login
               </button>
             </div>
