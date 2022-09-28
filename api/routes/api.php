@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,5 +23,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 // Private
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/auth', AuthController::class);
+    Route::apiResource('/announcement', DashboardController::class);
+    
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
