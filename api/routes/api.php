@@ -14,8 +14,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-Route::apiResource('/auth', AuthController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Public
+Route::post('/auth/login', [AuthController::class, 'login']);
+
+// Private
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/auth', AuthController::class);
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
