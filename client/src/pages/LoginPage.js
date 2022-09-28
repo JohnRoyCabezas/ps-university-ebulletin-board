@@ -69,7 +69,7 @@ const LoginPage = () => {
             </div>
             <div className="mt-16">
               <button
-                className={`w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform ${!email || !password ? "bg-regal-blue" : "bg-blue-800"} rounded-md focus:outline-none focus:bg-blue-900`}
+                className={`w-full px-4 py-2 tracking-wide transition-colors duration-200 transform ${!email || !password ? "bg-gray-300 text-gray-400" : "bg-regal-blue text-white shadow-lg shadow-regal-blue-500/50"} rounded-md focus:outline-none focus:bg-blue-900`}
                 disabled={!email || !password ? true : false}
               >
                 Login
