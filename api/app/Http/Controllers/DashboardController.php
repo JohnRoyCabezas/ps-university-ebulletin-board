@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index() 
+    public function index()
     {
         $announcements = Announcement::all();
 
@@ -21,9 +21,8 @@ class DashboardController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
         $user_fullname = $user['fullname'];
-        $role_users = $user->roleUsers;
+        $user_role_id = $user->roleUser->role_id;
 
         $validatedData = $request->validate([
             'announcementable_id' => 'required',
@@ -31,22 +30,12 @@ class DashboardController extends Controller
             'announcement' => 'required'
         ]);
 
-        //checks if role_users has permission canCreateAnnouncement 
-        //boolean values are set for each role the user has
-        //returns object
-        $role_permissions = $role_users->map(function ($item, $key) {
-            return PermissionRole::where('role_id', $item->role_id)
+        $canCreateAnnouncement = PermissionRole::where('role_id', $user_role_id)
             ->whereHas('permission', function ($query) {
                 $query->where('permission', 'canCreateAnnouncement');
-            })
-            ->exists(); 
-        });
+            })->exists();
 
-        //converts role_permissions object to array
-        $canCreateAnnouncementBoolean = in_array('true', $role_permissions->toArray());
-        
-        //checks if user with role(s) has canCreateAnnouncement permission
-        if ($canCreateAnnouncementBoolean) {
+        if ($canCreateAnnouncement) {
             $announcement = Announcement::create([
                 'announcementable_id' => $validatedData['announcementable_id'],
                 'announcementable_type' => $validatedData['announcementable_type'],
@@ -55,40 +44,36 @@ class DashboardController extends Controller
             ]);
 
             $data = [
-                'message' => 'Successfully created an announcement!',
+                'message' => $user_fullname . ' successfully created an announcement!',
                 'user' => $user_fullname,
                 'announcement' => $announcement
             ];
             return response()->json($data);
-
         } else {
             return response()->json([
                 'message' => $user_fullname . ' does not have permission to post announcement.'
             ]);
         }
+
+        return response()->json($canCreateAnnouncement);
     }
 
-    public function show($id) 
+    public function show($id)
     {
         $user = Auth::user();
-        
-        $user_fullname = $user['fullname'];
-        $role_users = $user->roleUsers;
 
-        //checks if role_users has permission canReadAnnouncement 
-        $role_permissions = $role_users->map(function ($item, $key) {
-            return PermissionRole::where('role_id', $item->role_id)
+        $user_fullname = $user['fullname'];
+        $user_role_id = $user->roleUser->role_id;
+
+        //checks if role_user has permission canReadAnnouncement 
+        $canReadAnnouncement = PermissionRole::where('role_id', $user_role_id)
             ->whereHas('permission', function ($query) {
                 $query->where('permission', 'canReadAnnouncement');
-            })
-            ->exists(); 
-        });
+            })->exists();
 
-        $canReadAnnouncementBoolean = in_array('true', $role_permissions->toArray());
-
-        if ($canReadAnnouncementBoolean) {
+        if ($canReadAnnouncement) {
             $announcement = Announcement::find($id);
-           
+
             return response()->json($announcement);
         } else {
             return response()->json([
@@ -96,43 +81,35 @@ class DashboardController extends Controller
             ]);
         }
     }
-    
-    public function update(Request $request, $id) 
+
+    public function update(Request $request, $id)
     {
         $user = Auth::user();
-        
+
         $user_fullname = $user['fullname'];
-        $role_users = $user->roleUsers;
+        $user_role_id = $user->roleUser->role_id;
 
         $validatedData = $request->validate([
-            // 'announcement_id' => 'required',
             'announcement_update' => 'required'
         ]);
 
-        //checks if role_users has permission canUpdateAnnouncement 
-        $role_permissions = $role_users->map(function ($item, $key) {
-            return PermissionRole::where('role_id', $item->role_id)
+        //checks if role_user has permission canUpdateAnnouncement 
+        $canUpdateAnnouncement = PermissionRole::where('role_id', $user_role_id)
             ->whereHas('permission', function ($query) {
                 $query->where('permission', 'canUpdateAnnouncement');
-            })
-            ->exists(); 
-        });
+            })->exists();
 
-        //converts role_permissions object to array
-        $canUpdateAnnouncementBoolean = in_array('true', $role_permissions->toArray());
-        
-        //checks if user with role(s) has canCreateAnnouncement permission
-        if ($canUpdateAnnouncementBoolean) {
+        //checks if user with role has canCreateAnnouncement permission
+        if ($canUpdateAnnouncement) {
             $announcement_update = Announcement::find($id)
-            ->update(['announcement' => $validatedData['announcement_update']]);
-            
+                ->update(['announcement' => $validatedData['announcement_update']]);
+
             $data = [
                 'message' => 'Successfully updated announcement!',
                 'user' => $user_fullname,
                 'announcement_update' => $announcement_update,
             ];
             return response()->json($data);
-
         } else {
             return response()->json([
                 'message' => $user_fullname . ' does not have permission to update announcement.'
@@ -140,34 +117,27 @@ class DashboardController extends Controller
         }
     }
 
-    public function destroy($id) 
+    public function destroy($id)
     {
         $user = Auth::user();
-        
+
         $user_fullname = $user['fullname'];
-        $role_users = $user->roleUsers;
+        $user_role_id = $user->roleUser->role_id;
 
-        //checks if role_users has permission canDeleteAnnouncement 
-        $role_permissions = $role_users->map(function ($item, $key) {
-            return PermissionRole::where('role_id', $item->role_id)
-            ->whereHas('permission', function ($query) {
-                $query->where('permission', 'canDeleteAnnouncement');
-            })
-            ->exists(); 
-        });
+        //checks if role_user has permission canDeleteAnnouncement 
+        $canDeleteAnnouncement = PermissionRole::where('role_id', $user_role_id)
+        ->whereHas('permission', function ($query) {
+            $query->where('permission', 'canDeleteAnnouncement');
+        })->exists();
 
-        //converts role_permissions object to array
-        $canDeleteAnnouncementBoolean = in_array('true', $role_permissions->toArray());
-        
-        //checks if user with role(s) has canDeleteAnnouncement permission
-        if ($canDeleteAnnouncementBoolean) {
+        //checks if user with role has canDeleteAnnouncement permission
+        if ($canDeleteAnnouncement) {
             Announcement::destroy($id);
 
             $data = [
                 'message' => 'Successfully deleted announcement!'
             ];
             return response()->json($data);
-
         } else {
             return response()->json([
                 'message' => $user_fullname . ' does not have permission to delete announcement.'
