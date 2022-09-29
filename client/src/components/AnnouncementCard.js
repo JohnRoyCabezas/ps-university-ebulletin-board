@@ -5,7 +5,7 @@ export default function AnnouncementCard() {
   return (
     <div>
       <div
-        class="block p-6 shadow-lg bg-white w-full"
+        class="block p-6 shadow-lg bg-white w-full border-b-2"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{
@@ -48,7 +48,6 @@ export default function AnnouncementCard() {
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
       </div>
-      <hr></hr>
     </div>
   );
 }

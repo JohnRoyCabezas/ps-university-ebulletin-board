@@ -7,8 +7,7 @@ const AnnouncementPage = () => {
     <div className="flex w-full">
       <Sidebar />
       <div className="container w-full">
-        <h1 className="font-bold p-3 text-lg">Announcements</h1>
-        <hr></hr>
+        <h1 className="font-bold p-3 text-lg border-b-2">Announcements</h1>
         <AnnouncementCard />
         <AnnouncementCard />
         <AnnouncementCard />
