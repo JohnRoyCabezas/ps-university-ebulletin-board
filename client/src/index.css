@@ -28,3 +28,7 @@
 .active {
   background-color: #0B1428;
 }
+
+.ql-editor{
+  min-height: 2.5cm;
+}
