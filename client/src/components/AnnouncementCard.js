@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
+import { faComment } from '@fortawesome/free-regular-svg-icons'
 
 export default function AnnouncementCard() {
   const [isShown, setIsShown] = useState(false);
@@ -20,7 +20,7 @@ export default function AnnouncementCard() {
           alt="Avatar"
         />
 
-        <div className="relative flex flex-col ml-2">
+        <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">Admin</h5>
             <p className="ml-2 text-xs">Sept. 21, 2022 at 12:44PM</p>
@@ -36,14 +36,12 @@ export default function AnnouncementCard() {
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
-          {isShown && (
-            <div className="absolute top-0 right-0 drop-shadow-md text-gray-800 cursor-pointer">
-              <div>
-                <FontAwesomeIcon icon={faComment} size="lg" />
-              </div>
-            </div>
-          )}
         </div>
+        {isShown && (
+          <div className="absolute top-0 right-0 translate-y-1/2 -translate-x-1/2 drop-shadow-md px-2 py-0.5 bg-white text-gray-500 border-regal-blue border-2 rounded cursor-pointer">
+            <FontAwesomeIcon icon={faComment} size="lg" color="#162750"/>
+          </div>
+        )}
       </div>
     </div>
   );
