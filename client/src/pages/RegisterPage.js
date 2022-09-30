@@ -65,6 +65,7 @@ const RegisterPage = () => {
 
     AuthApi.register(token, params).then(
       (res) => {
+        Cookies.remove('params');
         console.log(res.data);
       },
       (err) => {
@@ -112,7 +113,10 @@ const RegisterPage = () => {
                 Department
               </label>
               <Dropdown
-                defaultLabel={departments[params?.department_id-1]?.department}
+                defaultLabel={
+                  departments[params?.department_id - 1]?.department
+                }
+                defaultValue={departments[params?.department_id - 1]?.id}
                 handleChange={handleSelectChange}
                 type="department"
                 data={departments}
@@ -123,7 +127,8 @@ const RegisterPage = () => {
                 Role
               </label>
               <Dropdown
-                defaultLabel={roles[params?.role-1]?.role}
+                defaultLabel={roles[params?.role - 1]?.role}
+                defaultValue={roles[params?.role - 1]?.id}
                 handleChange={handleSelectChange}
                 type="role"
                 data={roles}
@@ -156,15 +161,26 @@ const RegisterPage = () => {
             <div className="test-xs text-red-600 italic">{errorMessage}</div>
             <div className="mt-16">
               <button
-                disabled={(params.fullname || params.avatar || params.department_id || params.email || params.role) ? true : false}
+                disabled={
+                  (params.fullname &&
+                  params.avatar &&
+                  params.department_id &&
+                  params.email &&
+                  params.role)
+                    ? false
+                    : true
+                }
                 onClick={handleSubmit}
                 className={`w-full px-4 py-2 tracking-wide rounded-md 
-                ${(params.fullname && params.avatar && params.department_id && params.email && params.role) 
-                  ? 
-                  `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900` 
-                  :
-                  `bg-gray-300 text-gray-400` 
-                }` }
+                ${
+                  params.fullname &&
+                  params.avatar &&
+                  params.department_id &&
+                  params.email &&
+                  params.role
+                    ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
+                    : `bg-gray-300 text-gray-400`
+                }`}
               >
                 Create Account
               </button>
