@@ -1,11 +1,10 @@
 import instance from "./instance";
 
 const RoleApi = {
-  fetchRoles: (token) => {
+  fetchRoles: () => {
     const config = {
       method: 'GET',
       url: '/role',
-      headers: { Authorization: `Bearer ${token}`}
     }
     return instance.request(config);
   }

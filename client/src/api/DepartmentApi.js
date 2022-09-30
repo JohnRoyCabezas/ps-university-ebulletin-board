@@ -1,11 +1,10 @@
 import instance from "./instance";
 
 const DepartmentApi = {
-  fetchDepartments: (token) => {
+  fetchDepartments: () => {
     const config = {
       method: 'GET',
       url: '/department',
-      headers: { Authorization: `Bearer ${token}`}
     }
     return instance.request(config);
   }

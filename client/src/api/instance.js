@@ -1,8 +1,14 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+const TOKEN = Cookies.get('token')
 
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
-  headers: { 'Content-Type': 'application/json' }
-})
+  baseURL: `${process.env.REACT_APP_SERVER_API}/api`,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${TOKEN}`,
+  }
+});
 
 export default instance;

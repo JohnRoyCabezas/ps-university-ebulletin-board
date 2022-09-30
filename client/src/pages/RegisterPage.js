@@ -9,7 +9,7 @@ import RoleApi from '../api/RoleApi';
 const RegisterPage = () => {
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [token, setToken] = useState('');
+  const [errors, setErrors] = useState({});
   const [params, setParams] = useState({
     fullname: '',
     email: '',
@@ -17,7 +17,6 @@ const RegisterPage = () => {
     role: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
   });
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     DepartmentApi.fetchDepartments().then((res) => {
@@ -26,7 +25,6 @@ const RegisterPage = () => {
     RoleApi.fetchRoles().then((res) => {
       setRoles(res.data);
     });
-    setToken(Cookies.get('token'));
     Cookies.get('params') &&
       setParams(JSON.parse(Cookies.get('params') || '{}'));
   }, []);
@@ -63,13 +61,13 @@ const RegisterPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    AuthApi.register(token, params).then(
+    AuthApi.register(params).then(
       (res) => {
         Cookies.remove('params');
         console.log(res.data);
       },
       (err) => {
-        setErrorMessage(err.response.data.message);
+        setErrors(err.response.data.errors);
       }
     );
   };
@@ -111,6 +109,11 @@ const RegisterPage = () => {
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-800 mb-2">
                 Department
+                {params.department_id === '' && (
+                  <span className="ml-2 text-xs italic font-light text-red-800">
+                    Department value is required
+                  </span>
+                )}
               </label>
               <Dropdown
                 defaultLabel={
@@ -125,6 +128,11 @@ const RegisterPage = () => {
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-800">
                 Role
+                {params.role === '' && (
+                  <span className="ml-2 text-xs italic font-light text-red-800">
+                    Role value is required
+                  </span>
+                )}
               </label>
               <Dropdown
                 defaultLabel={roles[params?.role - 1]?.role}
@@ -137,6 +145,11 @@ const RegisterPage = () => {
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-800">
                 Fullname
+                {params.fullname === '' && (
+                  <span className="ml-2 text-xs italic font-light text-red-800">
+                    Your full name is required
+                  </span>
+                )}
               </label>
               <input
                 name="fullname"
@@ -149,6 +162,12 @@ const RegisterPage = () => {
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-800">
                 Email
+                {params.email === '' && (
+                  <span className="ml-2 text-xs italic font-light text-red-800">
+                    Your email is required
+                  </span>
+                )}
+               
               </label>
               <input
                 name="email"
@@ -157,16 +176,19 @@ const RegisterPage = () => {
                 placeholder="johndoe@domain.com"
                 className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500 input"
               />
+              
             </div>
-            <div className="test-xs text-red-600 italic">{errorMessage}</div>
+            <span className="ml-2 text-xs italic font-light text-red-800">
+                  {errors.email}
+                </span>
             <div className="mt-16">
               <button
                 disabled={
-                  (params.fullname &&
+                  params.fullname &&
                   params.avatar &&
                   params.department_id &&
                   params.email &&
-                  params.role)
+                  params.role
                     ? false
                     : true
                 }
