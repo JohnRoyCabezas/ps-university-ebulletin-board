@@ -156,16 +156,15 @@ const RegisterPage = () => {
             <div className="test-xs text-red-600 italic">{errorMessage}</div>
             <div className="mt-16">
               <button
-                // disabled={(params.fullname || params.avatar || params.department_id || params.email || params.role) ? true : false}
+                disabled={(params.fullname || params.avatar || params.department_id || params.email || params.role) ? true : false}
                 onClick={handleSubmit}
-                className={`w-full px-4 py-2 tracking-wide rounded-md`
-                // (params.fullname || params.avatar || params.department_id || params.email || params.role)
-                //   ? 
-                //   `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900` 
-                //   :
-                //   `bg-gray-300 text-gray-400` 
-                }
-                 
+                className={`w-full px-4 py-2 tracking-wide rounded-md 
+                ${(params.fullname && params.avatar && params.department_id && params.email && params.role) 
+                  ? 
+                  `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900` 
+                  :
+                  `bg-gray-300 text-gray-400` 
+                }` }
               >
                 Create Account
               </button>
