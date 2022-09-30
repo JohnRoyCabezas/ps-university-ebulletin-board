@@ -24,3 +24,7 @@
   border: 1px solid #c2bcbc;
   border-radius: 3px;
 }
+
+.active {
+  background-color: #0B1428;
+}
