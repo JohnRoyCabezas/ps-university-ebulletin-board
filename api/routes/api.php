@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 // Public
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::apiResource('/department', DepartmentController::class);
+Route::apiResource('/role', RoleController::class);
+Route::apiResource('/auth', AuthController::class);
 
 // Private
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('/auth', AuthController::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+
 });
