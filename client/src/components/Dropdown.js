@@ -1,25 +1,30 @@
-import React from "react";
+import React from 'react';
+import Select from 'react-select';
 
-import Select from "react-select";
 
-const Countries = [
-  { label: "Albania", value: 355 },
-  { label: "Argentina", value: 54 },
-  { label: "Austria", value: 43 },
-  { label: "Cocos Islands", value: 61 },
-  { label: "Kuwait", value: 965 },
-  { label: "Sweden", value: 46 },
-  { label: "Venezuela", value: 58 },
-];
-
-class SelectDropDownComponent extends React.Component {
-  render() {
-    return (
-      <div>
-        <Select options={Countries} />
-      </div>
-    );
+const Dropdown = ({defaultLabel, handleChange, data, type}) => {
+  const onSelectChange = (value) => {
+    handleChange(type, value)
   }
-}
 
-export default SelectDropDownComponent;
+  const dataOptions = data?.map((item) => {
+    return {
+      label: item[`${type}`],
+      value: item['id']
+    }
+  });
+
+  const defaultLabelString = String(defaultLabel);
+
+  return (
+    <div>
+      {/* {defaultLabel} */}
+      <Select 
+        // defaultValue={{ label: defaultLabelString, value: 0}}
+        onChange={onSelectChange} 
+        options={dataOptions} />
+    </div>
+  );
+};
+
+export default Dropdown;
