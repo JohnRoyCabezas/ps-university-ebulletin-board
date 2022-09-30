@@ -13,8 +13,6 @@ const Dropdown = ({ defaultLabel, defaultValue, handleChange, data, type }) => {
     };
   });
 
-  // const defaultLabelString = String(defaultLabel);
-
   return (
     <div>
       <Select
