@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import React from 'react';
 
-import AnnouncementPage from "../pages/AnnouncementPage";
+import LoginPage from "../pages/LoginPage";
 
 const RoutesList = () => {
   return (
     <Routes>
-      <Route path="/" element={<AnnouncementPage />} />
+      <Route path="/" element={<LoginPage />} />
     </Routes>
   )
 }
