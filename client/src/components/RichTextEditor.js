@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <ReactQuill
       theme="snow"
-      className="block p-3 rounded-lg shadow-lg bg-white bottom-0"
+      className="block rounded shadow-lg bottom-0"
     ></ReactQuill>
   );
 }

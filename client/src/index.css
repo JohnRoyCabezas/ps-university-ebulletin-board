@@ -29,6 +29,13 @@
   background-color: #0B1428;
 }
 
-.ql-editor{
+.ql-editor {
   min-height: 2.5cm;
+}
+
+.ql-container {
+  border-radius:  0px 0px 5px 5px;
+}
+.ql-toolbar {
+  border-radius: 5px 5px 0px 0px;
 }
