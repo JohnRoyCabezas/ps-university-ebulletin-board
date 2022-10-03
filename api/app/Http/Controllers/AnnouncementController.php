@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class AnnouncementController extends Controller
 {
     public function index()
     {
