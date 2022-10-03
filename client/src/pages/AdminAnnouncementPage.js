@@ -34,7 +34,7 @@ const AdminAnnouncementPage = () => {
             <AnnouncementCard />
         
           </div>
-          <div className="px-5 pb-5">
+          <div className="px-5">
             <RichTextEditor />
           </div>
         </div>
