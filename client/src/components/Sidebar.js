@@ -1,4 +1,5 @@
 import React from "react";
+import SideBarPopup from "./SideBarPopup";
 
 export default function Sidebar() {
   return (
@@ -91,26 +92,7 @@ export default function Sidebar() {
           </div>
         </div>
         <div className="bg-dark-blue mt-auto">
-          <div className="flex items-center p-2">
-            <img
-              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-              className="rounded-full w-12 ml-8"
-              alt="Avatar"
-            />
-            <label className="mx-2">Avatar</label>
-            <button className="button-default">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path d="M18 15l-6-6-6 6" />
-              </svg>
-            </button>
-          </div>
+          <SideBarPopup />
         </div>
       </div>
     </div>
