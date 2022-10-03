@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('roles')->insert([
             [
-                'role' => 'student'
+                'role' => 'Student'
             ],
             [
-                'role' => 'admin'
+                'role' => 'Admin'
             ],
             [
-                'role' => 'student_body'
+                'role' => 'Student Body'
             ]
         ]);
 

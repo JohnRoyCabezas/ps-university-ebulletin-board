@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\RoleController;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +22,12 @@ use Illuminate\Support\Facades\Route;
 // Public
 Route::post('/auth/login', [AuthController::class, 'login']);
 
+
 // Private
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/auth', AuthController::class);
+    Route::apiResource('/role', RoleController::class);
+    Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', DashboardController::class);
-    
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
