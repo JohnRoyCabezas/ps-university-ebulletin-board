@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class AnnouncementController extends Controller
 {
     public function index()
     {
-        $announcements = Announcement::all();
+        $announcements = Announcement::with('user')->get();
 
         return response()->json($announcements);
     }
@@ -65,7 +65,7 @@ class DashboardController extends Controller
         $user_fullname = $user['fullname'];
         $user_role_id = $user->roleUser->role_id;
 
-        //checks if role_user has permission canReadAnnouncement 
+        //checks if role_user has permission canReadAnnouncement
         $canReadAnnouncement = PermissionRole::where('role_id', $user_role_id)
             ->whereHas('permission', function ($query) {
                 $query->where('permission', 'canReadAnnouncement');
@@ -93,7 +93,7 @@ class DashboardController extends Controller
             'announcement_update' => 'required'
         ]);
 
-        //checks if role_user has permission canUpdateAnnouncement 
+        //checks if role_user has permission canUpdateAnnouncement
         $canUpdateAnnouncement = PermissionRole::where('role_id', $user_role_id)
             ->whereHas('permission', function ($query) {
                 $query->where('permission', 'canUpdateAnnouncement');
@@ -124,7 +124,7 @@ class DashboardController extends Controller
         $user_fullname = $user['fullname'];
         $user_role_id = $user->roleUser->role_id;
 
-        //checks if role_user has permission canDeleteAnnouncement 
+        //checks if role_user has permission canDeleteAnnouncement
         $canDeleteAnnouncement = PermissionRole::where('role_id', $user_role_id)
         ->whereHas('permission', function ($query) {
             $query->where('permission', 'canDeleteAnnouncement');
