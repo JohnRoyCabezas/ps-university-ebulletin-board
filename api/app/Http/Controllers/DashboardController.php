@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $announcements = Announcement::all();
+        $announcements = Announcement::with('user')->get();
 
         return response()->json($announcements);
     }

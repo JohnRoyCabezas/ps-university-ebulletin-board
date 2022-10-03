@@ -19,4 +19,8 @@ class Announcement extends Model
     public function announcementable() {
         return $this->morphTo();
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
