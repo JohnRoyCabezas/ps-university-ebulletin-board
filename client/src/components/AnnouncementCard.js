@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from '@fortawesome/free-regular-svg-icons'
 import StudentMessageOptions from "./StudentMessageOptions"
 import AdminMessageOptions from "./AdminMessageOptions"
 
@@ -7,34 +9,41 @@ export default function AnnouncementCard() {
   return (
     <div>
       <div
-        class="block p-6 shadow-lg bg-white w-full border-b-2"
+        className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{
           backgroundColor: isShown ? "#EAE8E8" : "",
         }}
       >
-        <div className="flex">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-            className="rounded-full w-12"
-            alt="Avatar"
-          />
-          <h5 class="leading-tight font-bold ml-3 mb-2">Admin</h5>
-          <p class="ml-2 text-xs mt-[2px]">Sept. 21, 2022 at 12:44PM</p>
-          {isShown && (
-            <AdminMessageOptions />
-          )}
+        <img
+          src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+          className="rounded-full w-12 h-12"
+          alt="Avatar"
+        />
+
+        <div className="flex flex-col ml-2">
+          <div className="flex justify-start items-center mb-2">
+            <h5 className="font-bold">Admin</h5>
+            <p className="ml-2 text-xs">Sept. 21, 2022 at 12:44PM</p>
+          </div>
+          <div>
+            <p className="text-gray-700 text-base">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore gna aliqua. Ut enim
+              ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+              aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
         </div>
-        <p class="text-gray-700 text-base ml-14">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        {isShown && (
+          <div className="absolute top-0 right-0 translate-y-1/2 -translate-x-1/2 drop-shadow-md px-2 py-0.5 bg-white text-gray-500 border-regal-blue border-2 rounded cursor-pointer">
+            <FontAwesomeIcon icon={faComment} size="lg" color="#162750"/>
+          </div>
+        )}
       </div>
     </div>
   );
