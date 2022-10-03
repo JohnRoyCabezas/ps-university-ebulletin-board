@@ -11,7 +11,7 @@ class Thread extends Model
 
     protected $fillable = [
         'user_id',
-        'announcementable_id',
+        'announcement_id',
         'thread_message',
     ];
 

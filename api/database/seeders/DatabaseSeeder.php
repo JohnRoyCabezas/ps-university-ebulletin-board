@@ -339,5 +339,23 @@ class DatabaseSeeder extends Seeder
                 'announcement' => 'This is your CompSci instructor posting an announcement. Please submit your projects to the Google Drive on or before October 31.'
             ],
         ]);
+        DB::table('threads')->insert([
+            [
+                'user_id' => 2,
+                'announcement_id' => '1',
+                'thread_message' => 'yeheyy!' 
+
+            ], 
+            [
+                'user_id' => 2,
+                'announcement_id' => '1',
+                'thread_message' => 'relax timee!'
+            ], 
+            [
+                'user_id' => 2,
+                'announcement_id' => '1',
+                'thread_message' => 'oh no!'
+            ], 
+        ]);
     }
 }
