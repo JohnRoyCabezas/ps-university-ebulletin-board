@@ -57,8 +57,8 @@ class User extends Authenticatable
         return $this->hasMany(File::class);
     }
 
-    public function roleUsers() {
-        return $this->hasMany(RoleUser::class);
+    public function roleUser() {
+        return $this->hasOne(RoleUser::class);
     }
 
     public function courseUsers() {
