@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('announcementable_id');
             $table->string('announcementable_type');
-            $table->integer('user_id');
+            $table->foreignId('user_id');
             $table->string('announcement');
             $table->timestamps();
         });
