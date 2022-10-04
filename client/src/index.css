@@ -28,3 +28,18 @@
 .active {
   background-color: #0B1428;
 }
+
+.ql-editor {
+  min-height: 2.5cm;
+}
+
+.ql-toolbar {
+  border-radius: 5px 5px 0px 0px;
+}
+
+.rte {
+  border: solid #c0c0c0;
+  border-radius: 0px 0px 5px 5px ;
+  border-width: 1px;
+  border-top: 0px;
+}
