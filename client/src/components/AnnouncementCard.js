@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
+import parse from 'html-react-parser';
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
@@ -28,7 +29,7 @@ export default function AnnouncementCard(props) {
           </div>
           <div>
             <p className="text-gray-700 text-base">
-              {props.announcement.announcement}
+              {parse(props.announcement.announcement)}
             </p>
           </div>
         </div>
