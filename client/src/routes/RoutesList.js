@@ -13,8 +13,9 @@ const RoutesList = () => {
       <Route path="/adminannouncement" element={<AdminAnnouncementPage />} />
       <Route path="/announcement" element={<AnnouncementPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage />} />
       <Route path="/adminsettings" element={<AdminSettingsPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />}></Route>
     </Routes>
   )
 }
