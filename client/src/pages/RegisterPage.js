@@ -7,6 +7,7 @@ import AuthApi from '../api/AuthApi';
 import RoleApi from '../api/RoleApi';
 
 const RegisterPage = () => {
+  const EMAIL_REGEX = /\S+@\S+\.\S+/;
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState({});
@@ -30,14 +31,25 @@ const RegisterPage = () => {
   }, []);
 
   const handleInputChange = (e) => {
+    setErrors({});
     setParams({ ...params, [e.target.name]: e.target.value });
     Cookies.set(
       'params',
       JSON.stringify({ ...params, [e.target.name]: e.target.value })
     );
+
   };
+  
+  useEffect(() => {
+    if ((params.email === '') || EMAIL_REGEX.test(params.email)) {
+      setErrors({});
+    } else (
+      setErrors({...errors, 'email': 'Not a valid email format'})
+      )
+  }, [params.email]);
 
   const handleAvatarChange = () => {
+    setErrors({});
     const randomAvatar = `https://joeschmoe.io/api/v1/${
       Math.floor(Math.random() * 90000) + 10000
     }`;
@@ -46,6 +58,7 @@ const RegisterPage = () => {
   };
 
   const handleSelectChange = (type, item) => {
+    setErrors({});
     if (type === 'department') {
       setParams({ ...params, department_id: item.value });
       Cookies.set(
@@ -110,8 +123,8 @@ const RegisterPage = () => {
               <label className="block text-sm font-semibold text-gray-800 mb-2">
                 Department
                 {params.department_id === '' && (
-                  <span className="ml-2 text-xs italic font-light text-red-800">
-                    Department value is required
+                  <span className="text-s italic font-light text-red-800">
+                    *
                   </span>
                 )}
               </label>
@@ -129,8 +142,8 @@ const RegisterPage = () => {
               <label className="block text-sm font-semibold text-gray-800">
                 Role
                 {params.role === '' && (
-                  <span className="ml-2 text-xs italic font-light text-red-800">
-                    Role value is required
+                  <span className="text-s italic font-light text-red-800">
+                    *
                   </span>
                 )}
               </label>
@@ -146,8 +159,8 @@ const RegisterPage = () => {
               <label className="block text-sm font-semibold text-gray-800">
                 Fullname
                 {params.fullname === '' && (
-                  <span className="ml-2 text-xs italic font-light text-red-800">
-                    Your full name is required
+                  <span className="text-s italic font-light text-red-800">
+                    *
                   </span>
                 )}
               </label>
@@ -163,11 +176,13 @@ const RegisterPage = () => {
               <label className="block text-sm font-semibold text-gray-800">
                 Email
                 {params.email === '' && (
-                  <span className="ml-2 text-xs italic font-light text-red-800">
-                    Your email is required
+                  <span className="text-s italic font-light text-red-800">
+                    *
                   </span>
                 )}
-               
+                <span className="ml-2 text-s italic font-light text-red-800">
+                  {errors.email}
+                </span>
               </label>
               <input
                 name="email"
@@ -178,12 +193,11 @@ const RegisterPage = () => {
               />
               
             </div>
-            <span className="ml-2 text-xs italic font-light text-red-800">
-                  {errors.email}
-                </span>
+          
             <div className="mt-16">
               <button
                 disabled={
+                  !errors.email &&
                   params.fullname &&
                   params.avatar &&
                   params.department_id &&
@@ -195,6 +209,7 @@ const RegisterPage = () => {
                 onClick={handleSubmit}
                 className={`w-full px-4 py-2 tracking-wide rounded-md 
                 ${
+                  !errors.email &&
                   params.fullname &&
                   params.avatar &&
                   params.department_id &&
