@@ -1,13 +1,45 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav {
+  height: 40px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.navtext {
+  padding: 6px;
+  margin-left: 30px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.css-319lph-ValueContainer {
+  height: 42px;
+}
+
+.input {
+  border: 1px solid #c2bcbc;
+  border-radius: 3px;
+}
+
+.active {
+  background-color: #0B1428;
+}
+
+.ql-editor {
+  min-height: 2.5cm;
+}
+
+.ql-toolbar {
+  border-radius: 5px 5px 0px 0px;
+}
+
+.rte {
+  border: solid #c0c0c0;
+  border-radius: 0px 0px 5px 5px ;
+  border-width: 1px;
+  border-top: 0px;
 }
