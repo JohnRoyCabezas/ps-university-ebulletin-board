@@ -13,6 +13,7 @@ const RoutesList = () => {
       <Route path="/announcement" element={<AnnouncementPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />}></Route>
     </Routes>
   )
 }
