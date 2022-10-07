@@ -12,15 +12,16 @@ import AdminSettingsPage from "../pages/AdminSettingsPage";
 const RoutesList = () => {
   return (
     <Routes>
-      <Route path="/adminannouncement" element={<AdminAnnouncementPage />} />
+      <Route index element={<LandingPage />} />
+      <Route path="landing" element={<LandingPage />} />
+      <Route path="login" element={<LoginPage />} />
       <Route path="/createdepartment" element={<CreateDepartmentPage />} />
-      <Route path="/announcement" element={<AnnouncementPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/adminsettings" element={<AdminSettingsPage />} />
+      <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
+      <Route path="adminsettings" element={<AdminSettingsPage />} />
+      <Route path="register" element={<RegisterPage />} />
+      <Route path="announcement" element={<AnnouncementPage />} />
     </Routes>
-  )
+  );
 }
 
 export default RoutesList
