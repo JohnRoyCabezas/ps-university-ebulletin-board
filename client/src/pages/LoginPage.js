@@ -38,7 +38,11 @@ const LoginPage = () => {
         setEmail('');
         setPassword('');
         
-        navigate('/adminannouncement');
+        if (res.data.user.role_user.role_id === 2) {
+          navigate('/adminannouncement');
+        } else (
+          navigate('/announcement')
+        )
       },
       (err) => {
         setErrMsg(err.response.data.error);
