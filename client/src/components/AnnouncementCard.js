@@ -1,13 +1,34 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from '@fortawesome/free-regular-svg-icons';
 import moment from "moment";
 import parse from 'html-react-parser';
+import AdminMessageOptions from "./AdminMessageOptions";
+import StudentMessageOptions from "./StudentMessageOptions";
+import AnnouncementApi from "../api/AnnouncementApi";
+import RichTextEditor from "../components/RichTextEditor";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [params, setParams] = useState({});
+  const [id, setId] = useState('');
+
+  function handleEdit(id) {
+    setId(id);
+    AnnouncementApi.fetchSpecificAnnouncement(id).then(
+      (res) => {
+        setParams(res.data);
+      }
+    )
+    setIsEdit(true);
+  }
+
+  function isChange(value) {
+    setIsEdit(value);
+    props.handleRefresh();
+  }
+
   return (
-    <div id={props.id.toString()}>
+    <div>
       <div
         className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
         onMouseEnter={() => setIsShown(true)}
@@ -25,18 +46,14 @@ export default function AnnouncementCard(props) {
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">{props.announcement.user.fullname}</h5>
-            <p className="ml-2 text-xs"><i>{moment(props.announcement.created_at).fromNow()}</i></p>
+            <span className="ml-2 text-xs"><i>{moment(props.announcement.created_at).fromNow()}</i></span>
           </div>
           <div>
-            <p className="text-gray-700 text-base">
-              {parse(props.announcement.announcement)}
-            </p>
+            {(isEdit) ? <div className="px-5 w-full"><RichTextEditor isEdit={isEdit} isChange={value => isChange(value)} handleRefresh={() => props.handleRefresh()} id={id} params={params} /></div> : <span className="text-gray-700 text-base">{parse(props.announcement.announcement)}</span>}
           </div>
         </div>
         {isShown && (
-          <div className="absolute top-0 right-0 translate-y-1/2 -translate-x-1/2 drop-shadow-md px-2 py-0.5 bg-white text-gray-500 border-regal-blue border-2 rounded cursor-pointer">
-            <button className="cursor-pointer"><FontAwesomeIcon icon={faComment} size="lg" color="#162750" /></button>
-          </div>
+          (props.userRole === 'student') ? <StudentMessageOptions /> : <AdminMessageOptions id={props.announcement.id} handleRefresh={props.handleRefresh} handleEdit={id => handleEdit(id)} />
         )}
       </div>
     </div>
