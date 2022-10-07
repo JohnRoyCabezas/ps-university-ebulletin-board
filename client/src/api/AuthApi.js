@@ -22,6 +22,14 @@ const AuthApi = {
     }
     return instance.request(config);
   },
+
+  logout: () => {
+    const config = {
+      method: 'POST',
+      url: '/auth/logout'
+    }
+    return instance.request(config);
+  }
   
 }
 

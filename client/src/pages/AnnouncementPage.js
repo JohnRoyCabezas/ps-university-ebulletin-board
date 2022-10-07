@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
 
-const AdminAnnouncementPage = () => {
+const AnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
 
   useEffect(() => {
@@ -38,4 +38,4 @@ const AdminAnnouncementPage = () => {
   );
 };
 
-export default AdminAnnouncementPage;
+export default AnnouncementPage;
