@@ -60,12 +60,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($validatedData)) {
-            $user = Auth::user();
+            $user_id = Auth::id();
+            $user = User::where('id', $user_id)->with('roleUser')->first();
+
             $token = $user->createToken('access_token')->plainTextToken;
+
             $data = [
                 'message' => 'Successfully logged in user!',
                 'user' => $user,
-                'token' => $token
+                'token' => $token,
             ];
             return response()->json($data);
         } else {

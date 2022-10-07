@@ -3,9 +3,11 @@ import NavBar from "../components/Navbar";
 import Cookies from "js-cookie";
 import AuthApi from '../api/AuthApi';
 import ErrMsg from "../components/ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 const LoginPage = () => {
+  const navigate = useNavigate();
   const emailRef = useRef();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +35,10 @@ const LoginPage = () => {
       (res) => {
         Cookies.set('token', res.data.token);
         Cookies.set('user', JSON.stringify(res.data.user));
+        setEmail('');
+        setPassword('');
+        
+        navigate('/adminannouncement');
       },
       (err) => {
         setErrMsg(err.response.data.error);
@@ -55,6 +61,7 @@ const LoginPage = () => {
                 Email
               </label>
               <input
+                value={email}
                 placeholder="johndoe@gmail.com"
                 type="email"
                 ref={emailRef}
@@ -70,6 +77,7 @@ const LoginPage = () => {
                 Password
               </label>
               <input
+                value={password}
                 placeholder="password"
                 type="password"
                 className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"

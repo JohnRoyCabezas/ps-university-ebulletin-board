@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\CollegeContoller;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -27,5 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
+    Route::apiResource('/college', CollegeContoller::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
