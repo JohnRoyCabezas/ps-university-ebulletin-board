@@ -19,8 +19,7 @@ const RoutesList = () => {
 
   return (
     <Routes>
-      <Route index element={<LandingPage />} />
-      <Route path="landing" element={<LandingPage />} />
+      <Route path="/" element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="unauthorized" element={<Unauthorized />}></Route>
         <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}>

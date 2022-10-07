@@ -13,6 +13,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [validEmail, setvalidEmail] = useState(true);
   const [errMsg, setErrMsg] = useState('');
+  const [redirectRoute, setRedirectRoute] = useState('');
 
   useEffect(() => {
     emailRef.current.focus();
@@ -39,17 +40,18 @@ const LoginPage = () => {
         setPassword('');
         
         if (res.data.user.role_user.role_id === 2) {
-          navigate('/adminannouncement');
+          window.location.pathname = '/adminannouncement'
         } else (
-          navigate('/announcement')
+          window.location.pathname = '/announcement'
         )
       },
       (err) => {
         setErrMsg(err.response.data.error);
       }
     );
-  };
 
+  };
+  
   return (
     <div>
       <NavBar />

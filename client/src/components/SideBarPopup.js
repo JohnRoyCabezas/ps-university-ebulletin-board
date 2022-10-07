@@ -17,8 +17,8 @@ export default function Modal() {
     AuthApi.logout().then(res => {
       Cookies.remove('token');
       Cookies.remove('user');
+      navigate('/');    
     })
-    navigate('/');    
   }
 
   const [showModal, setShowModal] = React.useState(false);
