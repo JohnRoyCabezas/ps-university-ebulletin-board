@@ -8,13 +8,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import AuthApi from "../api/AuthApi";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function Modal() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     AuthApi.logout().then(res => {
-      console.log(res.data);
+      Cookies.remove('token');
+      Cookies.remove('user');
     })
     navigate('/');    
   }
