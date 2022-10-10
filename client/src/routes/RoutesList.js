@@ -6,6 +6,7 @@ import AnnouncementPage from '../pages/AnnouncementPage';
 import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import LandingPage from '../pages/LandingPage';
+import ManageUsersPage from "../pages/ManageUsersPage";
 import AdminSettingsPage from '../pages/AdminSettingsPage';
 import Unauthorized from '../pages/Unauthorized';
 import ProtectedRoute from './utilities/ProtectedRoute';
@@ -29,6 +30,7 @@ const RoutesList = () => {
         <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
         <Route path="adminsettings" element={<AdminSettingsPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="manageusers" element={<ManageUsersPage />}></Route>
       </Route>
       <Route path="*" element={<ErrorPage />}></Route>
     </Routes>
