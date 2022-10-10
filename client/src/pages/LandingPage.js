@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/Navbar";
 import shake from "../images/shake.svg";
 import presentation from "../images/presentation.svg";
@@ -10,9 +10,20 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const LandingPage = () => {
+  const user = Cookies.get('user') && JSON.parse(Cookies.get('user') || '{}');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    !user
+      ? navigate('/')
+      : user?.role_user?.role_id === 2
+      ? navigate('/adminannouncement')
+      : navigate('/announcement');
+  }, []);
+
   const handleClick = () => {
     navigate('/login');
   }

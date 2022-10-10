@@ -3,11 +3,9 @@ import NavBar from "../components/Navbar";
 import Cookies from "js-cookie";
 import AuthApi from '../api/AuthApi';
 import ErrMsg from "../components/ErrorMessage";
-import { useNavigate } from "react-router-dom";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 const LoginPage = () => {
-  const navigate = useNavigate();
   const emailRef = useRef();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,14 +36,19 @@ const LoginPage = () => {
         setEmail('');
         setPassword('');
         
-        navigate('/adminannouncement');
+        if (res.data.user.role_user.role_id === 2) {
+          window.location.pathname = '/adminannouncement'
+        } else (
+          window.location.pathname = '/announcement'
+        )
       },
       (err) => {
         setErrMsg(err.response.data.error);
       }
     );
-  };
 
+  };
+  
   return (
     <div>
       <NavBar />
