@@ -54,7 +54,7 @@ class CollegeContoller extends Controller
     public function show($id)
     {
         //
-       $college = College::find($id);
+       $college = College::findOrFail($id);
 
        return response()->json($college);
     }
@@ -75,7 +75,7 @@ class CollegeContoller extends Controller
             'dean' => 'required',
         ]);
         
-        College::where('id', $id)->update([
+        College::findOrFail($id)->update([
             'college' => $validatedData['college'],
             'college_information' => $validatedData['college_information'],
             'user_id' => $validatedData['dean'],
