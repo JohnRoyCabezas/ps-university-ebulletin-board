@@ -3,17 +3,14 @@ import NavBar from "../components/Navbar";
 import Cookies from "js-cookie";
 import AuthApi from '../api/AuthApi';
 import ErrMsg from "../components/ErrorMessage";
-import { useNavigate } from "react-router-dom";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 const LoginPage = () => {
-  const navigate = useNavigate();
   const emailRef = useRef();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [validEmail, setvalidEmail] = useState(true);
   const [errMsg, setErrMsg] = useState('');
-  const [redirectRoute, setRedirectRoute] = useState('');
 
   useEffect(() => {
     emailRef.current.focus();
