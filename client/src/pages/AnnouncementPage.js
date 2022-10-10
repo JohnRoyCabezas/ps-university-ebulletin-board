@@ -3,37 +3,21 @@ import Sidebar from '../components/Sidebar';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
 
-const AdminAnnouncementPage = () => {
+const AnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
-  const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
     AnnouncementApi.fetchAnnouncement().then(
       (res) => {
         setAnnouncement(res.data.filter(item => item.announcementable_type === "App/Models/University"));
-      },
-      (err) => {
-        setErrMsg(err.response);
       }
     );
   }, []);
 
-  console.log(announcements[0])
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
     lastDiv.scrollTo(0, lastDiv.scrollHeight)
   }, [announcements])
-
-  function handleClick() {
-    AnnouncementApi.fetchAnnouncement().then(
-      (res) => {
-        setAnnouncement(res.data.filter(item => item.announcementable_type === "App/Models/University"));
-      },
-      (err) => {
-        setErrMsg(err.response);
-      }
-    );
-  }
 
   return (
     <div className="flex">
@@ -43,8 +27,8 @@ const AdminAnnouncementPage = () => {
         <div className="flex flex-col justify-between h-full">
           <div id='announcementWrapper' className="mt-12 overflow-y-scroll scroll">
             {
-              announcements.map((announcement, id) => (
-                <AnnouncementCard key={announcement.id.toString()} id={(id)} announcement={announcement} />
+              announcements.map((announcement) => (
+                <AnnouncementCard key={announcement.id.toString()} userRole={'student'} announcement={announcement} />
               ))}
           </div>
         </div>
@@ -54,4 +38,4 @@ const AdminAnnouncementPage = () => {
   );
 };
 
-export default AdminAnnouncementPage;
+export default AnnouncementPage;
