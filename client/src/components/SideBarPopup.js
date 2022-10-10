@@ -6,8 +6,21 @@ import {
   faChevronDown,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import AuthApi from "../api/AuthApi";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function Modal() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    AuthApi.logout().then(res => {
+      Cookies.remove('token');
+      Cookies.remove('user');
+    })
+    navigate('/');    
+  }
+
   const [showModal, setShowModal] = React.useState(false);
   return (
     <>
@@ -19,7 +32,10 @@ export default function Modal() {
         />
         <label className="mx-2">Avatar</label>
         {showModal == true ? (
-          <button className="button-default" onClick={() => setShowModal(false)}>
+          <button
+            className="button-default"
+            onClick={() => setShowModal(false)}
+          >
             <FontAwesomeIcon icon={faChevronDown} />
           </button>
         ) : (
@@ -36,7 +52,9 @@ export default function Modal() {
           </div>
           <div className="flex justify-center items-center p-2">
             <FontAwesomeIcon icon={faRightFromBracket} />
-            <label className="mx-2">Logout</label>
+            <button onClick={handleLogout} className="mx-2">
+              Logout
+            </button>
           </div>
         </>
       ) : null}

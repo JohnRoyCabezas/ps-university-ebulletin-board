@@ -9,8 +9,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/login');
+  }
   return (
     <div>
       <NavBar />
@@ -35,21 +40,21 @@ const LandingPage = () => {
                 <img
                   className="object-fill w-full h-96"
                   src={shake}
-                  alt="image slide 1"
+                  alt="slide 1"
                 />
               </SwiperSlide>
               <SwiperSlide>
                 <img
                   className="object-fill w-full h-96"
                   src={presentation}
-                  alt="image slide 2"
+                  alt="slide 2"
                 />
               </SwiperSlide>
               <SwiperSlide>
                 <img
                   className="object-fill w-full h-96"
                   src={networking}
-                  alt="image slide 3"
+                  alt="slide 3"
                 />
               </SwiperSlide>
             </Swiper>
@@ -68,12 +73,12 @@ const LandingPage = () => {
           </p>
           <div className="mt-12">
             <p className="mb-5">Already enrolled?</p>
-            <a
-              href="#"
+            <button
+              onClick={handleClick}
               className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded"
             >
               Login
-            </a>
+            </button>
           </div>
         </div>
       </div>
