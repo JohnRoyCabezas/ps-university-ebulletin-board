@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('password');
             $table->boolean('is_verified')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
