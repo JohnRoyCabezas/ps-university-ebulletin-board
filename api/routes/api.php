@@ -28,6 +28,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
+    Route::prefix('thread')->group(function() {
+        Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
+        Route::get('/{id}', [ThreadController::class, 'fetchThread']);
+    });
     Route::apiResource('/college', CollegeContoller::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
