@@ -22,9 +22,9 @@ const RoutesList = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="unauthorized" element={<Unauthorized />}></Route>
-        <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}>
-          <Route path="announcement" element={<AnnouncementPage />} />
-        </Route>
+      <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}>
+        <Route path="announcement" element={<AnnouncementPage />} />
+      </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
         <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
         <Route path="adminsettings" element={<AdminSettingsPage />} />
