@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('department_id')->nullable();
             $table->string('avatar')->nullable();
             $table->string('password');
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
             $table->boolean('is_verified')->nullable();
             $table->timestamps();
         });

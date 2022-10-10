@@ -33,13 +33,22 @@ const LoginPage = () => {
       (res) => {
         Cookies.set('token', res.data.token);
         Cookies.set('user', JSON.stringify(res.data.user));
+        setEmail('');
+        setPassword('');
+        
+        if (res.data.user.role_user.role_id === 2) {
+          window.location.pathname = '/adminannouncement'
+        } else (
+          window.location.pathname = '/announcement'
+        )
       },
       (err) => {
         setErrMsg(err.response.data.error);
       }
     );
-  };
 
+  };
+  
   return (
     <div>
       <NavBar />
@@ -55,6 +64,7 @@ const LoginPage = () => {
                 Email
               </label>
               <input
+                value={email}
                 placeholder="johndoe@gmail.com"
                 type="email"
                 ref={emailRef}
@@ -70,6 +80,7 @@ const LoginPage = () => {
                 Password
               </label>
               <input
+                value={password}
                 placeholder="password"
                 type="password"
                 className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"

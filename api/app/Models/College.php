@@ -9,10 +9,10 @@ class College extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'college'
+    protected $guarded = [
+   
     ];
-
+   
     public function university() {
         return $this->belongsTo(University::class);
     }
