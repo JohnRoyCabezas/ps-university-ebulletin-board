@@ -339,5 +339,6 @@ class DatabaseSeeder extends Seeder
                 'announcement' => 'This is your CompSci instructor posting an announcement. Please submit your projects to the Google Drive on or before October 31.'
             ],
         ]);
+        
     }
 }

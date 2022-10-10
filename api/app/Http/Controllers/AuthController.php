@@ -47,9 +47,46 @@ class AuthController extends Controller
     //show user with given id
     public function show($id) 
     {
-        $user = User::where('id', $id)->first();
+        $user = User::find($id);
 
         return response()->json($user);
+    }
+
+    //update user detail with given id
+    public function update(Request $request, $id) 
+    {
+        $user = User::find($id);
+
+        $validatedData = $request->validate([
+            'department_id' => 'required',
+            'role_id' => 'required',
+            'fullname' => 'required | max:255',
+            'email' => 'required'
+        ]);
+
+        $user->update([
+            'department_id' => $validatedData['department_id'],
+            'role_id' => $validatedData['role_id'],
+            'fullname' => $validatedData['fullname'],
+            'email' => $validatedData['email'],
+        ]);
+
+        $role_user = RoleUser::where('user_id', $id)->first();
+
+        $role_user->update([
+            'role_id' => $validatedData['role_id']
+        ]);
+
+        return response()->json(['message' => 'Updated user information!']);
+    }
+    
+    //destroy user info with given id 
+    public function destroy($id) 
+    {
+        $user = User::find($id);
+
+        $user->delete();
+        return response()->json(['message' => 'Soft deleted user!']);
     }
     //login user
     public function login(Request $request) 
@@ -60,12 +97,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($validatedData)) {
-            $user = Auth::user();
+            $user_id = Auth::id();
+            $user = User::where('id', $user_id)->with('roleUser')->first();
+
             $token = $user->createToken('access_token')->plainTextToken;
+
             $data = [
                 'message' => 'Successfully logged in user!',
                 'user' => $user,
-                'token' => $token
+                'token' => $token,
             ];
             return response()->json($data);
         } else {
@@ -84,4 +124,5 @@ class AuthController extends Controller
 
         return response()->json($data);
     }
+
 }
