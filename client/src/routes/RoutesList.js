@@ -6,6 +6,7 @@ import AnnouncementPage from "../pages/AnnouncementPage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import LandingPage from "../pages/LandingPage";
+import CreateCollegePage from "../pages/CreateCollegePage";
 import CreateDepartmentPage from "../pages/CreateDepartmentPage";
 import AdminSettingsPage from "../pages/AdminSettingsPage";
 
@@ -15,7 +16,8 @@ const RoutesList = () => {
       <Route index element={<LandingPage />} />
       <Route path="landing" element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
-      <Route path="/createdepartment" element={<CreateDepartmentPage />} />
+      <Route path="createdepartment" element={<CreateDepartmentPage />} />
+      <Route path="createcollege" element={<CreateCollegePage />} />
       <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
       <Route path="adminsettings" element={<AdminSettingsPage />} />
       <Route path="register" element={<RegisterPage />} />
