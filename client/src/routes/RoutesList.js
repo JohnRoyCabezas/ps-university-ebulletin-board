@@ -11,6 +11,7 @@ import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import LandingPage from '../pages/LandingPage';
 import ManageUsersPage from "../pages/ManageUsersPage";
+import EditUserPage from '../pages/EditUserPage';
 import AdminSettingsPage from '../pages/AdminSettingsPage';
 import Unauthorized from '../pages/Unauthorized';
 import ProtectedRoute from './utilities/ProtectedRoute';
@@ -38,6 +39,7 @@ const RoutesList = () => {
         <Route path="createclass" element={<CreateClassPage />} />
         <Route path="adminsettings" element={<AdminSettingsPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="edituser" element={<EditUserPage />} />
         <Route path="manageusers" element={<ManageUsersPage />}></Route>
       </Route>
       <Route path="*" element={<ErrorPage />}></Route>
