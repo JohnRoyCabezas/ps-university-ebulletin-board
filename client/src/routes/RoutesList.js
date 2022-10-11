@@ -2,6 +2,10 @@ import { Route, Routes } from 'react-router-dom';
 import React from 'react';
 
 import AdminAnnouncementPage from '../pages/AdminAnnouncementPage';
+import CreateCollegePage from '../pages/CreateCollegePage';
+import EditCollegePage from '../pages/EditCollegePage';
+import CreateDepartmentPage from '../pages/CreateDepartmentPage';
+import CreateClassPage from '../pages/CreateClassPage';
 import AnnouncementPage from '../pages/AnnouncementPage';
 import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
@@ -28,6 +32,10 @@ const RoutesList = () => {
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
         <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
+        <Route path="createcollege" element={<CreateCollegePage />} />
+        <Route path="editcollege" element={<EditCollegePage />} />
+        <Route path="createdepartment" element={<CreateDepartmentPage />} />
+        <Route path="createclass" element={<CreateClassPage />} />
         <Route path="adminsettings" element={<AdminSettingsPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="manageusers" element={<ManageUsersPage />}></Route>
