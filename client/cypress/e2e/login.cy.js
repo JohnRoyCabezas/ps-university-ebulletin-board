@@ -1,5 +1,5 @@
 describe('Login', () => {
-  it('passes', () => {
+  it('User Login', () => {
     cy.login()
   })
 })

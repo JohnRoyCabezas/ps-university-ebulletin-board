@@ -26,10 +26,17 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', () => {
-  cy.viewport(1200, 660)
   cy.visit('https://ps-university-ebulletin-board.vercel.app/')
   cy.get('.bg-gray-300').click()
   cy.get("input[type='email']").clear().type('user@ebulletin.com')
+  cy.get("input[type='password']").clear().type('password')
+  cy.get('.mt-16 > .w-full').click()
+})
+
+Cypress.Commands.add('adminLogin', () => {
+  cy.visit('https://ps-university-ebulletin-board.vercel.app/')
+  cy.get('.bg-gray-300').click()
+  cy.get("input[type='email']").clear().type('admin@ebulletin.com')
   cy.get("input[type='password']").clear().type('password')
   cy.get('.mt-16 > .w-full').click()
 })
