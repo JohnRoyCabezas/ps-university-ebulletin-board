@@ -12,6 +12,7 @@ const Dropdown = ({ defaultLabel, defaultValue, handleChange, data, type }) => {
       value: item['id'],
     };
   });
+  
 
   return (
     <div>

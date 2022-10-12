@@ -11,6 +11,13 @@ const UserApi = {
     };
     return instance.request(config);
   },
+  fetchAdmins: () => {
+    const config = {
+      method: 'GET',
+      url: '/users/admins',
+    };
+    return instance.request(config);
+  },
 };
 
 export default UserApi;
