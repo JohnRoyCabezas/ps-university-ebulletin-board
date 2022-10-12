@@ -25,4 +25,8 @@ class Department extends Model
     public function announcements() {
         return $this->morphMany(Announcement::class, 'announcements');
     }
+
+    public function user() {
+        return $this->hasMany(User::class);
+    }
 }
