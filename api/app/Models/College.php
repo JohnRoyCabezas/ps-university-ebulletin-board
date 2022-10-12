@@ -22,6 +22,6 @@ class College extends Model
     }
     
     public function announcements() {
-        return $this->morphMany(Announcementable::class, 'announcements');
+        return $this->morphMany(Announcement::class, 'announcements');
     }
 }

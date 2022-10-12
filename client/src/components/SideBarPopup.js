@@ -1,25 +1,25 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
   faChevronUp,
   faChevronDown,
   faRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons";
-import AuthApi from "../api/AuthApi";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+} from '@fortawesome/free-solid-svg-icons';
+import AuthApi from '../api/AuthApi';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function Modal() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    AuthApi.logout().then(res => {
+    AuthApi.logout().then((res) => {
       Cookies.remove('token');
       Cookies.remove('user');
-      navigate('/');    
-    })
-  }
+      navigate('/');
+    });
+  };
 
   const [showModal, setShowModal] = React.useState(false);
   return (
@@ -46,9 +46,12 @@ export default function Modal() {
       </div>
       {showModal ? (
         <>
-          <div className="flex justify-center items-center p-2">
+          <div
+            onClick={() => navigate('/adminsettings')}
+            className="flex justify-center items-center p-2 cursor-pointer"
+          >
             <FontAwesomeIcon icon={faGear} />
-            <label className="mx-2">Admin Settings</label>
+            <span className="mx-2">Admin settings</span>
           </div>
           <div className="flex justify-center items-center p-2">
             <FontAwesomeIcon icon={faRightFromBracket} />
