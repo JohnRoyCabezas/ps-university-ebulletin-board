@@ -5,6 +5,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CollegeContoller;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 
 // Private
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/auth', AuthController::class);
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/department', DepartmentController::class);
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
     });
+    Route::get('/users', [UserController::class, 'getUsers']);
     Route::apiResource('/college', CollegeContoller::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
