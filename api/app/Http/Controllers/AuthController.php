@@ -13,7 +13,7 @@ class AuthController extends Controller
     //get all users
     public function index()
     {
-        return User::all();
+        return response()->json(User::all());
     }
     //register new user
     public function store(Request $request)

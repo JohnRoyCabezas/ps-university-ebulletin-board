@@ -7,8 +7,11 @@ import {
   faBuildingUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const AdminSettingsPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full">
       <Sidebar />
@@ -16,7 +19,7 @@ const AdminSettingsPage = () => {
         <h1 className="font-bold p-3 sticky top-0 bg-white text-lg border-b-2">Admin Settings</h1>
         <div className="flex flex-col text-gray-500">
           <div className="flex justify-center">
-            <div className="m-28">
+            <div onClick={() => navigate('/manageusers')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faUsers}
                 size="9x"
@@ -25,7 +28,7 @@ const AdminSettingsPage = () => {
               />
               <h1 className="font-bold pt-3 text-lg flex justify-center">Manage Users</h1>
             </div>
-            <div className="m-28">
+            <div onClick={() => navigate('/create/college')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faBuildingColumns}
                 size="9x"
@@ -35,7 +38,7 @@ const AdminSettingsPage = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <div className="m-28">
+            <div onClick={() => navigate('/create/department')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faBuildingUser}
                 size="9x"
@@ -44,7 +47,7 @@ const AdminSettingsPage = () => {
               />
               <h1 className="font-bold pt-3 text-lg flex justify-center">Add Department</h1>
             </div>
-            <div className="m-28">
+            <div onClick={() => navigate('/create/class')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faBook}
                 size="9x"
