@@ -28,7 +28,7 @@ const AdminSettingsPage = () => {
               />
               <h1 className="font-bold pt-3 text-lg flex justify-center">Manage Users</h1>
             </div>
-            <div onClick={() => navigate('/create/college')} className="m-28 cursor-pointer">
+            <div onClick={() => navigate('/createcollege')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faBuildingColumns}
                 size="9x"
@@ -38,7 +38,7 @@ const AdminSettingsPage = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <div onClick={() => navigate('/create/department')} className="m-28 cursor-pointer">
+            <div onClick={() => navigate('/createdepartment')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faBuildingUser}
                 size="9x"
@@ -47,7 +47,7 @@ const AdminSettingsPage = () => {
               />
               <h1 className="font-bold pt-3 text-lg flex justify-center">Add Department</h1>
             </div>
-            <div onClick={() => navigate('/create/class')} className="m-28 cursor-pointer">
+            <div onClick={() => navigate('/createclass')} className="m-28 cursor-pointer">
               <FontAwesomeIcon
                 icon={faBook}
                 size="9x"
