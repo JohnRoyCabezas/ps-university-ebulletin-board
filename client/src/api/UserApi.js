@@ -1,6 +1,13 @@
 import instance from './instance';
 
 const UserApi = {
+  fetchUser: () => {
+    const config = {
+      method: 'GET',
+      url: '/user',
+    }
+    return instance.request(config);
+  },
   fetchAllUsers: (params) => {
     const config = {
       method: 'GET',

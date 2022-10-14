@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
     });
+    Route::get('/user', [UserController::class, 'getAuthUser']);
     Route::get('/users', [UserController::class, 'getUsers']);
     Route::get('/users/admins', [UserController::class, 'getAdmins']);
     Route::get('/users', [UserController::class, 'getUsers']);

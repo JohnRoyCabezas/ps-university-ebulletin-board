@@ -1,100 +1,73 @@
-import React from "react";
-import SideBarPopup from "./SideBarPopup";
+import React, { useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import SideBarPopup from './SideBarPopup';
+import AnnouncementIcon from '../shared/AnnouncementIcon';
+import UserApi from '../api/UserApi';
+import Cookies from 'js-cookie';
+import CollegeAccordion from './CollegeAccordion';
 
-export default function Sidebar() {
+const Sidebar = () => {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState([]);
+  const user = JSON.parse(Cookies.get('user') || '{}');
+  const ROLES = {
+    STUDENT: 1,
+    ADMIN: 2,
+  };
+
+  useEffect(() => {
+    UserApi.fetchUser().then((res) => {
+      setUserData(res.data);
+    });
+  }, []);
+
   return (
-    <div className="flex">
-      <div className="flex flex-col h-screen bg-regal-blue shadow w-60 text-white sticky top-0">
-        <div className="space-y-3">
-          <div className="flex items-center m-5">
-            <h2 className="text-xl font-bold">Sun* University</h2>
+    <div className="flex shrink-0 w-full h-screen">
+      <div className="flex flex-col w-full overflow-y-auto min-w-[240px] max-w-[240px] justify-between bg-regal-blue text-white">
+        <div className="mb-20">
+          <div
+            onClick={() => navigate('/')}
+            className="flex justify-center px-2 my-5 cursor-pointer"
+          >
+            <span className="text-xl font-bold">
+              {user?.role_user?.role_id === ROLES['ADMIN']
+                ? userData?.university?.university
+                : userData?.department?.college?.university?.university}
+            </span>
           </div>
-          <div className="flex-1">
-            <ul className="pt-2   pb-4 space-y-1 text-sm">
-              <li className="rounded-sm active">
-                <a
-                  href="#"
-                  className="flex items-center ml-2 p-2 space-x-3 rounded-md"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                  <span>Announcement</span>
-                </a>
-              </li>
-              <li className="rounded-sm">
-                <a
-                  href="#"
-                  className="flex items-center ml-2 p-2 space-x-3 rounded-md"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                  <span>College</span>
-                </a>
-              </li>
-              <li className="rounded-sm">
-                <a
-                  href="#"
-                  className="flex items-center ml-5 p-2 space-x-3 rounded-md"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                  <span>Department</span>
-                </a>
-              </li>
-              <li className="rounded-sm">
-                <a
-                  href="#"
-                  className="flex items-center ml-9 p-2 space-x-3 rounded-md"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path>
-                    <polygon points="12 15 17 21 7 21 12 15"></polygon>
-                  </svg>
-                  <span>Class 1</span>
-                </a>
-              </li>
-            </ul>
+          <div className="flex items-center px-5 py-2">
+            <AnnouncementIcon />
+            <span className="ml-2">Announcement</span>
           </div>
+          {user?.role_user?.role_id === ROLES['ADMIN'] ? (
+            userData?.university?.colleges?.map((college) => {
+              return (
+                <div key={college.id}>
+                  <CollegeAccordion
+                    data={college}
+                    departments={college.departments}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <CollegeAccordion
+              userData={userData}
+              data={userData?.department?.college}
+              department={userData?.department}
+            />
+          )}
         </div>
-        <div className="bg-dark-blue mt-auto">
+
+        <div className="sticky bottom-0 bg-dark-blue">
           <SideBarPopup />
         </div>
       </div>
+      <div className="w-full flex-1">
+        <Outlet />
+      </div>
     </div>
   );
-}
+};
+
+export default Sidebar;

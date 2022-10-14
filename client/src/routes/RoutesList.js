@@ -10,37 +10,45 @@ import AnnouncementPage from '../pages/AnnouncementPage';
 import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import LandingPage from '../pages/LandingPage';
-import ManageUsersPage from "../pages/ManageUsersPage";
+import ManageUsersPage from '../pages/ManageUsersPage';
 import EditUserPage from '../pages/EditUserPage';
 import AdminSettingsPage from '../pages/AdminSettingsPage';
 import Unauthorized from '../pages/Unauthorized';
 import ProtectedRoute from './utilities/ProtectedRoute';
 import ErrorPage from '../pages/ErrorPage';
+import Sidebar from '../components/Sidebar';
+;
 
 const RoutesList = () => {
   const ROLES = {
     Student: 1,
     Admin: 2,
-  }
+  };
 
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="unauthorized" element={<Unauthorized />}></Route>
-      <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}>
-        <Route path="announcement" element={<AnnouncementPage />} />
+      <Route
+        element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}
+      >
+        <Route element={<Sidebar />}>
+          <Route path="announcement" element={<AnnouncementPage />} />
+        </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
-        <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
-        <Route path="createcollege" element={<CreateCollegePage />} />
-        <Route path="editcollege" element={<EditCollegePage />} />
-        <Route path="createdepartment" element={<CreateDepartmentPage />} />
-        <Route path="createclass" element={<CreateClassPage />} />
-        <Route path="adminsettings" element={<AdminSettingsPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="edituser" element={<EditUserPage />} />
-        <Route path="manageusers" element={<ManageUsersPage />}></Route>
+        <Route element={<Sidebar />}>
+          <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
+          <Route path="adminsettings" element={<AdminSettingsPage />} />
+          <Route path="manageusers" element={<ManageUsersPage />}></Route>
+          <Route path="createcollege" element={<CreateCollegePage />} />
+          <Route path="editcollege" element={<EditCollegePage />} />
+          <Route path="createdepartment" element={<CreateDepartmentPage />} />
+          <Route path="createclass" element={<CreateClassPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="edituser" element={<EditUserPage />} />
+        </Route>
       </Route>
       <Route path="*" element={<ErrorPage />}></Route>
     </Routes>
