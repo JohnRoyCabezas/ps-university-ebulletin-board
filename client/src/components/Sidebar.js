@@ -41,6 +41,7 @@ const Sidebar = () => {
             userData?.university?.colleges?.map((college) => {
               return (
                 <div key={college.id}>
+                  
                   <CollegeAccordion
                     data={college}
                     departments={college.departments}

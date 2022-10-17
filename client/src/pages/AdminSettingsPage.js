@@ -41,7 +41,7 @@ const AdminSettingsPage = () => {
                 icon={faBuildingColumns}
                 size="5x"
                 color="#A7A7A7"
-              />{' '}
+              />
               <h1 className="font-bold pt-3 text-lg flex justify-center">
                 Add College
               </h1>
