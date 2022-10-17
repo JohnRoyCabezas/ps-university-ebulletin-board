@@ -5,7 +5,6 @@ import DepartmentApi from "../api/DepartmentApi";
 import AuthApi from "../api/AuthApi";
 import RoleApi from "../api/RoleApi";
 import RegistrationModal from "../components/RegistrationModal";
-import Sidebar from "../components/Sidebar";
 
 const RegisterPage = () => {
   const initialParams = {
@@ -96,8 +95,7 @@ const RegisterPage = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
           Create User
         </h1>

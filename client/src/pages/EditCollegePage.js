@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
 import SelectDropDownComponent from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
@@ -7,8 +6,7 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 const EditCollegePage = () => {
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2 fex">
           Edit College
           <button

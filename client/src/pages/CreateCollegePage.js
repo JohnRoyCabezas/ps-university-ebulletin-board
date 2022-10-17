@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import Dropdown from '../components/Dropdown';
 import UserApi from '../api/UserApi';
 import CollegeApi from '../api/CollegeApi';
@@ -50,7 +49,7 @@ const CreateCollegePage = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       {showModal && (
         <SuccessModal
           title="College Creation"
@@ -58,7 +57,6 @@ const CreateCollegePage = () => {
           setShowModal={setShowModal}
         />
       )}
-      <Sidebar />
       <div className="flex flex-col w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
           Create College

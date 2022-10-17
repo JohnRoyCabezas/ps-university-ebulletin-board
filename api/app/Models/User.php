@@ -46,35 +46,53 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function colleges() {
+    public function university()
+    {
+        return $this->hasOne(University::class);
+    }
+
+    public function colleges()
+    {
         return $this->hasMany(College::class);
     }
 
-    public function department() {
+    public function department()
+    {
         return $this->belongsTo(Department::class);
     }
 
-    public function announcement() {
+    public function announcement()
+    {
         return $this->hasMany(Announcement::class);
     }
 
-    public function chats() {
+    public function chats()
+    {
         return $this->hasMany(Chat::class);
     }
 
-    public function files() {
+    public function files()
+    {
         return $this->hasMany(File::class);
     }
 
-    public function roleUser() {
+    public function roleUser()
+    {
         return $this->hasOne(RoleUser::class);
     }
 
-    public function courseUsers() {
+    public function courseUsers()
+    {
         return $this->hasMany(CourseUser::class);
     }
 
-    public function threads() {
+    public function threads()
+    {
         return $this->hasMany(Thread::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->roleUser()->where('role_id', 2)->exists();
     }
 }
