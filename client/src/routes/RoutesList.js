@@ -13,7 +13,6 @@ import LandingPage from '../pages/LandingPage';
 import ManageUsersPage from "../pages/ManageUsersPage";
 import EditUserPage from '../pages/EditUserPage';
 import AdminSettingsPage from '../pages/AdminSettingsPage';
-import ManageUsersPage from "../pages/ManageUsersPage";
 import Unauthorized from '../pages/Unauthorized';
 import ProtectedRoute from './utilities/ProtectedRoute';
 import ErrorPage from '../pages/ErrorPage';

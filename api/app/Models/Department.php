@@ -9,10 +9,7 @@ class Department extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'college_id',
-        'department'
-    ];
+    protected $guarded = [];
 
     public function courses() {
         return $this->hasMany(Course::class);
