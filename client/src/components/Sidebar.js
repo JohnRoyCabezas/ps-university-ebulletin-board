@@ -5,18 +5,16 @@ import AnnouncementIcon from '../shared/AnnouncementIcon';
 import UserApi from '../api/UserApi';
 import Cookies from 'js-cookie';
 import CollegeAccordion from './CollegeAccordion';
+import ROLES from './Roles';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
   const user = JSON.parse(Cookies.get('user') || '{}');
-  const ROLES = {
-    STUDENT: 1,
-    ADMIN: 2,
-  };
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
+      console.log(res.data);
       setUserData(res.data);
     });
   }, []);

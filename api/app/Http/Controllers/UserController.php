@@ -15,15 +15,14 @@ class UserController extends Controller
     public function getAuthUser()
     {
         $user = Auth::user();
-        $id = Auth::id();
-
-        if ($user->roleUser->role_id === 2) {
-            $user = User::with('university.colleges.departments.courses')->find($id);
-            return response()->json($user);
+        
+        if ($user->isAdmin()) {
+            $user = User::with('university.colleges.departments.courses')->find($user->id);
         } else {
-            $user = User::with('department.college.university', 'courseUsers.course')->find($id);
-            return response()->json($user);
+            $user = User::with('department.college.university', 'courseUsers.course')->find($user->id);
         }
+
+        return response()->json($user);
     }
 
     public function getAdmins()
