@@ -1,13 +1,11 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
 import SelectDropDownComponent from "../components/Dropdown";
 import MultiDropdown from "../components/DropdownMulti";
 
 const CreateCollegePage = () => {
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
           Create Class
         </h1>
