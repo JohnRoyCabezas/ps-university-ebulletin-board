@@ -14,7 +14,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
-      console.log(res.data);
       setUserData(res.data);
     });
   }, []);

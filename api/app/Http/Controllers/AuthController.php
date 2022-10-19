@@ -47,7 +47,7 @@ class AuthController extends Controller
     //show user with given id
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::with('roleUser.role')->find($id);
 
         return response()->json($user);
     }
