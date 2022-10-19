@@ -9,7 +9,7 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $departments = Department::all()->sortDesc();
+        $departments = Department::all();
 
         return response()->json($departments);
     }

@@ -111,7 +111,7 @@ const RegisterPage = () => {
           <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
             <form className="mt-1">
               <div className="flex flex-col items-center justify-center mb-4">
-                <label className="block text-sm font-semibold text-gray-800 flex items-center justify-center mb-2">
+                <label className="text-sm font-semibold text-gray-800 flex items-center justify-center mb-2">
                   Avatar
                 </label>
                 <div className="flex justify-center">
