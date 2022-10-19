@@ -17,7 +17,7 @@ const CreateCollegePage = () => {
   const [params, setParams] = useState(initialParams);
 
   useEffect(() => {
-    UserApi.fetchAdmins().then((res) => {
+    UserApi.fetchDeans().then((res) => {
       setData(res.data);
     });
   }, []);

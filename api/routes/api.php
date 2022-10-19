@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     });
     Route::get('/user', [UserController::class, 'getAuthUser']);
     Route::get('/users', [UserController::class, 'getUsers']);
-    Route::get('/users/admins', [UserController::class, 'getAdmins']);
+    Route::get('/users/deans', [UserController::class, 'getDeans']);
     Route::apiResource('/college', CollegeContoller::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SucessModal = ({title, message, setShowModal}) => {
+const SuccessModal = ({title, message, setShowModal}) => {
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -39,4 +39,4 @@ const SucessModal = ({title, message, setShowModal}) => {
   );
 };
 
-export default SucessModal;
+export default SuccessModal;

@@ -106,6 +106,18 @@ class DatabaseSeeder extends Seeder
             [
                 'permission' => 'canDeleteFile'
             ],
+            [
+                'permission' => 'canCreateCollege'
+            ],
+            [
+                'permission' => 'canReadCollege'
+            ],
+            [
+                'permission' => 'canUpdateCollege'
+            ],
+            [
+                'permission' => 'canDeleteCollege'
+            ],
         ]);
         DB::table('permission_roles')->insert([
             [
@@ -220,6 +232,22 @@ class DatabaseSeeder extends Seeder
                 'role_id' => 2,
                 'permission_id' => 24
             ],
+            [
+                'role_id' => 4,
+                'permission_id' => 25
+            ],
+            [
+                'role_id' => 4,
+                'permission_id' => 26
+            ],
+            [
+                'role_id' => 4,
+                'permission_id' => 27
+            ],
+            [
+                'role_id' => 4,
+                'permission_id' => 28
+            ],
         ]);
         DB::table('users')->insert([
             [
@@ -268,6 +296,22 @@ class DatabaseSeeder extends Seeder
                 'department_id' => 1,
                 'avatar' => 'randomavatargenerator',
                 'is_verified' => false
+            ],
+            [
+                'fullname' => 'Sample Dean 1',
+                'password' => Hash::make('password'),
+                'email' => 'dean1@ebulletin.com',
+                'department_id' => null,
+                'avatar' => 'randomavatargenerator',
+                'is_verified' => false
+            ],
+            [
+                'fullname' => 'Sample Dean 2',
+                'password' => Hash::make('password'),
+                'department_id' => null,
+                'email' => 'dean2@ebulletin.com',
+                'avatar' => 'randomavatargenerator',
+                'is_verified' => false
             ]
         ]);
 
@@ -279,6 +323,14 @@ class DatabaseSeeder extends Seeder
             [
                 'role_id' => 2,
                 'user_id' => 1
+            ],
+            [
+                'role_id' => 4,
+                'user_id' => 3
+            ],
+            [
+                'role_id' => 4,
+                'user_id' => 4
             ],
 
         ]);
