@@ -21,7 +21,7 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'avatar' => ['max:255'],
             'fullname' => ['required', 'max:255'],
-            'department_id' => ['required'],
+            'department_id' => [''],
             'email' => ['required', 'unique:users'],
             'role' => ['required']
         ]);
@@ -45,7 +45,7 @@ class AuthController extends Controller
         ]);
     }
     //show user with given id
-    public function show($id) 
+    public function show($id)
     {
         $user = User::find($id);
 
@@ -53,7 +53,7 @@ class AuthController extends Controller
     }
 
     //update user detail with given id
-    public function update(Request $request, $id) 
+    public function update(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -79,9 +79,9 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Updated user information!']);
     }
-    
-    //destroy user info with given id 
-    public function destroy($id) 
+
+    //destroy user info with given id
+    public function destroy($id)
     {
         $user = User::find($id);
 
@@ -89,7 +89,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'Soft deleted user!']);
     }
     //login user
-    public function login(Request $request) 
+    public function login(Request $request)
     {
         $validatedData = $request->validate([
             'email' => 'required',
@@ -113,7 +113,7 @@ class AuthController extends Controller
         }
     }
     //logout user
-    public function logout() 
+    public function logout()
     {
         $user = Auth::user();
         $user->currentAccessToken()->delete();
