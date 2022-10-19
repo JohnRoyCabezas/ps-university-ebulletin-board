@@ -12,8 +12,8 @@ const EditUserPage = () => {
   const initialParams = {
     fullname: '',
     email: '',
-    department_id: 0,
-    role: 0,
+    department_id: '',
+    role_id: '',
   };
   
   const { id } = useParams();
@@ -55,9 +55,9 @@ const EditUserPage = () => {
         'params',
         JSON.stringify({ ...params, department_id: item.value })
       );
-    } else if (type === 'role') {
-      setParams({ ...params, role: item.value });
-      Cookies.set('params', JSON.stringify({ ...params, role: item.value }));
+    }  else if (type === "role") {
+      setParams({ ...params, role_id: item.value });
+      Cookies.set("params", JSON.stringify({ ...params, role: item.value }));
     }
   };
 
@@ -118,8 +118,8 @@ const EditUserPage = () => {
                   Role
                 </label>
                 <Dropdown
-                  defaultLabel={roles[params?.role_id - 1]?.role}
-                  defaultValue={roles[params?.role_id - 1]?.id}
+                  defaultLabel={roles[params?.role_id-1]?.role}
+                  defaultValue={roles[params?.role_id-1]?.id}
                   handleChange={handleSelectChange}
                   type="role"
                   data={roles}

@@ -38,8 +38,6 @@ const UsersTable = ({
   
   const handleConfirmDelete = () => {
     AuthApi.softDelete(deleteId).then(res=> {
-      console.log(res.data);
-
       UserApi.fetchAllUsers(params).then((res) => {
         setPaginateData(res.data);
         setUsers(res.data.data);
