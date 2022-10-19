@@ -24,10 +24,10 @@ export default function Modal() {
   const [showModal, setShowModal] = React.useState(false);
   return (
     <>
-      <div className="flex items-center p-2">
+      <div className="flex justify-center items-center p-2">
         <img
           src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-          className="rounded-full w-12 ml-10"
+          className="rounded-full w-12"
           alt="Avatar"
         />
         <label className="mx-2">Avatar</label>
@@ -44,7 +44,7 @@ export default function Modal() {
           </button>
         )}
       </div>
-      {showModal ? (
+      {showModal && (
         <>
           <div
             onClick={() => navigate('/adminsettings')}
@@ -60,7 +60,7 @@ export default function Modal() {
             </button>
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
 }

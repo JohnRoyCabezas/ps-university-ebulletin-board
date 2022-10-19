@@ -34,12 +34,11 @@ const AdminAnnouncementPage = () => {
   }
 
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="relative flex flex-col w-screen h-screen">
+    <div className="flex h-screen">
+      <div className="relative flex flex-col w-full">
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">Announcements</h1>
         <div className="flex flex-col justify-between h-full">
-          <div id='announcementWrapper' className="mt-12 overflow-y-scroll scroll">
+          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
               announcements.map((announcement) => (
                 <AnnouncementCard key={announcement.id.toString()} userRole={'admin'} announcement={announcement} handleRefresh={() => handleRefresh()} />

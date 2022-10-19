@@ -13,21 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('course_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+        Schema::table('departments', function (Blueprint $table) {
+            $table->after('department', function ($table) {
+                $table->foreignId('user_id')->nullable()->constrained();
+                $table->longText('department_information')->nullable();
+            });
         });
-    }
-
-    /**
+    }/**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('course_user');
+        Schema::table('departments', function (Blueprint $table) {
+            //
+        });
     }
 };
