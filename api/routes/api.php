@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollegeContoller;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,14 +23,15 @@ use Illuminate\Support\Facades\Route;
 // Public
 Route::post('/auth/login', [AuthController::class, 'login']);
 
-
 // Private
 Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/auth', AuthController::class);
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
-    Route::prefix('thread')->group(function() {
+    Route::apiResource('/college', CollegeContoller::class);
+    Route::apiResource('/course', CourseController::class);
+    Route::prefix('thread')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
     });
