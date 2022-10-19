@@ -24,7 +24,7 @@ class User extends Authenticatable
         'password',
         'avatar',
         'department_id',
-        'is_verified'
+        'is_verified',
     ];
 
     /**
@@ -45,11 +45,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function university()
-    {
-        return $this->hasOne(University::class);
-    }
 
     public function colleges()
     {
@@ -91,6 +86,10 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class);
     }
 
+    public function university()
+    {
+        return $this->hasOne(University::class);
+    }
     public function isAdmin()
     {
         return $this->roleUser()->where('role_id', 2)->exists();
