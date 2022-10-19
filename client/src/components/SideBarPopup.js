@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
@@ -10,7 +10,7 @@ import AuthApi from '../api/AuthApi';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-export default function Modal() {
+export default function Modal(props) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,6 +21,10 @@ export default function Modal() {
       navigate('/');
     });
   };
+
+  useEffect(() => {
+    setShowModal(props.show);
+  })
 
   const [showModal, setShowModal] = React.useState(false);
   return (
