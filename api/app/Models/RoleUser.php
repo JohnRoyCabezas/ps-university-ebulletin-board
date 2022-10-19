@@ -22,4 +22,9 @@ class RoleUser extends Model
     public function role() {
         return $this->belongsTo(Role::class);
     }
+
+    public function scopeDean($query) {
+
+        return $query->where('role_id', 4);
+    }
 }

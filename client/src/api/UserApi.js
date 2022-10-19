@@ -18,10 +18,10 @@ const UserApi = {
     };
     return instance.request(config);
   },
-  fetchAdmins: () => {
+  fetchDeans: () => {
     const config = {
       method: 'GET',
-      url: '/users/admins',
+      url: '/users/deans',
     };
     return instance.request(config);
   },

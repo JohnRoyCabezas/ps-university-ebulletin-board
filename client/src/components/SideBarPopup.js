@@ -17,6 +17,7 @@ export default function Modal() {
     AuthApi.logout().then((res) => {
       Cookies.remove('token');
       Cookies.remove('user');
+      Cookies.remove('params');
       navigate('/');
     });
   };

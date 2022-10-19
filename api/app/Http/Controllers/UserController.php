@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\College;
-use App\Models\Course;
-use App\Models\Department;
 use App\Models\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +11,7 @@ class UserController extends Controller
     public function getAuthUser()
     {
         $user = Auth::user();
-        
+
         if ($user->isAdmin()) {
             $user = User::with('university.colleges.departments.courses')->find($user->id);
         } else {
@@ -25,13 +21,13 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function getAdmins()
+    public function getDeans()
     {
-        $admins = User::whereHas('roleUser', function ($query) {
-            $query->where('role_id', '=', 2);
+        $deans = User::with('roleUser')->whereHas('roleUser', function ($query) {
+            $query->where('role_id', '=', 4);
         })->get();
 
-        return response()->json($admins);
+        return response()->json($deans);
     }
 
     public function getUsers(Request $request)

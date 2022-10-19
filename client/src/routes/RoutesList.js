@@ -17,7 +17,6 @@ import Unauthorized from '../pages/Unauthorized';
 import ProtectedRoute from './utilities/ProtectedRoute';
 import ErrorPage from '../pages/ErrorPage';
 import Sidebar from '../components/Sidebar';
-;
 
 const RoutesList = () => {
   const ROLES = {
@@ -47,7 +46,7 @@ const RoutesList = () => {
           <Route path="createdepartment" element={<CreateDepartmentPage />} />
           <Route path="createclass" element={<CreateClassPage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="edituser" element={<EditUserPage />} />
+          <Route path="edituser/:id" element={<EditUserPage />} />
         </Route>
       </Route>
       <Route path="*" element={<ErrorPage />}></Route>
