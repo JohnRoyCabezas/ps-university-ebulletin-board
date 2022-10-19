@@ -9,9 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class AnnouncementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $announcements = Announcement::with('user')->get();
+
+        return response()->json($announcements);
+    }
+
+    public function channelAnnouncements(Request $request)
+    {
+        $announcements = Announcement::with('user')->channel($request)->get();
 
         return response()->json($announcements);
     }

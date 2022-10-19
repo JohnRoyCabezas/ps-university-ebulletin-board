@@ -1,24 +1,25 @@
 import { React, useEffect, useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import AnnouncementCard from '../components/AnnouncementCard';
 import RichTextEditor from '../components/RichTextEditor';
 import AnnouncementApi from '../api/AnnouncementApi';
+import { useParams } from 'react-router-dom';
 
-const AdminAnnouncementPage = () => {
+const AdminCollegePage = () => {
+  const { id } = useParams();
   const [announcements, setAnnouncement] = useState([]);
   const params =
   {
-    announcementable_id: 1,
-    announcementable_type: "App/Models/University",
+    announcementable_id: id,
+    announcementable_type: "App/Models/College",
   }
 
   useEffect(() => {
-    AnnouncementApi.fetchAnnouncement(params.announcementable_type).then(
+    AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
       }
     );
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
@@ -26,17 +27,16 @@ const AdminAnnouncementPage = () => {
   }, [announcements])
 
   function handleRefresh() {
-    AnnouncementApi.fetchAnnouncement(params.announcementable_type).then(
+    AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
       }
     );
   }
-
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">Announcements</h1>
+        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">College Announcements</h1>
         <div className="flex flex-col justify-between h-full">
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
@@ -54,4 +54,4 @@ const AdminAnnouncementPage = () => {
   );
 };
 
-export default AdminAnnouncementPage;
+export default AdminCollegePage;

@@ -23,4 +23,9 @@ class Announcement extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeChannel($query, $request) {
+        return $query->where('announcementable_type', $request->announcementable_type)
+        ->where('announcementable_id', $request->announcementable_id);
+    }
 }
