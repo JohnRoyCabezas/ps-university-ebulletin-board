@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'role' => 'Student Body'
+            ],
+            [
+                'role' => 'Dean'
+            ],
+            [
+                'role' => 'Instructor'
             ]
         ]);
         DB::table('permissions')->insert([
@@ -276,25 +282,7 @@ class DatabaseSeeder extends Seeder
             ],
 
         ]);
-        DB::table('courses')->insert([
-            [
-                'department_id' => 1,
-                'course' => 'Electrical Wiring 101'
-            ], [
-                'department_id' => 1,
-                'course' => 'Fundamentals of Electrical Current 203'
-            ],
-            [
-                'department' => 3,
-                'course' => 'Computer Science 102'
-            ],  [
-                'department' => 6,
-                'course' => 'Infotech 102'
-            ], [
-                'department' => 7,
-                'course' => 'Data Entry 101'
-            ],
-        ]);
+
         DB::table('announcements')->insert([
             [
                 'announcementable_id' => 2,
