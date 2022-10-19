@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,6 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::get('/user', [UserController::class, 'getAuthUser']);
     Route::get('/users', [UserController::class, 'getUsers']);
     Route::get('/users/admins', [UserController::class, 'getAdmins']);
-    Route::get('/users', [UserController::class, 'getUsers']);
     Route::apiResource('/college', CollegeContoller::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
