@@ -6,7 +6,7 @@ use App\Models\College;
 use App\Models\RoleUser;
 use Illuminate\Http\Request;
 
-class CollegeContoller extends Controller
+class CollegeController extends Controller
 {
     public function index()
     {

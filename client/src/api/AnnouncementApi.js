@@ -1,10 +1,13 @@
 import instance from "./instance";
 
 const AnnouncementApi = {
-  fetchAnnouncement: () => {
+  fetchAnnouncement: (announcementable_type) => {
     const config = {
       method: 'GET',
       url: '/announcement',
+      params: {
+        announcementable_type
+      }
     }
     return instance.request(config);
   },
@@ -45,7 +48,18 @@ const AnnouncementApi = {
       url: `/announcement/${id}`
     }
     return instance.request(config);
-  }
+  },
+
+  fetchChannelAnnouncements: (params) => {
+    const config = {
+      method: 'GET',
+      url: `/announcements`,
+      params: {
+        ...params
+      }
+    }
+    return instance.request(config);
+  },
 }
 
 export default AnnouncementApi;

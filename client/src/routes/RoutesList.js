@@ -1,5 +1,5 @@
-import { Route, Routes } from 'react-router-dom';
-import React from 'react';
+import { Route, Routes } from "react-router-dom";
+import React from "react";
 
 import AdminAnnouncementPage from '../pages/AdminAnnouncementPage';
 import CreateCollegePage from '../pages/CreateCollegePage';
@@ -17,6 +17,8 @@ import Unauthorized from '../pages/Unauthorized';
 import ProtectedRoute from './utilities/ProtectedRoute';
 import ErrorPage from '../pages/ErrorPage';
 import Sidebar from '../components/Sidebar';
+import CollegePage from '../pages/CollegePage';
+import AdminCollegePage from "../pages/AdminCollegePage";
 
 const RoutesList = () => {
   const ROLES = {
@@ -34,11 +36,13 @@ const RoutesList = () => {
       >
         <Route element={<Sidebar />}>
           <Route path="announcement" element={<AnnouncementPage />} />
+          <Route path="college" element={<CollegePage />} />
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
         <Route element={<Sidebar />}>
           <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
+          <Route path="admincollege/:id" element={<AdminCollegePage />} />
           <Route path="adminsettings" element={<AdminSettingsPage />} />
           <Route path="manageusers" element={<ManageUsersPage />}></Route>
           <Route path="createcollege" element={<CreateCollegePage />} />

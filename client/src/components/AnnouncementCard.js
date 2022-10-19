@@ -38,22 +38,22 @@ export default function AnnouncementCard(props) {
         }}
       >
         <img
-          src={props.announcement.user.avatar}
+          src={props?.announcement?.user?.avatar}
           className="rounded-full w-12 h-12"
           alt="Avatar"
         />
 
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
-            <h5 className="font-bold">{props.announcement.user.fullname}</h5>
-            <span className="ml-2 text-xs"><i>{moment(props.announcement.created_at).fromNow()}</i></span>
+            <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
+            <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
           </div>
           <div>
             {(isEdit) ? <div className="px-5 w-full"><RichTextEditor isEdit={isEdit} isChange={value => isChange(value)} handleRefresh={() => props.handleRefresh()} id={id} params={params} /></div> : <span className="text-gray-700 text-base">{parse(props.announcement.announcement)}</span>}
           </div>
         </div>
         {isShown && (
-          (props.userRole === 'student') ? <StudentMessageOptions /> : <AdminMessageOptions id={props.announcement.id} handleRefresh={props.handleRefresh} handleEdit={id => handleEdit(id)} />
+          (props.userRole === 'student') ? <StudentMessageOptions /> : <AdminMessageOptions id={props?.announcement?.id} handleRefresh={props.handleRefresh} handleEdit={id => handleEdit(id)} />
         )}
       </div>
     </div>
