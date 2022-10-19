@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import React, { useState } from 'react';
 import UsersTable from '../components/UsersTable';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import UserApi from '../api/UserApi';
 
 const ManageUsersPage = () => {
-  const [users, setUsers] = useState([]);
-  const [paginateData, setPaginateData] = useState({});
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isAscending, setIsAscending] = useState(true);
   const [params, setParams] = useState({
@@ -18,13 +14,6 @@ const ManageUsersPage = () => {
     order_direction: 'asc',
     keyword: '',
   });
-
-  useEffect(() => {
-    UserApi.fetchAllUsers(params).then((res) => {
-      setPaginateData(res.data);
-      setUsers(res.data.data);
-    });
-  }, [params]);
 
   const handleSearch = (e) => {
     if (e.target.value === '' ) {
@@ -82,8 +71,6 @@ const ManageUsersPage = () => {
 
         <div className="container mx-auto mt-[5vh]">
           <UsersTable
-            users={users}
-            paginateData={paginateData}
             params={params}
             isAscending={isAscending}
             onSortChange={handleSort}
