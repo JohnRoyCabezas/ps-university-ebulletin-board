@@ -94,4 +94,18 @@ class User extends Authenticatable
     {
         return $this->roleUser()->where('role_id', 2)->exists();
     }
+
+    public function scopeStudent($query)
+    {
+        $query->whereHas('roleUser', function ($query) {
+            $query->where('role_id', '=', 1);
+        });
+    }
+
+    public function scopeInstructor($query)
+    {
+        $query->whereHas('roleUser', function ($query) {
+            $query->where('role_id', '=', 5);
+        });
+    }
 }

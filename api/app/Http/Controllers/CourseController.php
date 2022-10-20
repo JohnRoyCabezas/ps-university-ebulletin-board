@@ -3,21 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\CourseUser;
-use App\Models\Department;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $courses = Course::all();
-
-        return response()->json($courses);
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $validatedData = $request->validate(
@@ -39,9 +46,7 @@ class CourseController extends Controller
                 ]
             );
 
-            $user_ids = explode(',', $validatedData['user_ids']);
-
-            $course->user()->attach($user_ids);
+            $course->user()->attach($validatedData['user_ids']);
             $course->user()->attach($validatedData['instructor_id']);
 
             DB::commit();
@@ -61,76 +66,37 @@ class CourseController extends Controller
         }
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
-        $course = Course::findOrFail($id);
-        $course->courseUsers;
-
-        return response()->json(
-            [
-                'course_detail' => $course,
-
-            ]
-        );
+        //
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
-        $request->validate(
-            [
-                'course' => ['required'],
-                'department' => ['required'],
-                'user_ids' => ['required'],
-            ]
-        );
-        try {
-            DB::beginTransaction();
-
-            $department_id = Department::where('department', $request['department'])->get('id')->first()->id;
-            $course = Course::findOrFail($id);
-
-            $course->update(
-                [
-                    'course' => $request->course,
-                    'department_id' => $department_id,
-                ]
-            );
-
-            $user_ids = array_filter(explode(',', $request['user_ids']));
-            $current_users = CourseUser::where('course_id', $course->id)->pluck('user_id');
-
-            $deleted_users = array_values(array_diff($current_users->toArray(), $user_ids));
-            $added_users = array_values(array_diff($user_ids, $current_users->toArray()));
-
-            $course->user()->detach($deleted_users);
-            $course->user()->attach($added_users);
-
-            DB::commit();
-
-            return response()->json(
-                [
-                    'message' => 'Class updated!'
-                ]
-            );
-
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        //
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $class = Course::findOrFail($id);
-        $class->delete();
-
-        return response()->json(
-            [
-                'message' => 'Class deleted!',
-            ]
-        );
+        //
     }
 }

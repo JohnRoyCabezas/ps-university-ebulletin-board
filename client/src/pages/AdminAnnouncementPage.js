@@ -5,6 +5,7 @@ import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
 
+
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcements, setAnnouncement] = useState([]);
@@ -18,7 +19,7 @@ const AdminAnnouncementPage = () => {
   }
 
   useEffect(() => {
-    AnnouncementApi.fetchAnnouncement(params.announcementable_type).then(
+    AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
       }

@@ -15,7 +15,7 @@ const EditUserPage = () => {
     department_id: '',
     role_id: '',
   };
-  
+
   const { id } = useParams();
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -55,9 +55,9 @@ const EditUserPage = () => {
         'params',
         JSON.stringify({ ...params, department_id: item.value })
       );
-    }  else if (type === "role") {
+    } else if (type === 'role') {
       setParams({ ...params, role_id: item.value });
-      Cookies.set("params", JSON.stringify({ ...params, role: item.value }));
+      Cookies.set('params', JSON.stringify({ ...params, role_id: item.value }));
     }
   };
 
@@ -66,7 +66,7 @@ const EditUserPage = () => {
 
     AuthApi.update(id, params).then((res) => {
       Cookies.remove('params');
-      setShowModal(true)
+      setShowModal(true);
     });
   };
 
@@ -97,19 +97,31 @@ const EditUserPage = () => {
                     alt="Avatar"
                   />
                 </div>
-                
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Department
                 </label>
                 <Dropdown
-                  defaultLabel={
-                    departments[params?.department_id - 1]?.department
+                  selectedLabel={
+                    params.department_id &&
+                    departments[
+                      departments
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.department_id))
+                    ]?.department
                   }
-                  defaultValue={departments[params?.department_id - 1]?.id}
+                  selectedValue={
+                    params.department_id &&
+                    departments[
+                      departments
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.department_id))
+                    ]?.id
+                  }
                   handleChange={handleSelectChange}
                   type="department"
+                  label="department"
                   data={departments}
                 />
               </div>
@@ -118,10 +130,25 @@ const EditUserPage = () => {
                   Role
                 </label>
                 <Dropdown
-                  defaultLabel={roles[params?.role_id-1]?.role}
-                  defaultValue={roles[params?.role_id-1]?.id}
+                  selectedLabel={
+                    params.role_id &&
+                    roles[
+                      roles
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.role_id))
+                    ]?.role
+                  }
+                  selectedValue={
+                    params.role_id &&
+                    roles[
+                      roles
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.role_id))
+                    ]?.id
+                  }
                   handleChange={handleSelectChange}
                   type="role"
+                  label="role"
                   data={roles}
                 />
               </div>

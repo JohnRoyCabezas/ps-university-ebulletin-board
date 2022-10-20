@@ -23,7 +23,7 @@ class AuthController extends Controller
             'fullname' => ['required', 'max:255'],
             'department_id' => [''],
             'email' => ['required', 'unique:users'],
-            'role' => ['required']
+            'role_id' => ['required']
         ]);
 
         $user = User::create([
@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         RoleUser::create([
             'user_id' => $user->id,
-            'role_id' => $validatedData['role'],
+            'role_id' => $validatedData['role_id'],
         ]);
 
         return response()->json([
