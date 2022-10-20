@@ -47,4 +47,18 @@ class UserController extends Controller
 
         return response()->json($users);
     }
+    
+    public function getStudents() 
+    {
+        $students = User::student()->get();
+
+        return response()->json($students);
+    }
+
+    public function getInstructors() 
+    {
+        $instructors = User::instructor()->get();
+
+        return response()->json($instructors);
+    }
 }

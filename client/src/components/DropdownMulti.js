@@ -1,15 +1,16 @@
-import React from "react";
-import Select from "react-select";
+import React from 'react';
+import Select from 'react-select';
 
-const Dropdown = ({ defaultLabel, defaultValue, handleChange, data, type }) => {
+const DropdownMulti = ({ label, handleMultiChange, data, type }) => {
+
   const onSelectChange = (value) => {
-    handleChange(type, value);
+    handleMultiChange(value);
   };
 
   const dataOptions = data?.map((item) => {
     return {
-      label: item[`${type}`],
-      value: item["id"],
+      label: item[`${label}`],
+      value: item['id'],
     };
   });
 
@@ -17,15 +18,14 @@ const Dropdown = ({ defaultLabel, defaultValue, handleChange, data, type }) => {
     <div>
       <Select
         isMulti
-        value={{
-          label: `${defaultLabel ? defaultLabel : "Select a value"}`,
-          value: `${defaultValue ? defaultValue : "Select a value"}`,
-        }}
-        onChange={onSelectChange}
+        placeholder={`Select ${type}...`}
         options={dataOptions}
+        className="basic-multi-select"
+        classNamePrefix="select"
+        onChange={onSelectChange}
       />
     </div>
   );
 };
 
-export default Dropdown;
+export default DropdownMulti;

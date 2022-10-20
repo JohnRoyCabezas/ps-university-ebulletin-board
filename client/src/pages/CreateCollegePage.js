@@ -9,23 +9,23 @@ const CreateCollegePage = () => {
     college_information: '',
     college: '',
     university: 1,
-    dean: null,
+    dean: '',
   };
   const [errors, setErrors] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [data, setData] = useState([]);
+  const [deans, setDeans] = useState([]);
   const [params, setParams] = useState(initialParams);
 
   useEffect(() => {
     UserApi.fetchDeans().then((res) => {
-      setData(res.data);
+      setDeans(res.data);
     });
   }, []);
 
   const handleSelectChange = (type, value) => {
     setErrors({});
-    if (type === 'fullname') {
-      setParams({ ...params, dean: value.value, dean_name: value.label });
+    if (type === 'dean') {
+      setParams({ ...params, dean_name: value.label, dean: value.value });
     }
   };
 
@@ -108,11 +108,16 @@ const CreateCollegePage = () => {
                   )}
                 </label>
                 <Dropdown
-                  defaultLabel={params?.dean_name}
-                  defaultValue={params?.dean}
+                 selectedLabel={
+                  deans[(deans.map(obj => obj.id)).indexOf(Number(params?.dean_name))]?.dean_name
+                }
+                selectedValue={
+                  deans[(deans.map(obj => obj.id)).indexOf(Number(params?.id))]?.dean
+                }
                   handleChange={handleSelectChange}
-                  data={data}
-                  type="fullname"
+                  data={deans}
+                  type="dean"
+                  label='fullname'
                 />
               </div>
               {errors?.message && (

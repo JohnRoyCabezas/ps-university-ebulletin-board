@@ -332,7 +332,6 @@ class DatabaseSeeder extends Seeder
                 'role_id' => 4,
                 'user_id' => 4
             ],
-
         ]);
 
         DB::table('announcements')->insert([

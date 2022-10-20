@@ -25,6 +25,20 @@ const UserApi = {
     };
     return instance.request(config);
   },
+  fetchStudents: ()=>{ 
+    const config = {
+      method: 'GET',
+      url: '/users/students',
+    }
+    return instance.request(config);
+  },
+  fetchInstructors: ()=>{ 
+    const config = {
+      method: 'GET',
+      url: '/users/instructors',
+    }
+    return instance.request(config);
+  }
 };
 
 export default UserApi;

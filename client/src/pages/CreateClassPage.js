@@ -1,8 +1,64 @@
-import React from "react";
-import SelectDropDownComponent from "../components/Dropdown";
-import MultiDropdown from "../components/DropdownMulti";
+import React, { useEffect, useState } from 'react';
+import Dropdown from '../components/Dropdown';
+import DropdownMulti from '../components/DropdownMulti';
+import UserApi from '../api/UserApi';
+import DepartmentApi from '../api/DepartmentApi';
+import CourseApi from '../api/CourseApi';
+import SuccessModal from '../components/SuccessModal';
 
 const CreateCollegePage = () => {
+  const initialState = {
+    user_ids: [],
+    instructor_id: '',
+    course: '',
+    department_id: '',
+  };
+  const [students, setStudents] = useState([]);
+  const [instructors, setInstructors] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [departments, setDepartments] = useState([]);
+  const [params, setParams] = useState(initialState);
+
+  useEffect(() => {
+    UserApi.fetchStudents().then((res) => {
+      setStudents(res.data);
+    });
+    UserApi.fetchInstructors().then((res) => {
+      setInstructors(res.data);
+    });
+    DepartmentApi.fetchDepartments().then((res) => {
+      setDepartments(res.data);
+    });
+  }, []);
+
+  const handleInputChange = (e) => {
+    setParams({ ...params, [e.target.name]: e.target.value });
+  };
+
+  const handleSelectChange = (type, value) => {
+    if (type === 'department') {
+      setParams({ ...params, department_id: value.value });
+    } else if (type === 'instructor') {
+      const selectedInstructor = value.value;
+      setParams({...params, instructor_id: selectedInstructor})
+    }
+  };
+  
+  const handleMultiSelectChange = (values) => {
+    const selectedStudents = values.map((value) => value.value); 
+    setParams({...params, user_ids: selectedStudents})
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    CourseApi.createCourse(params).then((res) => {
+      setParams(initialState);
+      setShowModal(true)
+    });
+
+  };
+  
   return (
     <div className="flex">
       <div className="flex flex-col h-screen w-full">
@@ -10,14 +66,26 @@ const CreateCollegePage = () => {
           Create Class
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
+        {showModal && (
+            <SuccessModal
+              title="Create Class"
+              message='Successfully created a class!'
+              buttonConfirmText={'Close'}
+              buttonCancelText={'text'}
+              setShowModal={setShowModal}
+            />
+          )}
           <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
-            <form className="mt-1">
+            <form onSubmit={handleSubmit} className="mt-1">
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Class Name
                 </label>
                 <input
-                  placeholder="College of Engineering"
+                  name="course"
+                  value={params?.course}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Engineering 101"
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
                 />
               </div>
@@ -25,19 +93,46 @@ const CreateCollegePage = () => {
                 <label className="block text-sm font-semibold text-gray-800">
                   Department
                 </label>
-                <SelectDropDownComponent />
+                <Dropdown
+                  selectedLabel={
+                    departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.department
+                  }
+                  selectedValue={
+                    departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.id
+                  }
+                  handleChange={handleSelectChange}
+                  type="department"
+                  label="department"
+                  data={departments}
+                />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Class Instructor
                 </label>
-                <SelectDropDownComponent />
+                <Dropdown
+                  selectedLabel={
+                    instructors[(instructors.map(obj => obj.id)).indexOf(Number(params?.instructor_id))]?.fullname
+                  }
+                  selectedValue={
+                    instructors[(instructors.map(obj => obj.id)).indexOf(Number(params?.instructor_id))]?.id
+                  }
+                  handleChange={handleSelectChange}
+                  type="instructor"
+                  label="fullname"
+                  data={instructors}
+                />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Class List
                 </label>
-                <MultiDropdown />
+                <DropdownMulti
+                  type="students"
+                  label="fullname"
+                  data={students}
+                  handleMultiChange={handleMultiSelectChange}
+                />
               </div>
               <div className="mt-8">
                 <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md hover:bg-blue-900 focus:outline-none focus:bg-blue-900">
@@ -50,5 +145,5 @@ const CreateCollegePage = () => {
       </div>
     </div>
   );
-};
+};;
 export default CreateCollegePage;

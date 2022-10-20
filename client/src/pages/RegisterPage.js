@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import Dropdown from "../components/Dropdown";
-import DepartmentApi from "../api/DepartmentApi";
-import AuthApi from "../api/AuthApi";
-import RoleApi from "../api/RoleApi";
-import RegistrationModal from "../components/RegistrationModal";
+import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import Dropdown from '../components/Dropdown';
+import DepartmentApi from '../api/DepartmentApi';
+import AuthApi from '../api/AuthApi';
+import RoleApi from '../api/RoleApi';
+import RegistrationModal from '../components/RegistrationModal';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const initialParams = {
-    fullname: "",
-    email: "",
-    department_id: "",
-    role: "",
+    fullname: '',
+    email: '',
+    department_id: '',
+    role: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
   };
 
@@ -21,10 +22,10 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState({
-    fullname: "",
-    email: "",
-    department_id: "",
-    role: "",
+    fullname: '',
+    email: '',
+    department_id: '',
+    role: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
   });
 
@@ -35,23 +36,23 @@ const RegisterPage = () => {
     RoleApi.fetchRoles().then((res) => {
       setRoles(res.data);
     });
-    Cookies.get("params") &&
-      setParams(JSON.parse(Cookies.get("params") || "{}"));
+    Cookies.get('params') &&
+      setParams(JSON.parse(Cookies.get('params') || '{}'));
   }, []);
 
   const handleInputChange = (e) => {
     setErrors({});
     setParams({ ...params, [e.target.name]: e.target.value });
     Cookies.set(
-      "params",
+      'params',
       JSON.stringify({ ...params, [e.target.name]: e.target.value })
     );
   };
 
   useEffect(() => {
-    if (params.email === "" || EMAIL_REGEX.test(params.email)) {
+    if (params.email === '' || EMAIL_REGEX.test(params.email)) {
       setErrors({});
-    } else setErrors({ ...errors, email: "Not a valid email format" });
+    } else setErrors({ ...errors, email: 'Not a valid email format' });
   }, [params.email]);
 
   const handleAvatarChange = () => {
@@ -60,20 +61,20 @@ const RegisterPage = () => {
       Math.floor(Math.random() * 90000) + 10000
     }`;
     setParams({ ...params, avatar: randomAvatar });
-    Cookies.set("params", JSON.stringify({ ...params }));
+    Cookies.set('params', JSON.stringify({ ...params }));
   };
 
-  const handleSelectChange = (type, item) => {
+  const handleSelectChange = (type, value) => {
     setErrors({});
-    if (type === "department") {
-      setParams({ ...params, department_id: item.value });
+    if (type === 'department') {
+      setParams({ ...params, department_id: value.value });
       Cookies.set(
-        "params",
-        JSON.stringify({ ...params, department_id: item.value })
+        'params',
+        JSON.stringify({ ...params, department_id: value.value })
       );
-    } else if (type === "role") {
-      setParams({ ...params, role: item.value });
-      Cookies.set("params", JSON.stringify({ ...params, role: item.value }));
+    } else if (type === 'role') {
+      setParams({ ...params, role: value.value });
+      Cookies.set('params', JSON.stringify({ ...params, role: value.value }));
     }
   };
 
@@ -82,7 +83,7 @@ const RegisterPage = () => {
 
     AuthApi.register(params).then(
       (res) => {
-        Cookies.remove("params");
+        Cookies.remove('params');
         setParams(initialParams);
         setShowModal(true);
       },
@@ -90,7 +91,6 @@ const RegisterPage = () => {
         setErrors(err.response.data.errors);
       }
     );
-    
   };
 
   return (
@@ -102,9 +102,9 @@ const RegisterPage = () => {
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
           {showModal && (
             <RegistrationModal
-              message={"Registration Complete!"}
-              buttonConfirmText={"Close"}
-              buttonCancelText={"text"}
+              message={'Registration Complete!'}
+              buttonConfirmText={'Close'}
+              buttonCancelText={'text'}
               setShowModal={setShowModal}
             />
           )}
@@ -144,43 +144,51 @@ const RegisterPage = () => {
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Department
-                  {params.department_id === "" && (
+                  {params.department_id === '' && (
                     <span className="text-s italic font-light text-red-800">
                       *
                     </span>
                   )}
                 </label>
                 <Dropdown
-                  defaultLabel={
-                    departments[params?.department_id - 1]?.department
-                  }
-                  defaultValue={departments[params?.department_id - 1]?.id}
+                 selectedLabel={
+                  departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.department
+                }
+                selectedValue={
+                  departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.id
+                }
                   handleChange={handleSelectChange}
                   type="department"
+                  label="department"
                   data={departments}
                 />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Role
-                  {params.role === "" && (
+                  {params.role === '' && (
                     <span className="text-s italic font-light text-red-800">
                       *
                     </span>
                   )}
                 </label>
                 <Dropdown
-                  defaultLabel={roles[params?.role - 1]?.role}
-                  defaultValue={roles[params?.role - 1]?.id}
+                  selectedLabel={
+                    roles[(roles.map(obj => obj.id)).indexOf(Number(params?.role))]?.department
+                  }
+                  selectedValue={
+                    roles[(roles.map(obj => obj.id)).indexOf(Number(params?.id))]?.id
+                  }
                   handleChange={handleSelectChange}
                   type="role"
+                  label="role"
                   data={roles}
                 />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Fullname
-                  {params.fullname === "" && (
+                  {params.fullname === '' && (
                     <span className="text-s italic font-light text-red-800">
                       *
                     </span>
@@ -197,7 +205,7 @@ const RegisterPage = () => {
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Email
-                  {params.email === "" && (
+                  {params.email === '' && (
                     <span className="text-s italic font-light text-red-800">
                       *
                     </span>
@@ -221,7 +229,6 @@ const RegisterPage = () => {
                     !errors.email &&
                     params.fullname &&
                     params.avatar &&
-                    params.department_id &&
                     params.email &&
                     params.role
                       ? false
@@ -233,7 +240,6 @@ const RegisterPage = () => {
                   !errors.email &&
                   params.fullname &&
                   params.avatar &&
-                  params.department_id &&
                   params.email &&
                   params.role
                     ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
