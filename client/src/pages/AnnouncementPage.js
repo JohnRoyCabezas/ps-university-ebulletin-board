@@ -1,9 +1,16 @@
 import { React, useEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
+import Thread from '../components/Thread';
 
 const AnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
+  const [isThread, setThread] = useState(false);
+
+  function setThreadValue(value) {
+    setThread(value);
+  }
+
 
   useEffect(() => {
     const params = {
@@ -30,17 +37,15 @@ const AnnouncementPage = () => {
           Announcements
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
-            {announcements.map((announcement) => (
-              <AnnouncementCard
-                key={announcement.id.toString()}
-                userRole={'student'}
-                announcement={announcement}
-              />
-            ))}
+          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
+            {
+              announcements.map((announcement) => (
+                <AnnouncementCard key={announcement.id.toString()} userRole={'student'} announcement={announcement} setValue={setThreadValue}/>
+              ))}
           </div>
         </div>
       </div>
+      {isThread && <Thread userRole={'student'} setValue={setThreadValue}/>}
     </div>
   );
 };
