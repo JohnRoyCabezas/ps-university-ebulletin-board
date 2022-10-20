@@ -1,26 +1,36 @@
 import React from 'react';
 import Select from 'react-select';
 
-const Dropdown = ({ defaultLabel, defaultValue, handleChange, data, type }) => {
+const Dropdown = ({
+  selectedLabel,
+  selectedValue,
+  label,
+  handleChange,
+  data,
+  type,
+}) => {
+  
   const onSelectChange = (value) => {
     handleChange(type, value);
   };
 
   const dataOptions = data?.map((item) => {
     return {
-      label: item[`${type}`],
+      label: item[`${label}`],
       value: item['id'],
     };
   });
-  
 
   return (
     <div>
       <Select
-        value={{
-          label: `${defaultLabel ? defaultLabel : 'Select a value'}`,
-          value: `${defaultValue ? defaultValue : 'Select a value'}`,
-        }}
+        value={
+          selectedValue && {
+            label: `${selectedLabel ? selectedLabel : null}`,
+            value: `${selectedValue ? selectedValue : null}`,
+          }
+        }
+        placeholder={`Select a ${type}...`}
         onChange={onSelectChange}
         options={dataOptions}
       />

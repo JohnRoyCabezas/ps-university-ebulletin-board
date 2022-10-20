@@ -15,7 +15,7 @@ class UserController extends Controller
         if ($user->isAdmin()) {
             $user = User::with('university.colleges.departments.courses')->find($user->id);
         } else {
-            $user = User::with('department.college.university', 'courseUsers.course')->find($user->id);
+            $user = User::with('department.college.university')->find($user->id);
         }
 
         return response()->json($user);
@@ -46,5 +46,19 @@ class UserController extends Controller
             ->paginate($request->items_per_page);
 
         return response()->json($users);
+    }
+    
+    public function getStudents() 
+    {
+        $students = User::student()->get();
+
+        return response()->json($students);
+    }
+
+    public function getInstructors() 
+    {
+        $instructors = User::instructor()->get();
+
+        return response()->json($instructors);
     }
 }

@@ -1,18 +1,20 @@
 import { React, useEffect, useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
+import { useParams } from 'react-router-dom';
 
 const CollegePage = () => {
+  const {id} = useParams();
   const [announcements, setAnnouncement] = useState([]);
 
   useEffect(() => {
-    const param = {announcementable_type:"App/Models/College"}
-    AnnouncementApi.fetchAnnouncement(param.announcementable_type).then(
-      (res) => {
-        setAnnouncement(res.data);
-      }
-    );
+    const params = {
+      announcementable_type: 'App/Models/College',
+      announcementable_id: id,
+    };
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncement(res.data);
+    });
   }, []);
 
   useEffect(() => {
@@ -22,8 +24,7 @@ const CollegePage = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="relative flex flex-col w-screen h-screen">
+      <div className="relative flex flex-col w-full h-screen">
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">College</h1>
         <div className="flex flex-col justify-between h-full">
           <div id='announcementWrapper' className="mt-12 overflow-y-scroll scroll">
