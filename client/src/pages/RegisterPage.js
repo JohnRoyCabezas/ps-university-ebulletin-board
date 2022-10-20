@@ -151,12 +151,22 @@ const RegisterPage = () => {
                   )}
                 </label>
                 <Dropdown
-                 selectedLabel={
-                  departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.department
-                }
-                selectedValue={
-                  departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.id
-                }
+                  selectedLabel={
+                    params.department_id &&
+                    departments[
+                      departments
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.department_id))
+                    ]?.department
+                  }
+                  selectedValue={
+                    params.department_id &&
+                    departments[
+                      departments
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.department_id))
+                    ]?.id
+                  }
                   handleChange={handleSelectChange}
                   type="department"
                   label="department"
@@ -174,10 +184,16 @@ const RegisterPage = () => {
                 </label>
                 <Dropdown
                   selectedLabel={
-                    roles[(roles.map(obj => obj.id)).indexOf(Number(params?.role))]?.department
+                    params.role && 
+                    roles[
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role))
+                    ]?.role
                   }
                   selectedValue={
-                    roles[(roles.map(obj => obj.id)).indexOf(Number(params?.id))]?.id
+                    params.role && 
+                    roles[
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role))
+                    ]?.id
                   }
                   handleChange={handleSelectChange}
                   type="role"

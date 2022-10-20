@@ -29,10 +29,9 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/auth', AuthController::class);
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/department', DepartmentController::class);
-    Route::apiResource('/course', CourseController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
     Route::get('/announcements', [AnnouncementController::class, 'channelAnnouncements']);
-    Route::apiResource('/college', CollegeContoller::class);
+    Route::apiResource('/college', CollegeController::class);
     Route::apiResource('/course', CourseController::class);
     Route::prefix('thread')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
@@ -43,6 +42,5 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::get('/users/deans', [UserController::class, 'getDeans']);
     Route::get('/users/students', [UserController::class, 'getStudents']);
     Route::get('/users/instructors', [UserController::class, 'getInstructors']);
-    Route::apiResource('/college', CollegeContoller::class);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });

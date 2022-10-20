@@ -18,6 +18,7 @@ const CreateCollegePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [params, setParams] = useState(initialState);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     UserApi.fetchStudents().then((res) => {
@@ -40,25 +41,28 @@ const CreateCollegePage = () => {
       setParams({ ...params, department_id: value.value });
     } else if (type === 'instructor') {
       const selectedInstructor = value.value;
-      setParams({...params, instructor_id: selectedInstructor})
+      setParams({ ...params, instructor_id: selectedInstructor });
     }
   };
-  
+
   const handleMultiSelectChange = (values) => {
-    const selectedStudents = values.map((value) => value.value); 
-    setParams({...params, user_ids: selectedStudents})
+    setSelected(values);
+
+    const selectedStudents = values.map((value) => value.value);
+    setParams({ ...params, user_ids: selectedStudents });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     CourseApi.createCourse(params).then((res) => {
       setParams(initialState);
-      setShowModal(true)
+      setShowModal(true);
+      setSelected([]);
     });
-
   };
-  
+
+  console.log(params);
   return (
     <div className="flex">
       <div className="flex flex-col h-screen w-full">
@@ -66,10 +70,10 @@ const CreateCollegePage = () => {
           Create Class
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
-        {showModal && (
+          {showModal && (
             <SuccessModal
               title="Create Class"
-              message='Successfully created a class!'
+              message="Successfully created a class!"
               buttonConfirmText={'Close'}
               buttonCancelText={'text'}
               setShowModal={setShowModal}
@@ -95,10 +99,20 @@ const CreateCollegePage = () => {
                 </label>
                 <Dropdown
                   selectedLabel={
-                    departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.department
+                    params.department_id &&
+                    departments[
+                      departments
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.department_id))
+                    ]?.department
                   }
                   selectedValue={
-                    departments[(departments.map(obj => obj.id)).indexOf(Number(params?.department_id))]?.id
+                    params.department_id &&
+                    departments[
+                      departments
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.department_id))
+                    ]?.id
                   }
                   handleChange={handleSelectChange}
                   type="department"
@@ -112,10 +126,20 @@ const CreateCollegePage = () => {
                 </label>
                 <Dropdown
                   selectedLabel={
-                    instructors[(instructors.map(obj => obj.id)).indexOf(Number(params?.instructor_id))]?.fullname
+                    params.instructor_id &&
+                    instructors[
+                      instructors
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.instructor_id))
+                    ]?.fullname
                   }
                   selectedValue={
-                    instructors[(instructors.map(obj => obj.id)).indexOf(Number(params?.instructor_id))]?.id
+                    params.instructor_id &&
+                    instructors[
+                      instructors
+                        .map((obj) => obj.id)
+                        .indexOf(Number(params?.instructor_id))
+                    ]?.id
                   }
                   handleChange={handleSelectChange}
                   type="instructor"
@@ -128,6 +152,8 @@ const CreateCollegePage = () => {
                   Class List
                 </label>
                 <DropdownMulti
+
+                  selected={selected}
                   type="students"
                   label="fullname"
                   data={students}
@@ -145,5 +171,5 @@ const CreateCollegePage = () => {
       </div>
     </div>
   );
-};;
+};
 export default CreateCollegePage;

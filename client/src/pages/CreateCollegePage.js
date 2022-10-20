@@ -48,6 +48,7 @@ const CreateCollegePage = () => {
     );
   };
 
+  console.log(deans);
   return (
     <div className="flex h-screen">
       {showModal && (
@@ -108,16 +109,22 @@ const CreateCollegePage = () => {
                   )}
                 </label>
                 <Dropdown
-                 selectedLabel={
-                  deans[(deans.map(obj => obj.id)).indexOf(Number(params?.dean_name))]?.dean_name
-                }
-                selectedValue={
-                  deans[(deans.map(obj => obj.id)).indexOf(Number(params?.id))]?.dean
-                }
+                  selectedLabel={
+                    params?.dean &&
+                    deans[
+                      deans.map((obj) => obj.id).indexOf(Number(params?.dean))
+                    ]?.fullname
+                  }
+                  selectedValue={
+                    params?.dean &&
+                    deans[
+                      deans.map((obj) => obj.id).indexOf(Number(params?.dean))
+                    ]?.id
+                  }
                   handleChange={handleSelectChange}
                   data={deans}
                   type="dean"
-                  label='fullname'
+                  label="fullname"
                 />
               </div>
               {errors?.message && (
