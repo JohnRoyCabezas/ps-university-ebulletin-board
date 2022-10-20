@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import moment from "moment";
-import parse from "html-react-parser";
-import AdminMessageOptions from "./AdminMessageOptions";
-import StudentMessageOptions from "./StudentMessageOptions";
+import AdminThreadOptions from "../components/AdminThreadOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
 
@@ -40,15 +38,16 @@ export default function AnnouncementCard(props) {
         }}
       >
         <img
-          src={props?.announcement?.user?.avatar}
+          src={props?.thread?.user?.avatar}
           className="rounded-full w-12 h-12"
           alt="Avatar"
         />
-
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
-            <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
-            <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
+            <h5 className="font-bold">{props?.thread?.user?.fullname}</h5>
+            <span className="ml-2 text-xs">
+              <i>{moment(props?.thread?.created_at).fromNow()}</i>
+            </span>
           </div>
           <div>
             {isEdit ? (
@@ -63,22 +62,12 @@ export default function AnnouncementCard(props) {
               </div>
             ) : (
               <span className="text-gray-700 text-base">
-                {parse(props.announcement.announcement)}
+                {props.thread.thread_message}
               </span>
             )}
           </div>
         </div>
-        {isShown &&
-          (props.userRole === "student" ? (
-            <StudentMessageOptions setValue={setThreadValue} />
-          ) : (
-            <AdminMessageOptions
-              id={props.announcement.id}
-              handleRefresh={props.handleRefresh}
-              handleEdit={(id) => handleEdit(id)}
-              setValue={setThreadValue}
-            />
-          ))}
+        {isShown && props.userRole === "admin" && <AdminThreadOptions />}
       </div>
     </div>
   );
