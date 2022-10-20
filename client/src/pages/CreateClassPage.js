@@ -62,7 +62,6 @@ const CreateCollegePage = () => {
     });
   };
 
-  console.log(params);
   return (
     <div className="flex">
       <div className="flex flex-col h-screen w-full">
@@ -152,7 +151,6 @@ const CreateCollegePage = () => {
                   Class List
                 </label>
                 <DropdownMulti
-
                   selected={selected}
                   type="students"
                   label="fullname"
@@ -161,7 +159,26 @@ const CreateCollegePage = () => {
                 />
               </div>
               <div className="mt-8">
-                <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md hover:bg-blue-900 focus:outline-none focus:bg-blue-900">
+                <button
+                  disabled={ 
+                    params.course &&
+                    params.department_id &&
+                    params.instructor_id &&
+                    params.user_ids.length>0
+                      ? false
+                      : true
+                  }
+                  onClick={handleSubmit}
+                  className={`w-full px-4 py-2 tracking-wide rounded-md 
+                ${
+                  params.course &&
+                  params.department_id &&
+                  params.instructor_id &&
+                  params.user_ids.length>0
+                    ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
+                    : `bg-gray-300 text-gray-400`
+                }`}
+                >
                   Create Class
                 </button>
               </div>

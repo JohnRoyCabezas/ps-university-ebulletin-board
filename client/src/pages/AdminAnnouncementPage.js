@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import AnnouncementCard from '../components/AnnouncementCard';
 import RichTextEditor from '../components/RichTextEditor';
 import AnnouncementApi from '../api/AnnouncementApi';
@@ -13,7 +12,7 @@ const AdminAnnouncementPage = () => {
   }
 
   useEffect(() => {
-    AnnouncementApi.fetchAnnouncement(params.announcementable_type).then(
+    AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
       }

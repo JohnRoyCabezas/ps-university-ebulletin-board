@@ -26,7 +26,7 @@ const DepartmentAccordion = ({ data, courses }) => {
           <FontAwesomeIcon icon={faChevronDown} />
         )}
 
-        <span className="ml-2">{data.department}</span>
+        <span className="ml-2">{data?.department}</span>
       </div>
 
       {user?.role_user?.role_id === ROLES['ADMIN']

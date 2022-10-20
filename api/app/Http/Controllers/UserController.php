@@ -15,7 +15,7 @@ class UserController extends Controller
         if ($user->isAdmin()) {
             $user = User::with('university.colleges.departments.courses')->find($user->id);
         } else {
-            $user = User::with('department.college.university', 'courseUsers.course')->find($user->id);
+            $user = User::with('department.college.university')->find($user->id);
         }
 
         return response()->json($user);

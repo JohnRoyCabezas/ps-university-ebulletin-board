@@ -5,14 +5,13 @@ import DepartmentApi from '../api/DepartmentApi';
 import AuthApi from '../api/AuthApi';
 import RoleApi from '../api/RoleApi';
 import RegistrationModal from '../components/RegistrationModal';
-import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const initialParams = {
     fullname: '',
     email: '',
     department_id: '',
-    role: '',
+    role_id: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
   };
 
@@ -21,13 +20,7 @@ const RegisterPage = () => {
   const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [params, setParams] = useState({
-    fullname: '',
-    email: '',
-    department_id: '',
-    role: '',
-    avatar: `https://joeschmoe.io/api/v1/0`,
-  });
+  const [params, setParams] = useState(initialParams);
 
   useEffect(() => {
     DepartmentApi.fetchDepartments().then((res) => {
@@ -73,8 +66,8 @@ const RegisterPage = () => {
         JSON.stringify({ ...params, department_id: value.value })
       );
     } else if (type === 'role') {
-      setParams({ ...params, role: value.value });
-      Cookies.set('params', JSON.stringify({ ...params, role: value.value }));
+      setParams({ ...params, role_id: value.value });
+      Cookies.set('params', JSON.stringify({ ...params, role_id: value.value }));
     }
   };
 
@@ -176,7 +169,7 @@ const RegisterPage = () => {
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Role
-                  {params.role === '' && (
+                  {params.role_id === '' && (
                     <span className="text-s italic font-light text-red-800">
                       *
                     </span>
@@ -184,15 +177,15 @@ const RegisterPage = () => {
                 </label>
                 <Dropdown
                   selectedLabel={
-                    params.role && 
+                    params.role_id &&
                     roles[
-                      roles.map((obj) => obj.id).indexOf(Number(params?.role))
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
                     ]?.role
                   }
                   selectedValue={
-                    params.role && 
+                    params.role_id &&
                     roles[
-                      roles.map((obj) => obj.id).indexOf(Number(params?.role))
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
                     ]?.id
                   }
                   handleChange={handleSelectChange}
@@ -246,7 +239,7 @@ const RegisterPage = () => {
                     params.fullname &&
                     params.avatar &&
                     params.email &&
-                    params.role
+                    params.role_id
                       ? false
                       : true
                   }
@@ -257,7 +250,7 @@ const RegisterPage = () => {
                   params.fullname &&
                   params.avatar &&
                   params.email &&
-                  params.role
+                  params.role_id
                     ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
                     : `bg-gray-300 text-gray-400`
                 }`}

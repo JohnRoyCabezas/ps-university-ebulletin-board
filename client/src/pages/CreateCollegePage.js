@@ -48,7 +48,6 @@ const CreateCollegePage = () => {
     );
   };
 
-  console.log(deans);
   return (
     <div className="flex h-screen">
       {showModal && (
