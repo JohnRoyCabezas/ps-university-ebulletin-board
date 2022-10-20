@@ -25,7 +25,7 @@ const AdminAnnouncementPage = () => {
   }, [announcements])
 
   function handleRefresh() {
-    AnnouncementApi.fetchAnnouncement(params.announcementable_type).then(
+    AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
       }
