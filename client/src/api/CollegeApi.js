@@ -1,48 +1,56 @@
-import instance from "./instance"
+import instance from "./instance";
 
 const CollegeApi = {
   fetchSpecificCollege: (id) => {
     const config = {
-      method: 'GET',
+      method: "GET",
       url: `/college/${id}`,
-    }
+    };
     return instance.request(config);
   },
 
   createCollege: ({ college_information, college, dean, university }) => {
     const config = {
-      method: 'POST',
-      url: '/college',
+      method: "POST",
+      url: "/college",
       params: {
         college_information,
         college,
         dean,
-        university
-      }
-    }
+        university,
+      },
+    };
     return instance.request(config);
   },
 
   updateCollege: ({ collegeInfo, college, defaultValue }, id) => {
     const config = {
-      method: 'PUT',
+      method: "PUT",
       url: `/college/${id}`,
       params: {
         college_information: collegeInfo,
         college,
         dean: defaultValue,
-      }
-    }
+      },
+    };
     return instance.request(config);
   },
 
   deleteCollege: (id) => {
     const config = {
-      method: 'DELETE',
-      url: `/college/${id}`
-    }
+      method: "DELETE",
+      url: `/college/${id}`,
+    };
     return instance.request(config);
-  }
-}
+  },
+
+  fetchColleges: () => {
+    const config = {
+      method: "GET",
+      url: "/college",
+    };
+    return instance.request(config);
+  },
+};
 
 export default CollegeApi;

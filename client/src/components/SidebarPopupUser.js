@@ -10,7 +10,7 @@ import AuthApi from '../api/AuthApi';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-export default function Modal(props) {
+const SideBarPopupUser = (props) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -52,11 +52,11 @@ export default function Modal(props) {
       {showModal && (
         <>
           <div
-            onClick={() => navigate('/adminsettings')}
+            onClick={() => console.log('redirect to user settings or reset password page')}
             className="flex justify-center items-center p-2 cursor-pointer"
           >
             <FontAwesomeIcon icon={faGear} />
-            <span className="mx-2">Admin settings</span>
+            <span className="mx-2">User Settings</span>
           </div>
           <div className="flex justify-center items-center p-2">
             <FontAwesomeIcon icon={faRightFromBracket} />
@@ -69,3 +69,5 @@ export default function Modal(props) {
     </>
   );
 }
+
+export default SideBarPopupUser;

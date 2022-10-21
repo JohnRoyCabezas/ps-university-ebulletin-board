@@ -36,7 +36,7 @@ const RoutesList = () => {
       >
         <Route element={<Sidebar />}>
           <Route path="announcement" element={<AnnouncementPage />} />
-          <Route path="college" element={<CollegePage />} />
+          <Route path="college/:id" element={<CollegePage />} />
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>

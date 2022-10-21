@@ -12,11 +12,16 @@ const CollegeAccordion = ({
   department,
 }) => {
   const { id } = useParams();
+  const [isActive, setIsActive] = useState(false);
   const user = JSON.parse(Cookies.get("user") || "{}");
   const ROLES = {
     STUDENT: 1,
     ADMIN: 2,
   };
+
+  function handleClick() {
+    data?.id == id ? setIsActive(!isActive) : setIsActive(true)
+  }
 
   return (
     <div className="accordion-item">
@@ -24,13 +29,14 @@ const CollegeAccordion = ({
         className={`accordion-title flex items-center px-5 py-2 ${
           data?.id == id && "bg-slate-800"
         } cursor-pointer`}
+        onClick={handleClick}
       >
         <CollegeIcon />
         <span className="ml-2">{data?.college}</span>
       </div>
 
       {user?.role_user?.role_id === ROLES["ADMIN"]
-        ? data?.id == id &&
+        ? (data?.id == id) && isActive &&
           departments?.map((department) => {
             return (
               <div key={department.id}>
