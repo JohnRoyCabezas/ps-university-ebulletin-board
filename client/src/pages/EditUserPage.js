@@ -32,6 +32,7 @@ const EditUserPage = () => {
     AuthApi.show(id).then((res) => {
       setParams({
         ...params,
+        avatar: res.data?.avatar,
         fullname: res.data?.fullname,
         email: res.data?.email,
         department_id: res.data?.department_id,
@@ -92,7 +93,7 @@ const EditUserPage = () => {
                 </label>
                 <div className="flex justify-center">
                   <img
-                    src="https://joeschmoe.io/api/v1/213"
+                    src={params?.avatar}
                     className="rounded-full w-24 "
                     alt="Avatar"
                   />
