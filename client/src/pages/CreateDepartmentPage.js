@@ -30,8 +30,8 @@ const CreateDepartmentPage = () => {
 
   const handleSelectChange = (type, value) => {
     setErrors({});
-    if (type === "fullname") {
-      setParams({ ...params, user_id: value.value, user_id_name: value.label });
+    if (type === "dean") {
+      setParams({ ...params, user_id: value.value });
     }
     if (type === "college") {
       setParams({ ...params, college_id: value.value, college_name: value.label });
@@ -82,11 +82,22 @@ const CreateDepartmentPage = () => {
                   )}
                 </label>
                 <Dropdown
-                  defaultLabel={params?.college_name}
-                  defaultValue={params?.college_id}
+                  selectedLabel={
+                    params?.college_id &&
+                    college[
+                      college.map((obj) => obj.id).indexOf(Number(params?.college_id))
+                    ]?.college
+                  }
+                  selectedValue={
+                    params?.college_id &&
+                    college[
+                      college.map((obj) => obj.id).indexOf(Number(params?.college_id))
+                    ]?.id
+                  }
                   handleChange={handleSelectChange}
-                  data={college}
                   type="college"
+                  label="college"
+                  data={college}
                 />
               </div>
               <div className="mb-4">
@@ -133,11 +144,22 @@ const CreateDepartmentPage = () => {
                   )}
                 </label>
                 <Dropdown
-                  defaultLabel={params?.user_id_name}
-                  defaultValue={params?.user_id}
+                  selectedLabel={
+                    params.user_id &&
+                    data[
+                      data.map((obj) => obj.id).indexOf(Number(params?.user_id))
+                    ]?.fullname
+                  }
+                  selectedValue={
+                    params.user_id &&
+                    data[
+                      data.map((obj) => obj.id).indexOf(Number(params?.user_id))
+                    ]?.id
+                  }
                   handleChange={handleSelectChange}
+                  type="dean"
+                  label="fullname"
                   data={data}
-                  type="fullname"
                 />
               </div>
               {errors?.message && (
