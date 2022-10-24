@@ -18,7 +18,7 @@ class AnnouncementController extends Controller
 
     public function channelAnnouncements(Request $request)
     {
-        $announcements = Announcement::with('user')->channel($request)->get();
+        $announcements = Announcement::with('user')->channel($request)->orderBy('created_at')->get();
 
         return response()->json($announcements);
     }
