@@ -44,13 +44,19 @@ const AdminAnnouncementPage = () => {
       <div className="relative flex flex-col w-full">
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">Announcements</h1>
         <div className="flex flex-col justify-between h-full">
-          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
+          <div id='announcementWrapper' className="mt-12 overflow-y-auto bg-danger">
             {
               announcements.map((announcement) => (
-                <AnnouncementCard key={announcement.id.toString()} userRole={'admin'} announcement={announcement} handleRefresh={() => handleRefresh()} setValue={setThreadValue}/>
+                <AnnouncementCard
+                  key={announcement.id.toString()}
+                  userRole={'admin'}
+                  announcement={announcement}
+                  handleRefresh={() => handleRefresh()}
+                  setValue={setThreadValue}
+                />
               ))}
           </div>
-          <div className="px-5">
+          <div className="p-2 rounded-3xl">
             <RichTextEditor
               handleRefresh={() => handleRefresh()}
               params={params}
@@ -58,7 +64,7 @@ const AdminAnnouncementPage = () => {
           </div>
         </div>
       </div>
-      {isThread && <Thread userRole={'admin'} setValue={setThreadValue}/>}
+      {isThread && <Thread userRole={'admin'} setValue={setThreadValue} />}
     </div>
   );
 };
