@@ -46,6 +46,7 @@ const RoutesList = () => {
           <Route path="adminsettings" element={<AdminSettingsPage />} />
           <Route path="manageusers" element={<ManageUsersPage />}></Route>
           <Route path="createcollege" element={<CreateCollegePage />} />
+          <Route path="adminsettings/done" element={<AdminSettingsPage />} />
           <Route path="editcollege" element={<EditCollegePage />} />
           <Route path="createdepartment" element={<CreateDepartmentPage />} />
           <Route path="createclass" element={<CreateClassPage />} />

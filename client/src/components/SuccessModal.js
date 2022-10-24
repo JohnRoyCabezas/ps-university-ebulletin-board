@@ -1,6 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SuccessModal = ({title, message, setShowModal}) => {
+  const navigate = useNavigate();
+
+  function onClose() {
+    setShowModal(false)
+    navigate("/adminsettings/done")
+  }
+
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -26,7 +34,7 @@ const SuccessModal = ({title, message, setShowModal}) => {
               <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={onClose}
               >
                 Close
               </button>
