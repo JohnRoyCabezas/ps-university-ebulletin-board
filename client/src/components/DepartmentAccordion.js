@@ -16,17 +16,18 @@ const DepartmentAccordion = ({ data, courses }) => {
     <div className="accordion-item">
       <div
         onClick={() => setIsActive(!isActive)}
-        className={`accordion-title flex pl-8 px-5 py-2 items-center text-sm ${
+        className={`accordion-title flex px-5 py-1 rounded-lg my-1 items-center text-sm ${
           isActive && 'bg-slate-700'
         } cursor-pointer`}
       >
-        {isActive ? (
-          <FontAwesomeIcon icon={faChevronUp} />
-        ) : (
-          <FontAwesomeIcon icon={faChevronDown} />
-        )}
-
-        <span className="ml-2">{data?.department}</span>
+        <div className="flex justify-between items-center w-full">
+          <span className="ml-2">{data?.department}</span>
+          {isActive ? (
+            <FontAwesomeIcon icon={faChevronUp} size="xs" />
+          ) : (
+            <FontAwesomeIcon icon={faChevronDown} size="xs"/>
+          )}
+        </div>
       </div>
 
       {user?.role_user?.role_id === ROLES['ADMIN']
