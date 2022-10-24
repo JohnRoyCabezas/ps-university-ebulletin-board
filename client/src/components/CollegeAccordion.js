@@ -1,57 +1,68 @@
 import Cookies from "js-cookie";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CollegeIcon from "../shared/CollegeIcon";
 import DepartmentAccordion from "./DepartmentAccordion";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
-
-const CollegeAccordion = ({
-  userData,
-  data,
-  departments,
-  department,
-}) => {
+const CollegeAccordion = ({ userData, data, departments, department }) => {
   const { id } = useParams();
   const [isActive, setIsActive] = useState(false);
-  const user = JSON.parse(Cookies.get("user") || "{}");
+  const user = JSON.parse(Cookies.get('user') || '{}');
   const ROLES = {
     STUDENT: 1,
     ADMIN: 2,
   };
 
   function handleClick() {
-    data?.id == id ? setIsActive(!isActive) : setIsActive(true)
+    data?.id == id ? setIsActive(!isActive) : setIsActive(true);
   }
 
   return (
     <div className="accordion-item">
       <div
-        className={`accordion-title flex items-center px-5 py-2 ${
-          data?.id == id && "bg-slate-800"
+        className={`relative z-0 accordion-title flex items-center justify-between px-5 py-2 ${
+          data?.id == id && 'bg-slate-800'
         } cursor-pointer`}
         onClick={handleClick}
       >
-        <CollegeIcon />
-        <span className="ml-2">{data?.college}</span>
+        <div className="flex">
+          <CollegeIcon size="lg"/>
+          <span className="ml-2">{data?.college}</span>
+        </div>
+
+        {data?.id == id && isActive ? (
+            <FontAwesomeIcon icon={faChevronUp} />
+          ) : (
+            <FontAwesomeIcon icon={faChevronDown} />
+          )}
       </div>
 
-      {user?.role_user?.role_id === ROLES["ADMIN"]
-        ? (data?.id == id) && isActive &&
-          departments?.map((department) => {
-            return (
-              <div key={department.id}>
-                <DepartmentAccordion
-                  data={department}
-                  courses={department.courses}
-                />
-              </div>
-            );
-          })
-        : data?.id == id && (
-            <DepartmentAccordion
-              data={department}
-              courses={userData?.course_users}
-            />
+      {user?.role_user?.role_id === ROLES['ADMIN']
+        ? data?.id == id &&
+          isActive && (
+            <div className="absolute bg-slate-800 opacity-1 z-10 text-white border rounded-lg w-60 flex flex-col px-2 py-1 mt-2 ml-10">
+              {departments?.map((department) => {
+                return (
+                  <div key={department.id}>
+                    <DepartmentAccordion
+                      data={department}
+                      courses={department.courses}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )
+        : data?.id == id &&
+        isActive && (
+            <div className="mx-2">
+              <DepartmentAccordion
+                data={department}
+                courses={userData?.course_users}
+              />
+            </div>
           )}
     </div>
   );
