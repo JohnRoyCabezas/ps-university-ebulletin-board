@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
 import Thread from "../components/Thread";
 import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";

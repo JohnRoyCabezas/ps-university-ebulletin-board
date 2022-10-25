@@ -20,7 +20,7 @@ class DepartmentController extends Controller
             [
                 'college_id' => ['required'],
                 'user_id' => ['required'],
-                'department' => ['required', 'unique:departments'],
+                'department' => ['required'],
                 'department_information' => ['required'],
             ]
         );
