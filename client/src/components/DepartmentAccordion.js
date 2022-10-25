@@ -16,12 +16,12 @@ const DepartmentAccordion = ({ data, courses }) => {
     <div className="accordion-item">
       <div
         onClick={() => setIsActive(!isActive)}
-        className={`accordion-title flex px-5 py-1 rounded-lg my-1 items-center text-sm ${
-          isActive && 'bg-slate-700'
+        className={`accordion-title flex px-2 py-1 mt-1 rounded-lg items-center text-sm hover:bg-slate-700 ${
+          isActive && 'bg-slate-600'
         } cursor-pointer`}
       >
         <div className="flex justify-between items-center w-full">
-          <span className="ml-2">{data?.department}</span>
+          <span>{data?.department}</span>
           {isActive ? (
             <FontAwesomeIcon icon={faChevronUp} size="xs" />
           ) : (
