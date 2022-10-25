@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
+    Route::put('/announcement/{id}/lock', [AnnouncementController::class, 'lock']);
     Route::get('/announcements', [AnnouncementController::class, 'channelAnnouncements']);
     Route::apiResource('/college', CollegeController::class);
     Route::apiResource('/course', CourseController::class);

@@ -149,4 +149,34 @@ class AnnouncementController extends Controller
             ]);
         }
     }
+
+    public function lock(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $user_fullname = $user['fullname'];
+        $user_role_id = $user->roleUser->role_id;
+
+        //checks if role_user has permission canUpdateAnnouncement
+        $canUpdateAnnouncement = PermissionRole::where('role_id', $user_role_id)
+            ->whereHas('permission', function ($query) {
+                $query->where('permission', 'canUpdateAnnouncement');
+            })->exists();
+
+        //checks if user with role has canCreateAnnouncement permission
+        if ($canUpdateAnnouncement) {
+            $announcement = Announcement::find($id);
+            $locked = $announcement->update(['is_locked' => ! $announcement['is_locked']]);
+
+            $data = [
+                'message' => "Successfully" . ($announcement['is_locked'] ? " locked ":" unlocked ")  . "announcement!",
+                'user' => $user_fullname,
+            ];
+            return response()->json($data);
+        } else {
+            return response()->json([
+                'message' => $user_fullname . ' does not have permission to update announcement.'
+            ]);
+        }
+    }
 }
