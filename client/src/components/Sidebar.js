@@ -23,8 +23,8 @@ const Sidebar = () => {
 
   return (
     <div className="flex shrink-0 w-full h-screen">
-      <div className="flex flex-col w-full overflow-y-auto min-w-[240px] max-w-[240px] justify-between bg-regal-blue text-white">
-        <div className="mb-20">
+      <div className="flex flex-col w-64 justify-between bg-regal-blue text-white overflow-y-auto">
+        <div>
           <div
             onClick={() => navigate("/")}
             className="flex justify-center p-4 cursor-pointer sticky top-0 bg-regal-blue border-b-2"
@@ -82,7 +82,7 @@ const Sidebar = () => {
           onMouseEnter={() => setShowModal(true)}
           onMouseLeave={() => setShowModal(false)}
         >
-          {user?.role_user?.role_id === ROLES["ADMIN"] ? (
+          {user?.role_user?.role_id === ROLES['ADMIN'] ? (
             <SideBarPopupAdmin show={Show} />
           ) : (
             <SideBarPopupUser show={Show} />

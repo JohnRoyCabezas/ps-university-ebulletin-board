@@ -13,6 +13,7 @@ import {
 const CollegeAccordion = ({ userData, data, departments, department }) => {
   const { id } = useParams();
   const [isActive, setIsActive] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const user = JSON.parse(Cookies.get("user") || "{}");
   const ROLES = {
     STUDENT: 1,
@@ -24,10 +25,12 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
   }
 
   return (
-    <div className="accordion-item">
+    <div className="relative accordion-item">
       <div
-        className={`z-0 accordion-title flex items-center justify-between pl-5 py-2 ${
-          data?.id == id && "bg-slate-800"
+      onMouseEnter={() => setIsEditing(true)}
+      onMouseLeave={() => setIsEditing(false)}
+        className={`accordion-title flex items-center justify-between pl-5 py-2 rounded-lg hover:bg-slate-800 ${
+          data?.id == id && 'bg-slate-800'
         } cursor-pointer`}
         onClick={handleClick}
       >
@@ -36,22 +39,25 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
           <span className="ml-2">{data?.college}</span>
         </div>
         <div className="pr-3">
+          {isEditing && 
+          <span onClick={() => console.log('now editing!')} className="mr-2">
+            {user?.role_user?.role_id == ROLES["ADMIN"] && (
+              <FontAwesomeIcon icon={faPenToSquare} className="ml-2"/>
+            )}
+          </span>
+          }
           {data?.id == id && isActive ? (
             <FontAwesomeIcon icon={faChevronUp} />
           ) : (
             <FontAwesomeIcon icon={faChevronDown} />
           )}
-          {user?.role_user?.role_id == ROLES["ADMIN"] && (
-            <FontAwesomeIcon icon={faPenToSquare} className="ml-2"/>
-          )}
         </div>
       </div>
 
-      {user?.role_user?.role_id === ROLES["ADMIN"]
-        ? data?.id == id &&
-          isActive &&
-          departments.length > 0 && (
-            <div className="absolute bg-slate-800 opacity-1 z-10 text-white border rounded-lg w-60 flex flex-col px-2 py-1 mt-2 ml-10">
+      {user?.role_user?.role_id === ROLES['ADMIN']
+        ? data?.id == id && departments?.length > 0 &&
+          isActive && (
+            <div className="absolute z-50 bg-slate-800 text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
               {departments?.map((department) => {
                 return (
                   <div key={department.id}>
