@@ -23,7 +23,8 @@ class AuthController extends Controller
             'fullname' => ['required', 'max:255'],
             'department_id' => [''],
             'email' => ['required', 'unique:users'],
-            'role_id' => ['required']
+            'role_id' => ['required'],
+            'mobile_number' => ['required']
         ]);
 
         $user = User::create([
@@ -32,7 +33,8 @@ class AuthController extends Controller
             'department_id' => $validatedData['department_id'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['email']),
-            'is_verified' => false
+            'is_verified' => false,
+            'mobile_number' => $validatedData['mobile_number']
         ]);
 
         RoleUser::create([
