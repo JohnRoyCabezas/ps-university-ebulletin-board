@@ -8,6 +8,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
     });
+    Route::apiResource('/university', UniversityController::class);
     Route::get('/user', [UserController::class, 'getAuthUser']);
     Route::get('/users', [UserController::class, 'getUsers']);
     Route::get('/users/deans', [UserController::class, 'getDeans']);
