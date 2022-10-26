@@ -9,7 +9,7 @@ const ManageUsersPage = () => {
   const [isAscending, setIsAscending] = useState(true);
   const [params, setParams] = useState({
     page: 1,
-    items_per_page: 3,
+    items_per_page: 10,
     order_name: 'id',
     order_direction: 'asc',
     keyword: '',
@@ -69,7 +69,7 @@ const ManageUsersPage = () => {
           </div>
         </h1>
 
-        <div className="container mx-auto mt-[5vh]">
+        <div className="container mx-auto mt-[3vh]">
           <UsersTable
             params={params}
             isAscending={isAscending}
