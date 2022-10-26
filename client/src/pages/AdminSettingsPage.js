@@ -20,7 +20,7 @@ const AdminSettingsPage = () => {
         <div className="flex justify-center items-end mb-14 h-1/2 w-full">
           <div
             onClick={() => navigate('/manageusers')}
-            className="flex flex-col border-2 mx-10 w-48 h-48 p-2 rounded-lg justify-center cursor-pointer"
+            className="flex flex-col border-2 mx-10 w-48 h-48 p-2 rounded-lg justify-center cursor-pointer hover:bg-gray-100"
           >
             <FontAwesomeIcon
               icon={faUsers}
@@ -34,7 +34,7 @@ const AdminSettingsPage = () => {
           </div>
           <div
             onClick={() => navigate('/createcollege')}
-            className="flex flex-col border-2 mx-10 w-48 h-48 p-2 rounded-lg justify-center cursor-pointer"
+            className="flex flex-col border-2 mx-10 w-48 h-48 p-2 rounded-lg justify-center cursor-pointer hover:bg-gray-100"
           >
             <FontAwesomeIcon
               icon={faBuildingColumns}
@@ -49,7 +49,7 @@ const AdminSettingsPage = () => {
         <div className="flex justify-center items-start mt-14 h-1/2 w-full">
           <div
             onClick={() => navigate('/createdepartment')}
-            className="flex flex-col border-2 mx-10 w-48 h-48  p-2 rounded-lg justify-center cursor-pointer"
+            className="flex flex-col border-2 mx-10 w-48 h-48  p-2 rounded-lg justify-center cursor-pointer hover:bg-gray-100"
           >
             <FontAwesomeIcon
               icon={faBuildingUser}
@@ -63,7 +63,7 @@ const AdminSettingsPage = () => {
           </div>
           <div
             onClick={() => navigate('/createclass')}
-            className="flex flex-col border-2 mx-10 w-48 h-48  p-2 rounded-lg justify-center cursor-pointer"
+            className="flex flex-col border-2 mx-10 w-48 h-48  p-2 rounded-lg justify-center cursor-pointer hover:bg-gray-100"
           >
             <FontAwesomeIcon icon={faBook} size="5x" color="#A7A7A7" />{' '}
             <h1 className="font-bold pt-3 text-lg flex justify-center">
@@ -75,4 +75,5 @@ const AdminSettingsPage = () => {
     </div>
   );
 };
+
 export default AdminSettingsPage;
