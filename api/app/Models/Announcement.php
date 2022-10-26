@@ -21,6 +21,10 @@ class Announcement extends Model
         return $this->morphTo();
     }
 
+    public function thread() {
+        return $this->hasMany(Thread::class);
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

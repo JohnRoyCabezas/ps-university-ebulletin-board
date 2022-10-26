@@ -77,7 +77,7 @@ export default function NavBar(props) {
                   <button
                     type="button"
                     onClick={() => handleEdit()}
-                    className={`text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${editState ? 'bg-blue-700 hover:bg-blue-800' : 'bg-blue-400'}`}
+                    className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${editState ? 'bg-blue-700 hover:bg-blue-800' : 'bg-gray-300 text-gray-400'}`}
                     disabled={!editState}
                   >
                     {
@@ -92,7 +92,7 @@ export default function NavBar(props) {
               </>
               :
               <button
-                className={`text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 h-9 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${!(announcement) || (announcement === "<p><br></p>") || buttonState ? 'bg-blue-400' : 'bg-blue-700 hover:bg-blue-800'}`}
+                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${!(announcement) || (announcement === "<p><br></p>") || buttonState ? 'bg-gray-300 text-gray-400' : 'bg-blue-700 hover:bg-blue-800'}`}
                 disabled={!(announcement) || announcement === "<p><br></p>" || buttonState ? true : false}
                 type="submit"
               >
