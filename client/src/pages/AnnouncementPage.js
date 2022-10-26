@@ -5,6 +5,7 @@ import Thread from '../components/Thread';
 
 const AnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
+  const [announcementThread, setAnnouncementThread] = useState()
   const [isThread, setThread] = useState(false);
 
   function setThreadValue(value) {
@@ -40,12 +41,17 @@ const AnnouncementPage = () => {
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
               announcements.map((announcement) => (
-                <AnnouncementCard key={announcement.id.toString()} userRole={'student'} announcement={announcement} setValue={setThreadValue}/>
+                <AnnouncementCard 
+                  key={announcement.id.toString()}
+                  userRole={'student'}
+                  announcement={announcement}
+                  setValue={setThreadValue}
+                  setAnnouncementThread={setAnnouncementThread}/>
               ))}
           </div>
         </div>
       </div>
-      {isThread && <Thread userRole={'student'} setValue={setThreadValue}/>}
+      {isThread && <Thread userRole={'student'} setValue={setThreadValue} announcementThread={announcementThread} />}
     </div>
   );
 };

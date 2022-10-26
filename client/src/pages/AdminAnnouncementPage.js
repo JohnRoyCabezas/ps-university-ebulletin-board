@@ -7,6 +7,7 @@ import AnnouncementApi from "../api/AnnouncementApi";
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
+  const [announcementThread, setAnnouncementThread] = useState()
   const [announcements, setAnnouncement] = useState([]);
   const params = {
     announcementable_id: 1,
@@ -52,6 +53,7 @@ const AdminAnnouncementPage = () => {
                   announcement={announcement}
                   handleRefresh={() => handleRefresh()}
                   setValue={setThreadValue}
+                  setAnnouncementThread={setAnnouncementThread}
                 />
               ))}
           </div>
@@ -63,7 +65,7 @@ const AdminAnnouncementPage = () => {
           </div>
         </div>
       </div>
-      {isThread && <Thread userRole={'admin'} setValue={setThreadValue} />}
+      {isThread && <Thread userRole={'admin'} setValue={setThreadValue} announcementThread={announcementThread}/>}
     </div>
   );
 };

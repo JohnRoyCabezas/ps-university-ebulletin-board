@@ -28,6 +28,7 @@ export default function AnnouncementCard(props) {
 
   function setThreadValue(value) {
     props.setValue(value);
+    props.setAnnouncementThread(props.announcement.id)
   }
 
   function cancel() {
