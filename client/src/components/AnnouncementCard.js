@@ -56,7 +56,7 @@ export default function AnnouncementCard(props) {
 
             {
               isEdit ? (
-                <div className="rounded w-full bg-white">
+                <div className="rounded w-[75vw] bg-white">
                   <RichTextEditor
                     style={{ backgroundColor: "white" }}
                     cancel={cancel}
