@@ -9,7 +9,10 @@ class University extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'university',
+    ];
 
     public function user()
     {
