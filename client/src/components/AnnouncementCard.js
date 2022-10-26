@@ -45,10 +45,7 @@ export default function AnnouncementCard(props) {
           backgroundColor: isShown ? "#EAE8E8" : "",
         }}
       >
-        {/* <div className="relative"> */}
           <img className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src={props?.announcement?.user?.avatar} alt="JC" />
-          {/* <span className="top-0 left-8 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span> */}
-          {/* </div> */}
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>

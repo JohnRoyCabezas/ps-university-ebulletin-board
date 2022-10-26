@@ -44,7 +44,7 @@ const AdminCollegePage = () => {
                 <AnnouncementCard key={announcement.id.toString()} userRole={'admin'} announcement={announcement} handleRefresh={() => handleRefresh()} />
               ))}
           </div>
-          <div className="px-5">
+          <div className="p-2 rounded-3xl">
             <RichTextEditor handleRefresh={() => handleRefresh()} params={params} />
           </div>
         </div>
