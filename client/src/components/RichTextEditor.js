@@ -56,8 +56,9 @@ export default function NavBar(props) {
           className="block bottom-0">
         </ReactQuill>
 
-        <div className="flex justify-between rte mb-2 p-2">
+        <div className="flex justify-between rte mb-1 p-2 h-14">
           <FontAwesomeIcon
+          className="mt-1"
             icon={faPaperclip}
             size="2x"
             color="#162750"
@@ -91,7 +92,7 @@ export default function NavBar(props) {
               </>
               :
               <button
-                className={`text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${!(announcement) || (announcement === "<p><br></p>") || buttonState ? 'bg-blue-400' : 'bg-blue-700 hover:bg-blue-800'}`}
+                className={`text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 h-9 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${!(announcement) || (announcement === "<p><br></p>") || buttonState ? 'bg-blue-400' : 'bg-blue-700 hover:bg-blue-800'}`}
                 disabled={!(announcement) || announcement === "<p><br></p>" || buttonState ? true : false}
                 type="submit"
               >

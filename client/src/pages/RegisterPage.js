@@ -5,6 +5,7 @@ import DepartmentApi from '../api/DepartmentApi';
 import AuthApi from '../api/AuthApi';
 import RoleApi from '../api/RoleApi';
 import RegistrationModal from '../components/RegistrationModal';
+import SubmitButton from '../components/submitButton';
 
 const RegisterPage = () => {
   const initialParams = {
@@ -50,9 +51,8 @@ const RegisterPage = () => {
 
   const handleAvatarChange = () => {
     setErrors({});
-    const randomAvatar = `https://joeschmoe.io/api/v1/${
-      Math.floor(Math.random() * 90000) + 10000
-    }`;
+    const randomAvatar = `https://joeschmoe.io/api/v1/${Math.floor(Math.random() * 90000) + 10000
+      }`;
     setParams({ ...params, avatar: randomAvatar });
     Cookies.set('params', JSON.stringify({ ...params }));
   };
@@ -71,17 +71,20 @@ const RegisterPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [processing, setProcessing] = useState(false);
 
+  const handleSubmit = () => {
+    setProcessing(true);
     AuthApi.register(params).then(
       (res) => {
+        setProcessing(false);
         Cookies.remove('params');
         setParams(initialParams);
         setShowModal(true);
       },
       (err) => {
         setErrors(err.response.data.errors);
+        setProcessing(false);
       }
     );
   };
@@ -232,32 +235,18 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="mt-16">
-                <button
-                  disabled={
-                    !errors.email &&
-                    params.fullname &&
-                    params.avatar &&
-                    params.email &&
-                    params.role_id
-                      ? false
-                      : true
-                  }
-                  onClick={handleSubmit}
-                  className={`w-full px-4 py-2 tracking-wide rounded-md 
-                ${
-                  !errors.email &&
+              <SubmitButton
+                handleSubmit={() => handleSubmit()}
+                buttonDisabled={!errors.email &&
                   params.fullname &&
                   params.avatar &&
                   params.email &&
                   params.role_id
-                    ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
-                    : `bg-gray-300 text-gray-400`
-                }`}
-                >
-                  Create Account
-                </button>
-              </div>
+                   ? true : false}
+                processing={processing}
+                buttonTitle={"Create Account"}
+              />
+              
             </form>
           </div>
         </div>
@@ -265,4 +254,5 @@ const RegisterPage = () => {
     </div>
   );
 };
+
 export default RegisterPage;

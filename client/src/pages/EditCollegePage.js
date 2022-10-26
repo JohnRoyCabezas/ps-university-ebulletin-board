@@ -5,8 +5,8 @@ import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import CollegeApi from "../api/CollegeApi";
 import DeleteModal from "../components/DeleteModal";
 import { useNavigate } from "react-router-dom";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import SuccessModal from "../components/SuccessModal";
+import SubmitButton from "../components/submitButton";
 
 const EditCollegePage = () => {
 
@@ -22,7 +22,7 @@ const EditCollegePage = () => {
   const navigate = useNavigate();
 
   // Const id can become dynamic afterwards
-  const id = 2;
+  const id = 20;
 
   useEffect(() => {
     CollegeApi.fetchSpecificCollege(id).then((res) => {
@@ -54,14 +54,11 @@ const EditCollegePage = () => {
     setShowDeleteModal(true);
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     setProcessing(true)
-    e.preventDefault();
     CollegeApi.updateCollege({ collegeInfo, college, defaultValue }, id).then((res) => {
-      setTimeout(() => {
         setProcessing(false);
         setShowModal(true);
-      }, 500)
     })
   }
 
@@ -139,15 +136,14 @@ const EditCollegePage = () => {
                 </label>
                 <SelectDropDownComponent defaultLabel={defaultLabel} defaultValue={defaultValue} data={deansList} type={"fullname"} handleChange={handleSelectChange} />
               </div>
-              <div className="mt-8">
-                <button
-                  disabled={!collegeInfo || !college || !defaultValue || processing ? true : false}
-                  className={`w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md ${!collegeInfo || !college || !defaultValue ? true : "hover:bg-blue-900 focus:outline-none focus:bg-blue-900"}`}
-                  onClick={handleSubmit}
-                >
-                  {processing ? <span><FontAwesomeIcon icon={faSpinner} spin /> Processing...</span> : "Accept Changes"}
-                </button>
-              </div>
+
+              <SubmitButton
+                handleSubmit={() => handleSubmit()}
+                buttonDisabled={!collegeInfo || !college || !defaultValue ? true : false}
+                processing={processing}
+                buttonTitle={"Accept Changes"}
+              />
+
             </form>
           </div>
         </div>

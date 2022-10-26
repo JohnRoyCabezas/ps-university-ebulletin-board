@@ -12,6 +12,13 @@ const AnnouncementPage = () => {
     setThread(value);
   }
 
+  // const today = new Date();
+  // const [time, setTime] = useState(today);
+
+  // useEffect(() => {
+  //     setTime(today);
+  // }, [today])
+
 
   useEffect(() => {
     const params = {
@@ -34,9 +41,11 @@ const AnnouncementPage = () => {
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">
-          Announcements
-        </h1>
+      <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
+          {/* <span className="text-lg">{hr > 5 && hr < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
+          <h1> Announcements</h1>
+          {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
+        </div>
         <div className="flex flex-col justify-between h-full">
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
