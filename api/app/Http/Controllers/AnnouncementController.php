@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\PermissionRole;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Twilio\Rest\Client;
 
 class AnnouncementController extends Controller
 {
@@ -32,7 +34,7 @@ class AnnouncementController extends Controller
         $validatedData = $request->validate([
             'announcementable_id' => 'required',
             'announcementable_type' => 'required',
-            'announcement' => 'required'
+            'announcement' => 'required',
         ]);
 
         $canCreateAnnouncement = PermissionRole::where('role_id', $user_role_id)
@@ -45,18 +47,36 @@ class AnnouncementController extends Controller
                 'announcementable_id' => $validatedData['announcementable_id'],
                 'announcementable_type' => $validatedData['announcementable_type'],
                 'user_id' => $user->id,
-                'announcement' => $validatedData['announcement']
+                'announcement' => $validatedData['announcement'],
             ]);
 
             $data = [
                 'message' => $user_fullname . ' successfully created an announcement!',
                 'user' => $user_fullname,
-                'announcement' => $announcement
+                'announcement' => $announcement,
             ];
+
+            $mobile_numbers = User::whereNotNull("mobile_number")->pluck('mobile_number');
+
+            $sid = env('TWILIO_SID');
+            $token = env('TWILIO_TOKEN');
+            $messageService = env('TWILIO_MESSAGING_SERVICE_SID');
+
+            foreach ($mobile_numbers as $mobile_number) {
+                $twilio = new Client($sid, $token);
+                $twilio->messages
+                    ->create($mobile_number, // to
+                        [
+                            "body" => strip_tags($announcement->announcement),
+                            "messagingServiceSid" => $messageService,
+                        ]
+                    );
+            }
+
             return response()->json($data);
         } else {
             return response()->json([
-                'message' => $user_fullname . ' does not have permission to post announcement.'
+                'message' => $user_fullname . ' does not have permission to post announcement.',
             ]);
         }
 
@@ -82,7 +102,7 @@ class AnnouncementController extends Controller
             return response()->json($announcement);
         } else {
             return response()->json([
-                'message' => $user_fullname . ' does not have permission to view announcement.'
+                'message' => $user_fullname . ' does not have permission to view announcement.',
             ]);
         }
     }
@@ -95,7 +115,7 @@ class AnnouncementController extends Controller
         $user_role_id = $user->roleUser->role_id;
 
         $validatedData = $request->validate([
-            'announcement_update' => 'required'
+            'announcement_update' => 'required',
         ]);
 
         //checks if role_user has permission canUpdateAnnouncement
@@ -117,7 +137,7 @@ class AnnouncementController extends Controller
             return response()->json($data);
         } else {
             return response()->json([
-                'message' => $user_fullname . ' does not have permission to update announcement.'
+                'message' => $user_fullname . ' does not have permission to update announcement.',
             ]);
         }
     }
@@ -131,21 +151,21 @@ class AnnouncementController extends Controller
 
         //checks if role_user has permission canDeleteAnnouncement
         $canDeleteAnnouncement = PermissionRole::where('role_id', $user_role_id)
-        ->whereHas('permission', function ($query) {
-            $query->where('permission', 'canDeleteAnnouncement');
-        })->exists();
+            ->whereHas('permission', function ($query) {
+                $query->where('permission', 'canDeleteAnnouncement');
+            })->exists();
 
         //checks if user with role has canDeleteAnnouncement permission
         if ($canDeleteAnnouncement) {
             Announcement::destroy($id);
 
             $data = [
-                'message' => 'Successfully deleted announcement!'
+                'message' => 'Successfully deleted announcement!',
             ];
             return response()->json($data);
         } else {
             return response()->json([
-                'message' => $user_fullname . ' does not have permission to delete announcement.'
+                'message' => $user_fullname . ' does not have permission to delete announcement.',
             ]);
         }
     }
@@ -166,16 +186,16 @@ class AnnouncementController extends Controller
         //checks if user with role has canCreateAnnouncement permission
         if ($canUpdateAnnouncement) {
             $announcement = Announcement::find($id);
-            $locked = $announcement->update(['is_locked' => ! $announcement['is_locked']]);
+            $locked = $announcement->update(['is_locked' => !$announcement['is_locked']]);
 
             $data = [
-                'message' => "Successfully" . ($announcement['is_locked'] ? " locked ":" unlocked ")  . "announcement!",
+                'message' => "Successfully" . ($announcement['is_locked'] ? " locked " : " unlocked ") . "announcement!",
                 'user' => $user_fullname,
             ];
             return response()->json($data);
         } else {
             return response()->json([
-                'message' => $user_fullname . ' does not have permission to update announcement.'
+                'message' => $user_fullname . ' does not have permission to update announcement.',
             ]);
         }
     }
