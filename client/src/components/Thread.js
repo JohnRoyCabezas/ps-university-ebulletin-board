@@ -8,25 +8,31 @@ import {
 import ThreadCard from "../components/ThreadCard";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
+import ThreadApi from "../api/ThreadApi";
 
 export default function Thread(props) {
-  const [announcements, setAnnouncement] = useState(false);
+  const [announcements, setAnnouncements] = useState(false);
   const [loading, setLoading] = useState(true);
   const [lockLoading, setLockLoading] = useState(false);
-  const threads = [
-    {id: 1, user_id: 1, announcement_id: 1, thread_message: "test message"},
-    {id: 2, user_id: 1, announcement_id: 2, thread_message: "test2 message"},
-    {id: 3, user_id: 1, announcement_id: 1, thread_message: "test3 message"}
-  ]
-  const params = {
-    announcementable_id: 1,
-    announcementable_type: "App/Models/University",
-  };
+  const [threads, setThreads] = useState();
+  const [announcement, setAnnouncement] = useState();
+  const [params, setParams] = useState();
 
   useEffect(() => {
     AnnouncementApi.fetchSpecificAnnouncement(props.announcementThread).then(({data}) => {
-      setAnnouncement(data);
-      setLoading(false);
+      setAnnouncements(data);
+      setParams({
+        announcementable_id: data.announcementable_id,
+        announcementable_type: data.announcementable_type,
+        announcement_id: data.id,
+        type: "comment"
+      })
+      ThreadApi.fetchThread(data.id).then(({data})=> {
+        setAnnouncement(data.announcement)
+        setThreads(data.thread)
+        setLoading(false);
+      })
+
     });
   }, []);
 
@@ -36,10 +42,11 @@ export default function Thread(props) {
   }, [announcements]);
 
   function handleRefresh() {
-    AnnouncementApi.fetchSpecificAnnouncement(props.announcementThread).then(({data}) => {
-      setAnnouncement(data);
+    ThreadApi.fetchThread(props.announcementThread).then(({data})=> {
+      setAnnouncement(data.announcement)
+      setThreads(data.thread)
       setLoading(false);
-    });
+    })
   }
 
   function buttonHandler() {
@@ -62,9 +69,9 @@ export default function Thread(props) {
           Thread
           <button
             onClick={buttonHandler}
-            className="cursor-pointer p-1.5 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            className="cursor-pointer p-1.5 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-7"
           >
-            X
+            x
           </button>
           
           {/* Lock button */}
@@ -83,11 +90,16 @@ export default function Thread(props) {
             id="announcementWrapper"
             className="mt-12 overflow-y-scroll scroll"
           >
+            <ThreadCard
+                thread={announcement}
+                user_detail={announcement.user}
+              />
             {threads.map((thread) => (
               <ThreadCard
                 key={thread.id.toString()}
                 userRole={"admin"}
                 thread={thread}
+                user_detail={thread.user}
                 handleRefresh={() => handleRefresh()}
               />
             ))}

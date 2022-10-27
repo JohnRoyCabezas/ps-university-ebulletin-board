@@ -18,9 +18,13 @@ class ThreadController extends Controller
     // Fetch specific Announcement with its Thread
     public function fetchThread($id)
     {
-        $announcement = Announcement::with('Thread')->findOrFail($id);
+        $announcement = Announcement::with('user')->findOrFail($id);
+        $thread = Thread::with('user')->where('announcement_id', $id)->get();
 
-        return response()->json($announcement);
+        return response()->json([
+            'thread'=> $thread,
+            'announcement'=> $announcement
+        ]);
     }
     // Create a thread
     public function createThread(Request $request)

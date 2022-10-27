@@ -3,6 +3,7 @@ import moment from "moment";
 import AdminThreadOptions from "../components/AdminThreadOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
+import parse from "html-react-parser"
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
@@ -38,13 +39,13 @@ export default function AnnouncementCard(props) {
         }}
       >
         <img
-          src={props?.thread?.user?.avatar}
+          src={props?.user_detail?.avatar}
           className="rounded-full w-12 h-12"
           alt="Avatar"
         />
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
-            <h5 className="font-bold">{props?.thread?.user?.fullname}</h5>
+            <h5 className="font-bold">{props?.user_detail?.fullname}</h5>
             <span className="ml-2 text-xs">
               <i>{moment(props?.thread?.created_at).fromNow()}</i>
             </span>
@@ -62,7 +63,8 @@ export default function AnnouncementCard(props) {
               </div>
             ) : (
               <span className="text-gray-700 text-base">
-                {props.thread.thread_message}
+                
+                {props.thread.announcement ? parse(props.thread.announcement): props.thread.thread_message}
               </span>
             )}
           </div>
