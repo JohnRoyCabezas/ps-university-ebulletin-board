@@ -18,7 +18,7 @@ class Course extends Model
         ->withPivot('course_user');
     }
 
-    public function courseUsers() {
+    public function courseUser() {
         return $this->hasMany(CourseUser::class);
     }
 

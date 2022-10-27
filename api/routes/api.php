@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
@@ -35,6 +36,9 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::get('/announcements', [AnnouncementController::class, 'channelAnnouncements']);
     Route::apiResource('/college', CollegeController::class);
     Route::apiResource('/course', CourseController::class);
+    Route::apiResource('/chat', ChatController::class);
+    Route::get('/course-chats', [ChatController::class, 'courseChats']);
+
     Route::prefix('thread')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);

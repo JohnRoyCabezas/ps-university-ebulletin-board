@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import React, { useState } from "react";
 import CollegeIcon from "../shared/CollegeIcon";
 import DepartmentAccordion from "./DepartmentAccordion";
@@ -9,9 +8,10 @@ import {
   faChevronUp,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
 
 const CollegeAccordion = ({ userData, data, departments, department }) => {
-  const { id } = useParams();
+  const { collegeid } = useParams();
   const [isActive, setIsActive] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const user = JSON.parse(Cookies.get("user") || "{}");
@@ -21,7 +21,7 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
   };
 
   function handleClick() {
-    data?.id == id ? setIsActive(!isActive) : setIsActive(true);
+    data?.id == collegeid ? setIsActive(!isActive) : setIsActive(true);
   }
 
   return (
@@ -30,7 +30,7 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
       onMouseEnter={() => setIsEditing(true)}
       onMouseLeave={() => setIsEditing(false)}
         className={`accordion-title flex items-center justify-between pl-5 py-2 rounded-lg hover:bg-slate-800 ${
-          data?.id == id && 'bg-slate-800'
+          data?.id == collegeid && 'bg-slate-800'
         } cursor-pointer`}
         onClick={handleClick}
       >
@@ -38,15 +38,15 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
           <CollegeIcon size="lg" />
           <span className="ml-2">{data?.college}</span>
         </div>
-        <div className="pr-3">
+        <div className="flex justify-center items-center mx-2">
           {isEditing && 
-          <span onClick={() => console.log('now editing!')} className="mr-2">
+          <span onClick={() => console.log('now editing!')} className="flex justify-center items-center mx-2">
             {user?.role_user?.role_id == ROLES["ADMIN"] && (
-              <FontAwesomeIcon icon={faPenToSquare} className="ml-2"/>
+              <FontAwesomeIcon icon={faPenToSquare} className=""/>
             )}
           </span>
           }
-          {data?.id == id && isActive ? (
+          {data?.id == collegeid && isActive ? (
             <FontAwesomeIcon icon={faChevronUp} />
           ) : (
             <FontAwesomeIcon icon={faChevronDown} />
@@ -55,13 +55,14 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
       </div>
 
       {user?.role_user?.role_id === ROLES['ADMIN']
-        ? data?.id == id && departments?.length > 0 &&
+        ? data?.id == collegeid && departments?.length > 0 &&
           isActive && (
             <div className="absolute z-50 bg-slate-800 text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
               {departments?.map((department) => {
                 return (
                   <div key={department.id}>
                     <DepartmentAccordion
+                      handleDropdown={setIsActive}
                       data={department}
                       courses={department.courses}
                     />
@@ -70,13 +71,14 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
               })}
             </div>
           )
-        : data?.id == id &&
+        : data?.id == collegeid &&
           isActive &&
           department && (
-            <div className="mx-2">
+            <div className="absolute z-50 bg-slate-800 text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
               <DepartmentAccordion
+                handleDropdown={setIsActive}
                 data={department}
-                courses={userData?.course_users}
+                courses={userData?.course_user}
               />
             </div>
           )}
