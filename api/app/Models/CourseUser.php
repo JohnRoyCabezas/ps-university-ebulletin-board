@@ -10,4 +10,11 @@ class CourseUser extends Pivot
     use HasFactory;
 
     protected $table = 'course_user';
+
+    public function course() {
+        return $this->belongsTo(Course::class);
+    }
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -5,11 +5,11 @@ import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
 
 const AdminCollegePage = () => {
-  const { id } = useParams();
+  const { collegeid } = useParams();
   const [announcements, setAnnouncement] = useState([]);
   const params =
   {
-    announcementable_id: id,
+    announcementable_id: collegeid,
     announcementable_type: "App/Models/College",
   }
 
@@ -19,7 +19,7 @@ const AdminCollegePage = () => {
         setAnnouncement(res.data);
       }
     );
-  }, [id]);
+  }, [collegeid]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");

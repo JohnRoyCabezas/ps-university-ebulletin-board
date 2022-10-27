@@ -1,5 +1,5 @@
-import { Route, Routes } from "react-router-dom";
-import React from "react";
+import { Route, Routes } from 'react-router-dom';
+import React from 'react';
 
 import AdminAnnouncementPage from '../pages/AdminAnnouncementPage';
 import CreateCollegePage from '../pages/CreateCollegePage';
@@ -20,6 +20,8 @@ import Sidebar from '../components/Sidebar';
 import CollegePage from '../pages/CollegePage';
 import AdminCollegePage from "../pages/AdminCollegePage";
 import ClassPage from "../pages/ClassPage";
+import DepartmentPage from '../pages/DepartmentPage';
+import AdminDepartmentPage from '../pages/AdminDepartmentPage';
 
 const RoutesList = () => {
   const ROLES = {
@@ -37,24 +39,26 @@ const RoutesList = () => {
       >
         <Route element={<Sidebar />}>
           <Route path="announcement" element={<AnnouncementPage />} />
-          <Route path="college/:id" element={<CollegePage />} />
-          <Route path="class" element={<ClassPage />} />
+          <Route path="college/:collegeid" element={<CollegePage />} />
+          <Route path="college/:collegeid/:departmentid" element={<DepartmentPage />} />
+          <Route path="college/:collegeid/:departmentid/:classid" element={<ClassPage />} />
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
         <Route element={<Sidebar />}>
-          <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
-          <Route path="admincollege/:id" element={<AdminCollegePage />} />
           <Route path="adminsettings" element={<AdminSettingsPage />} />
-          <Route path="manageusers" element={<ManageUsersPage />}></Route>
+          <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
+          <Route path="admincollege/:collegeid" element={<AdminCollegePage />} />
+          <Route path="admincollege/:collegeid/:departmentid" element={<AdminDepartmentPage />} />
+          <Route path="admincollege/:collegeid/:departmentid/:classid" element={<ClassPage />} />
           <Route path="createcollege" element={<CreateCollegePage />} />
-          <Route path="adminsettings/done" element={<AdminSettingsPage />} />
           <Route path="editcollege" element={<EditCollegePage />} />
           <Route path="createdepartment" element={<CreateDepartmentPage />} />
           <Route path="createclass" element={<CreateClassPage />} />
-          <Route path="class" element={<ClassPage />} />
+          <Route path="adminsettings/done" element={<AdminSettingsPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="edituser/:id" element={<EditUserPage />} />
+          <Route path="manageusers" element={<ManageUsersPage />}></Route>
         </Route>
       </Route>
       <Route path="*" element={<ErrorPage />}></Route>

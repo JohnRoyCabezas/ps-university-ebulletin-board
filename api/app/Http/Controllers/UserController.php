@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\CourseUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +17,7 @@ class UserController extends Controller
         if ($user->isAdmin()) {
             $user = User::with('university.colleges.departments.courses')->find($user->id);
         } else {
-            $user = User::with('department.college.university')->find($user->id);
+            $user = User::with('courseUser.course')->with('department.college.university')->find($user->id);
         }
 
         return response()->json($user);

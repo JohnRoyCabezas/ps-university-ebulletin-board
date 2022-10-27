@@ -4,18 +4,18 @@ import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
 
 const CollegePage = () => {
-  const {id} = useParams();
+  const {collegeid} = useParams();
   const [announcements, setAnnouncement] = useState([]);
 
   useEffect(() => {
     const params = {
       announcementable_type: 'App/Models/College',
-      announcementable_id: id,
+      announcementable_id: collegeid,
     };
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
       setAnnouncement(res.data);
     });
-  }, []);
+  }, [collegeid]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
