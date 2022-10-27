@@ -38,6 +38,9 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::prefix('thread')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
+        Route::post('/add', [ThreadController::class, 'createThread']);
+        Route::put('/update/{id}', [ThreadController::class, 'updateThread']);
+        Route::delete('/destroy/{id}', [ThreadController::class, 'destroy']);
     });
     Route::apiResource('/university', UniversityController::class);
     Route::get('/user', [UserController::class, 'getAuthUser']);
