@@ -42,7 +42,6 @@ const ChatTextEditor = ({
       : ChatApi.createChat(params).then((res) => {
           setStatus('done');
           handleRefresh();
-          setIsEditing(false);
           setParams(initialParams);
         });
   };

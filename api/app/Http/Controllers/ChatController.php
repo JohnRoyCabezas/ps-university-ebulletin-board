@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChatUpdate;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,9 +62,13 @@ class ChatController extends Controller
         return response()->json(['message' => 'Soft deleted a chat message!']);
     }
 
-    public function courseChats(Request $request) 
-    {   
-        $coursechats = Chat::with('user')->where('course_id', $request->course_id)->orderby('created_at')->get();
+    public function courseChats( Request $request)
+    {
+        $coursechats = Chat::where('course_id', $request->course_id)
+            ->with('user')->latest()->take(20)->get()->reverse()->values()->toJson();
+            
+
+        event(new ChatUpdate($coursechats));
 
         return response()->json($coursechats);
     }
