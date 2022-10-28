@@ -19,6 +19,7 @@ import ErrorPage from '../pages/ErrorPage';
 import Sidebar from '../components/Sidebar';
 import CollegePage from '../pages/CollegePage';
 import AdminCollegePage from "../pages/AdminCollegePage";
+import CreateUniversityPage from "../pages/CreateUniversityPage";
 import ClassPage from "../pages/ClassPage";
 import DepartmentPage from '../pages/DepartmentPage';
 import AdminDepartmentPage from '../pages/AdminDepartmentPage';
@@ -35,6 +36,7 @@ const RoutesList = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="unauthorized" element={<Unauthorized />}></Route>
+      <Route path="createuniversity" element={<CreateUniversityPage />} />
       <Route
         element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}
       >

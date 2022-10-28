@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::apiResource('/university', UniversityController::class);
 
 // Private
 Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
