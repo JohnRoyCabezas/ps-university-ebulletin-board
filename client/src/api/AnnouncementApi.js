@@ -63,7 +63,7 @@ const AnnouncementApi = {
   lockSpecificAnnouncement: (id) => {
     const config = {
       method: 'PUT',
-      url: `/announcement/${id}/lock`,
+      url: `announcements/announcement/${id}/lock`,
     }
     return instance.request(config);
   },

@@ -4,7 +4,7 @@ const UserApi = {
   fetchUser: () => {
     const config = {
       method: 'GET',
-      url: '/user',
+      url: 'users/user',
     }
     return instance.request(config);
   },

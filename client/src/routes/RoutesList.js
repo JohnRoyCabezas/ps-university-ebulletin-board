@@ -22,6 +22,7 @@ import AdminCollegePage from "../pages/AdminCollegePage";
 import ClassPage from "../pages/ClassPage";
 import DepartmentPage from '../pages/DepartmentPage';
 import AdminDepartmentPage from '../pages/AdminDepartmentPage';
+import EditPassword from '../components/ChangePassword';
 
 const RoutesList = () => {
   const ROLES = {
@@ -42,6 +43,7 @@ const RoutesList = () => {
           <Route path="college/:collegeid" element={<CollegePage />} />
           <Route path="college/:collegeid/:departmentid" element={<DepartmentPage />} />
           <Route path="college/:collegeid/:departmentid/:classid" element={<ClassPage />} />
+          <Route path="changepassword" element={<EditPassword />} />
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
