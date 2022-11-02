@@ -4,6 +4,9 @@ import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import AnnouncementApi from "../api/AnnouncementApi";
+import ThreadApi from "../api/ThreadApi";
+import Cookies from "js-cookie";
+import parse from 'html-react-parser';
 
 export default function NavBar(props) {
 
@@ -15,18 +18,33 @@ export default function NavBar(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setButtonState(true);
-    AnnouncementApi.createAnnouncement(
-      {
-        announcementable_id: props.params.announcementable_id,
-        announcementable_type: props.params.announcementable_type,
-        announcement: announcement
+
+    if(props.params?.type==="comment"){
+      ThreadApi.createThreadMessage({
+        user_id: JSON.parse(Cookies.get('user') || '{}').id,
+        announcement_id: props.params?.announcement_id,
+        thread_message: parse(announcement).props.children,
       }).then(
         (res) => {
           setAnnouncement('');
-          props.handleRefresh(res.data.announcement);
+          props.handleRefresh(res.data);
           setButtonState(false)
         }
       )
+    } else {
+      AnnouncementApi.createAnnouncement(
+        {
+          announcementable_id: props.params.announcementable_id,
+          announcementable_type: props.params.announcementable_type,
+          announcement: announcement
+        }).then(
+          (res) => {
+            setAnnouncement('');
+            props.handleRefresh(res.data.announcement);
+            setButtonState(false)
+          }
+        )
+    }
   }
 
   function handleEdit() {
