@@ -21,6 +21,14 @@ const DepartmentApi = {
       url: '/department',
     }
     return instance.request(config);
+  },
+
+  fetchSpecificDepartment: (id) => {
+    const config = {
+      method: 'GET',
+      url: `/department/${id}`,
+    }
+    return instance.request(config);
   }
 }
 
