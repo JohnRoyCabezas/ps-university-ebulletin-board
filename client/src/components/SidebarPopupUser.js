@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 
 const SideBarPopupUser = (props) => {
   const navigate = useNavigate();
+
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
@@ -27,11 +28,12 @@ const SideBarPopupUser = (props) => {
   })
 
   const [showModal, setShowModal] = React.useState(false);
+  
   return (
     <>
       <div className="flex justify-center items-center p-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+          src={JSON.parse(Cookies.get('user')).avatar}
           className="rounded-full w-12"
           alt="Avatar"
         />
@@ -52,11 +54,10 @@ const SideBarPopupUser = (props) => {
       {showModal && (
         <>
           <div
-            onClick={() => console.log('redirect to user settings or reset password page')}
             className="flex justify-center items-center p-2 cursor-pointer"
           >
             <FontAwesomeIcon icon={faGear} />
-            <span className="mx-2">User Settings</span>
+            <span className="mx-2" onClick={() => navigate('/changepassword')}>User Settings</span>
           </div>
           <div className="flex justify-center items-center p-2">
             <FontAwesomeIcon icon={faRightFromBracket} />

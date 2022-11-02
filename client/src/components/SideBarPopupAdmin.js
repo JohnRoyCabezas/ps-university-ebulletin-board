@@ -27,11 +27,12 @@ const SideBarPopupAdmin = (props) => {
   })
 
   const [showModal, setShowModal] = React.useState(false);
+  
   return (
     <>
       <div className="flex justify-center items-center p-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+          src={JSON.parse(Cookies.get('user')).avatar}
           className="rounded-full w-12"
           alt="Avatar"
         />
