@@ -9,7 +9,7 @@ const CollegeApi = {
     return instance.request(config);
   },
 
-  createCollege: ({ college_information, college, dean, university }) => {
+  createCollege: ({ college_information, college, dean, user_id }) => {
     const config = {
       method: "POST",
       url: "/college",
@@ -17,7 +17,7 @@ const CollegeApi = {
         college_information,
         college,
         dean,
-        university,
+        user_id,
       },
     };
     return instance.request(config);

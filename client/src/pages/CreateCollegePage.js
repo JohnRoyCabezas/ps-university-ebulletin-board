@@ -4,12 +4,14 @@ import UserApi from '../api/UserApi';
 import CollegeApi from '../api/CollegeApi';
 import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
+import Cookies from 'js-cookie';
 
 const CreateCollegePage = () => {
+  const user = JSON.parse(Cookies.get('user') || '{}');
   const initialParams = {
     college_information: '',
     college: '',
-    university: 1,
+    user_id: user.id,
     dean: '',
   };
   const [errors, setErrors] = useState([]);
