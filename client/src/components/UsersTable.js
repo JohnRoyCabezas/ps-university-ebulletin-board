@@ -7,6 +7,7 @@ import DeleteModal from "./DeleteModal";
 import AuthApi from "../api/AuthApi";
 import { useNavigate } from "react-router-dom";
 import UserApi from "../api/UserApi";
+import Cookies from "js-cookie";
 
 const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const [users, setUsers] = useState([]);
@@ -14,11 +15,14 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const navigate = useNavigate();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const universityid = Cookies.get('universityid')
 
   useEffect(() => {
-    UserApi.fetchAllUsers(params).then((res) => {
+    UserApi.fetchAllUsers({...params, university_id: universityid}).then((res) => {
       setPaginateData(res.data);
       setUsers(res.data.data);
+      setLoading(false);
     });
   }, [params]);
 
@@ -51,7 +55,6 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
           delete={() => handleConfirmDelete()}
         />
       )}
-      {console.log(users.length)}
       {users.length != 0 ? (
         <div>
           <table className="w-full">
@@ -212,7 +215,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
         </div>
       ) : (
         <div className="mt-8 flex justify-center">
-        <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-xl">No Registered User </h1>
+        <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-xl">{!loading ? "No Registered User" : "Loading..."}</h1>
       </div>
       )}
     </div>

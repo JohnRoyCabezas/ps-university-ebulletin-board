@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import Dropdown from '../components/Dropdown';
 import DropdownMulti from '../components/DropdownMulti';
 import UserApi from '../api/UserApi';
@@ -21,15 +22,16 @@ const CreateCollegePage = () => {
   const [params, setParams] = useState(initialState);
   const [selected, setSelected] = useState([]);
   const [processing, setProcessing] = useState(false);
+  const university_id = Cookies.get('universityid');
 
   useEffect(() => {
-    UserApi.fetchStudents().then((res) => {
+    UserApi.fetchStudents(university_id).then((res) => {
       setStudents(res.data);
     });
-    UserApi.fetchInstructors().then((res) => {
+    UserApi.fetchInstructors(university_id).then((res) => {
       setInstructors(res.data);
     });
-    DepartmentApi.fetchDepartments().then((res) => {
+    DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
     });
   }, []);

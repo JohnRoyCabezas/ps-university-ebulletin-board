@@ -19,9 +19,10 @@ const CreateCollegePage = () => {
   const [deans, setDeans] = useState([]);
   const [params, setParams] = useState(initialParams);
   const [processing, setProcessing] = useState(false);
+  const universityid = Cookies.get('universityid')
 
   useEffect(() => {
-    UserApi.fetchDeans().then((res) => {
+    UserApi.fetchDeans(universityid).then((res) => {
       setDeans(res.data);
     });
   }, []);

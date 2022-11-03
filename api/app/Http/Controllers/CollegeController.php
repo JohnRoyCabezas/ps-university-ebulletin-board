@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 
 class CollegeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         //
-        $college = College::all();
+        $college = College::where('university_id', $request->university_id)->get();
 
         return response()->json($college);
     }

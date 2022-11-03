@@ -8,12 +8,14 @@ import RegistrationModal from '../components/RegistrationModal';
 import SubmitButton from '../components/submitButton';
 
 const RegisterPage = () => {
+  const university_id = Cookies.get('universityid');
   const initialParams = {
     fullname: '',
     email: '',
     department_id: '',
     role_id: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
+    university_id: parseInt(university_id),
   };
 
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
@@ -24,7 +26,7 @@ const RegisterPage = () => {
   const [params, setParams] = useState(initialParams);
 
   useEffect(() => {
-    DepartmentApi.fetchDepartments().then((res) => {
+    DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
     });
     RoleApi.fetchRoles().then((res) => {
@@ -73,6 +75,7 @@ const RegisterPage = () => {
 
   const [processing, setProcessing] = useState(false);
 
+  console.log(params);
   const handleSubmit = () => {
     setProcessing(true);
     AuthApi.register(params).then(

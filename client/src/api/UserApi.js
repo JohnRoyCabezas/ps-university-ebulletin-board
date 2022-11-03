@@ -18,24 +18,33 @@ const UserApi = {
     };
     return instance.request(config);
   },
-  fetchDeans: () => {
+  fetchDeans: (id) => {
     const config = {
       method: 'GET',
       url: '/users/deans',
+      params: {
+        university_id: id
+      }
     };
     return instance.request(config);
   },
-  fetchStudents: ()=>{ 
+  fetchStudents: (id)=>{ 
     const config = {
       method: 'GET',
       url: '/users/students',
+      params: {
+        university_id: id
+      }
     }
     return instance.request(config);
   },
-  fetchInstructors: ()=>{ 
+  fetchInstructors: (id)=>{ 
     const config = {
       method: 'GET',
       url: '/users/instructors',
+      params: {
+        university_id: id
+      }
     }
     return instance.request(config);
   }
