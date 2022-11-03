@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Pusher from 'pusher-js';
 import CourseApi from '../api/CourseApi';
 import ChatApi from '../api/ChatApi';
 import ChatCard from '../components/ChatCard';
@@ -11,11 +12,18 @@ const ClassPage = () => {
   const [course, setCourse] = useState({});
 
   useEffect(() => {
+    ChatApi.fetchCourseChats(classid);
     CourseApi.fetchSpecificCourse(classid).then((res) => {
       setCourse(res.data);
     });
-    ChatApi.fetchCourseChats(classid).then((res) => {
-      setChats(res.data);
+
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('chat');
+    channel.bind('chat-update', function (data) {
+      setChats(JSON.parse(data?.messages));
     });
   }, [classid]);
 
@@ -25,10 +33,8 @@ const ClassPage = () => {
   }, [chats]);
 
   const handleRefresh = () => {
-    ChatApi.fetchCourseChats(classid).then((res) => {
-      setChats(res.data);
-    });
-  }
+    ChatApi.fetchCourseChats(classid);
+  };
 
   return (
     <div className="flex h-screen">
@@ -38,18 +44,21 @@ const ClassPage = () => {
         </h1>
         <div className="flex flex-col justify-between h-full">
           <div id="chatswrapper" className="mt-12 overflow-y-auto">
-            {chats.length == 0 ? (
+            {chats?.length === 0 ? (
               <div className="flex mt-10 italic justify-center">
                 There are no chat messages available.
               </div>
-            )
-          :
-          chats?.map((chat) => (
-            <div key={chat?.id}>
-              <ChatCard chatid={chat?.id} chat={chat} handleRefresh={handleRefresh} />
-            </div>
-          ))
-          }
+            ) : (
+              chats?.map((chat) => (
+                <div key={chat?.id}>
+                  <ChatCard
+                    chatid={chat?.id}
+                    chat={chat}
+                    handleRefresh={handleRefresh}
+                  />
+                </div>
+              ))
+            )}
           </div>
           <div className="p-2 rounded-3xl">
             <ChatTextEditor handleRefresh={handleRefresh} classid={classid} />
