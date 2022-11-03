@@ -24,6 +24,7 @@ class AuthController extends Controller
             'department_id' => [''],
             'email' => ['required', 'unique:users'],
             'role_id' => ['required'],
+            'university_id' => ['required'],
             // 'mobile_number' => ['required']
         ]);
 
@@ -34,6 +35,7 @@ class AuthController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['email']),
             'is_verified' => false,
+            'university_id' => $validatedData['university_id'],
             // 'mobile_number' => $validatedData['mobile_number']
         ]);
 
