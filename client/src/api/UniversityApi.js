@@ -4,13 +4,20 @@ const UniversityApi = {
   createUniversity: (params) => {
     const config = {
       method: "POST",
-      url: '/university',
+      url: "/university",
       params: {
         ...params,
-      }
-    }
-    return instance.request(config)
-  }
-}
+      },
+    };
+    return instance.request(config);
+  },
+  fetchUniversities: () => {
+    const config = {
+      method: "GET",
+      url: "/university",
+    };
+    return instance.request(config);
+  },
+};
 
 export default UniversityApi;
