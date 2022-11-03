@@ -44,10 +44,13 @@ const CollegeApi = {
     return instance.request(config);
   },
 
-  fetchColleges: () => {
+  fetchColleges: (universityid) => {
     const config = {
       method: "GET",
       url: "/college",
+      params: {
+        university_id: universityid,
+      },
     };
     return instance.request(config);
   },

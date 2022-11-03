@@ -15,10 +15,13 @@ const DepartmentApi = {
     return instance.request(config);
   },
 
-  fetchDepartments: () => {
+  fetchDepartments: (id) => {
     const config = {
       method: 'GET',
       url: '/department',
+      params: {
+        university_id: id
+      }
     }
     return instance.request(config);
   },

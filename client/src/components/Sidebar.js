@@ -18,9 +18,9 @@ const Sidebar = () => {
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
+      Cookies.set("universityid", res.data?.university?.id)
     });
-  }, []);
-
+  }, [id]);
   return (
     <div className="flex shrink-0 w-full h-screen">
       <div className="relative flex flex-col w-64 bg-regal-blue text-white">

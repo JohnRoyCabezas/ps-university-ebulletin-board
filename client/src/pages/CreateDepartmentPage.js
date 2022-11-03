@@ -5,6 +5,7 @@ import SuccessModal from "../components/SuccessModal";
 import DepartmentApi from "../api/DepartmentApi";
 import CollegeApi from "../api/CollegeApi";
 import SubmitButton from "../components/submitButton";
+import Cookies from "js-cookie";
 
 const CreateDepartmentPage = () => {
   const initialParams = {
@@ -19,15 +20,16 @@ const CreateDepartmentPage = () => {
   const [college, setCollege] = useState([]);
   const [params, setParams] = useState(initialParams);
   const [processing, setProcessing] = useState(false);
+  const universityid = Cookies.get('universityid')
 
   useEffect(() => {
-    UserApi.fetchDeans().then((res) => {
+    UserApi.fetchDeans(universityid).then((res) => {
       setData(res.data);
     });
-    CollegeApi.fetchColleges().then((res) => {
+    CollegeApi.fetchColleges(universityid).then((res) => {
       setCollege(res.data);
     });
-  }, []);
+  }, [universityid]);
 
   const handleSelectChange = (type, value) => {
     setErrors({});
@@ -146,6 +148,7 @@ const CreateDepartmentPage = () => {
                     </span>
                   )}
                 </label>
+                {/* -----bug start----- */}
                 <Dropdown
                   selectedLabel={
                     params.user_id &&
@@ -164,6 +167,7 @@ const CreateDepartmentPage = () => {
                   label="fullname"
                   data={data}
                 />
+                {/* -----bug end----- */}
               </div>
               {errors?.message && (
                 <div className="text-xs italic font-light text-red-800">

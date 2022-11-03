@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\User;
+use App\Models\Department;
+use App\Models\College;
+use App\Models\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,11 +26,11 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function getDeans()
+    public function getDeans(Request $request)
     {
-        $deans = User::with('roleUser')->whereHas('roleUser', function ($query) {
+        $deans = User::whereHas('roleUser', function ($query) {
             $query->where('role_id', '=', 4);
-        })->get();
+        })->where('university_id', $request->university_id)->get();
 
         return response()->json($deans);
     }
@@ -35,33 +38,32 @@ class UserController extends Controller
     public function getUsers(Request $request)
     {
         if ($request->keyword) {
-            $users = User::with(['roleUser.role', 'department'])
+            $selectUsers = User::with(['roleUser.role', 'department'])->where('university_id', $request->university_id)
                 ->where('fullname', 'ilike', '%' . $request->keyword . '%')
                 ->orderBy($request->order_name, $request->order_direction)
                 ->paginate($request->items_per_page);
-
-            return response()->json($users);
-        }
-
-        $users = User::with(['roleUser.role', 'department'])
+                
+                return response()->json($users);
+            }
+            
+        $selectUsers = User::with(['roleUser.role', 'department'])->where('university_id', $request->university_id)
             ->orderBy($request->order_name, $request->order_direction)
             ->paginate($request->items_per_page);
 
-        return response()->json($users);
+        return response()->json($selectUsers);
     }
     
-    public function getStudents() 
+    public function getStudents(Request $request) 
     {
-        $students = User::student()->get();
+        $students = User::student()->where('university_id', $request->university_id)->get();
 
         return response()->json($students);
     }
 
-    public function getInstructors() 
+    public function getInstructors(Request $request) 
     {
-        $instructors = User::instructor()->get();
+        $instructors = User::instructor()->where('university_id', $request->university_id)->get();
 
         return response()->json($instructors);
     }
 }
-

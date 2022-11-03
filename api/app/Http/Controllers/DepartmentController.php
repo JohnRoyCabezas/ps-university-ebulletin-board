@@ -3,15 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\College;
+use App\Models\University;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $departments = Department::all();
-
-        return response()->json($departments);
+        $allDepartments = collect();
+        $university = University::findOrFail($request->university_id);
+        $colleges = College::whereBelongsTo($university)->get();
+        foreach ($colleges as $college){
+            $allDepartments = $allDepartments->merge(Department::whereBelongsTo($college)->get());
+        }
+        
+        return response()->json($allDepartments);
     }
 
     public function store(Request $request)

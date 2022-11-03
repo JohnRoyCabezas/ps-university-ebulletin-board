@@ -295,7 +295,8 @@ class DatabaseSeeder extends Seeder
                 'email' => 'user@ebulletin.com',
                 'department_id' => 1,
                 'avatar' => 'randomavatargenerator',
-                'is_verified' => false
+                'is_verified' => false,
+                "university_id" => 1,
             ],
             [
                 'fullname' => 'Sample Dean 1',
@@ -303,7 +304,8 @@ class DatabaseSeeder extends Seeder
                 'email' => 'dean1@ebulletin.com',
                 'department_id' => null,
                 'avatar' => 'randomavatargenerator',
-                'is_verified' => false
+                'is_verified' => false,
+                "university_id" => 1,
             ],
             [
                 'fullname' => 'Sample Dean 2',
@@ -311,7 +313,8 @@ class DatabaseSeeder extends Seeder
                 'department_id' => null,
                 'email' => 'dean2@ebulletin.com',
                 'avatar' => 'randomavatargenerator',
-                'is_verified' => false
+                'is_verified' => false,
+                "university_id" => 1,
             ]
         ]);
 
