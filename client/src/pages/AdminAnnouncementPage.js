@@ -13,13 +13,6 @@ const AdminAnnouncementPage = () => {
     announcementable_id: 1,
     announcementable_type: "App/Models/University",
   };
-  
-  // const today = new Date();
-  // const [time, setTime] = useState(today);
-
-  // useEffect(() => {
-  //     setTime(today);
-  // }, [today])
 
   function setThreadValue(value) {
     setThread(value);

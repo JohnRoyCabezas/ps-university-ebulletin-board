@@ -18,6 +18,7 @@ const Sidebar = () => {
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
+      document.title = (res.data?.university?.university || res.data?.department?.college?.university?.university)+" | E-Bulletin"
       Cookies.set("universityid", res.data?.university?.id)
     });
   }, [id]);

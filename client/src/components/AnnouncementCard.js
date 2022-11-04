@@ -5,6 +5,7 @@ import AdminMessageOptions from "./AdminMessageOptions";
 import StudentMessageOptions from "./StudentMessageOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
+import "../index.css"
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
@@ -68,8 +69,8 @@ export default function AnnouncementCard(props) {
                   />
                 </div>
               ) : (
-                <span className="text-gray-700 text-base">
-                  {parse(props.announcement.announcement)}
+                <span className="cardText text-gray-700 text-base">
+                    {parse(props.announcement.announcement)}
                 </span>
               )
             }
