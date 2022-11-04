@@ -36,9 +36,7 @@ const ClassPage = () => {
   }, [chats]);
 
   const handleRefresh = () => {
-    ChatApi.fetchCourseChats(classid).then((res) => {
-      setChats(res.data);
-    });
+    ChatApi.fetchCourseChats(classid);
   };
 
   return (
