@@ -5,43 +5,52 @@ import Thread from '../components/Thread';
 import Cookies from 'js-cookie';
 
 const AnnouncementPage = () => {
+  const university_id = Cookies.get('universityid');
   const [announcements, setAnnouncement] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
   const [isThread, setThread] = useState(false);
   const user = JSON.parse(Cookies.get('user'));
+  const [loading, setLoading] = useState(true);
+  const [params, setParams] = useState({
+      announcementable_id: university_id,
+      announcementable_type: "App/Models/University",
+    }
+  );
 
   function setThreadValue(value) {
     setThread(value);
   }
 
+  useEffect(()=> {
+    setParams({
+      ...params,
+      announcementable_id: university_id,
+    })
+  }, [university_id]);
+  
   useEffect(() => {
-    const params = {
-      announcementable_id: 1,
-      announcementable_type: "App/Models/University"
-    }
-
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
-        console.log(user?.role_user?.role_id);
+        setLoading(false)
       }
     );
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight)
+    lastDiv?.scrollTo(0, lastDiv.scrollHeight)
   }, [announcements])
 
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
-          {/* <span className="text-lg">{hr > 5 && hr < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
+      <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
           <h1> Announcements</h1>
-          {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
         </div>
-        <div className="flex flex-col justify-between h-full">
+        {!loading ? (
+
+          <div className="flex flex-col justify-between h-full">
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
               announcements.map((announcement) => (
@@ -54,6 +63,11 @@ const AnnouncementPage = () => {
               ))}
           </div>
         </div>
+        ) : (
+          <div className="mt-12 flex justify-center align-items">
+            <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-xl">Loading...</h1>
+            </div>
+        )}
       </div>
       {isThread && <Thread userRole={'student'} setValue={setThreadValue} announcementThread={announcementThread} />}
     </div>

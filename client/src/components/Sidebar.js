@@ -19,7 +19,7 @@ const Sidebar = () => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
       document.title = (res.data?.university?.university || res.data?.department?.college?.university?.university)+" | E-Bulletin"
-      Cookies.set("universityid", res.data?.university?.id || res.data?.university_id)
+      Cookies.set("universityid", res.data?.university?.id || res.data?.university_id);
     });
   }, [id]);
   return (

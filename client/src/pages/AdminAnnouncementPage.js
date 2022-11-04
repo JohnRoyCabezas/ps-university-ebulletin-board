@@ -6,30 +6,40 @@ import AnnouncementApi from "../api/AnnouncementApi";
 import Cookies from "js-cookie";
 
 const AdminAnnouncementPage = () => {
+  const university_id = Cookies.get('universityid');
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState()
   const [announcements, setAnnouncement] = useState([]);
-  const university_id = Cookies.get('universityid');
-  const params = {
-    announcementable_id: university_id,
-    announcementable_type: "App/Models/University",
-  };
+  const [loading, setLoading] = useState(true);
+  const [params, setParams] = useState({
+      announcementable_id: university_id,
+      announcementable_type: "App/Models/University",
+    }
+  );
 
   function setThreadValue(value) {
     setThread(value);
   }
 
+  useEffect(()=> {
+    setParams({
+      ...params,
+      announcementable_id: university_id,
+    })
+  }, [university_id]);
+
   useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
+        setLoading(false);
       }
     );
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
+    lastDiv?.scrollTo(0, lastDiv.scrollHeight);
   }, [announcements]);
 
   function handleRefresh() {
@@ -47,6 +57,7 @@ const AdminAnnouncementPage = () => {
           <h1> Announcements</h1>
         </div>
         <div className="flex flex-col justify-between h-full">
+          {!loading ? (
           <div id='announcementWrapper' className="mt-12 overflow-y-auto bg-danger">
             {
               announcements.map((announcement) => (
@@ -60,6 +71,11 @@ const AdminAnnouncementPage = () => {
                 />
               ))}
           </div>
+          ) : (
+            <div className="mt-12 flex justify-center align-items">
+            <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-xl">Loading...</h1>
+            </div>
+          )}
           <div className="p-2 rounded-3xl">
             <RichTextEditor
               handleRefresh={() => handleRefresh()}
