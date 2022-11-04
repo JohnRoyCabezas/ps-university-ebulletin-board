@@ -70,7 +70,7 @@ export default function AnnouncementCard(props) {
                 />
               </div>
             ) : (
-              <span className="text-gray-700 text-base">
+              <span className="cardText text-gray-700 text-base">
                 {props.thread.announcement ? parse(props.thread.announcement): parse(props.thread.thread_message)}
               </span>
             )}
