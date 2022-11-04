@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import moment from "moment";
 import AdminThreadOptions from "../components/AdminThreadOptions";
-import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
 import parse from "html-react-parser"
+import ThreadApi from "../api/ThreadApi";
+import Cookies from "js-cookie";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
@@ -13,10 +14,15 @@ export default function AnnouncementCard(props) {
 
   function handleEdit(id) {
     setId(id);
-    AnnouncementApi.fetchSpecificAnnouncement(id).then((res) => {
-      setParams(res.data);
+    ThreadApi.fetchSpecificThread(id).then((res) => {
+      setParams({ announcement: res.data.thread.thread_message });
     });
     setIsEdit(true);
+  }
+
+  function cancel() {
+    setIsEdit(false);
+    setIsShown(false)
   }
 
   function isChange(value) {
@@ -24,8 +30,8 @@ export default function AnnouncementCard(props) {
     props.handleRefresh();
   }
 
-  function setThreadValue(value) {
-    props.setValue(value);
+  function threadOption() {
+    return props.isShown && (isShown && (props.userRole === 2 || props?.user_detail?.fullname === JSON.parse(Cookies.get('user')).fullname))
   }
 
   return (
@@ -51,25 +57,35 @@ export default function AnnouncementCard(props) {
             </span>
           </div>
           <div>
-            {isEdit ? (
-              <div className="px-5 w-full">
-                <RichTextEditor
-                  isEdit={isEdit}
-                  isChange={(value) => isChange(value)}
-                  handleRefresh={() => props.handleRefresh()}
-                  id={id}
-                  params={params}
-                />
-              </div>
-            ) : (
-              <span className="text-gray-700 text-base">
-                
-                {props.thread.announcement ? parse(props.thread.announcement): props.thread.thread_message}
-              </span>
-            )}
+            {
+              isEdit ? (
+                <div className="rounded bg-white w-full">
+                  <RichTextEditor
+                    isEdit={isEdit}
+                    isChange={(value) => isChange(value)}
+                    handleRefresh={() => props.handleRefresh()}
+                    id={id}
+                    type={'university_thread'}
+                    cancel={cancel}
+                    params={params}
+                  />
+                </div>
+              ) : (
+                <span className="text-gray-700 text-base">
+                  {props.thread.announcement ? parse(props.thread.announcement) : parse(props.thread.thread_message)}
+                </span>
+              )
+            }
           </div>
         </div>
-        {isShown && props.userRole === "admin" && <AdminThreadOptions />}
+        {
+          threadOption() &&
+            <AdminThreadOptions
+              id={props.thread.id}
+              handleRefresh={props.handleRefresh}
+              handleEdit={(id) => handleEdit(id)}
+            />
+        }
       </div>
     </div>
   );

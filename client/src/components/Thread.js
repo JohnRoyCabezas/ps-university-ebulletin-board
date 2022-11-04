@@ -1,48 +1,45 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useLayoutEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
-  faLock, 
-  faLockOpen, 
+import {
+  faLock,
+  faLockOpen,
   faSpinner
 } from "@fortawesome/free-solid-svg-icons"
 import ThreadCard from "../components/ThreadCard";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
 import ThreadApi from "../api/ThreadApi";
+import Cookies from "js-cookie";
 
 export default function Thread(props) {
-  const [announcements, setAnnouncements] = useState(false);
   const [loading, setLoading] = useState(true);
   const [lockLoading, setLockLoading] = useState(false);
+  const [isLock, setIsLock] = useState(false);
   const [threads, setThreads] = useState();
   const [announcement, setAnnouncement] = useState();
   const [params, setParams] = useState();
+  const user = JSON.parse(Cookies.get('user'));
 
   useEffect(() => {
-    AnnouncementApi.fetchSpecificAnnouncement(props.announcementThread).then(({data}) => {
-      setAnnouncements(data);
+    AnnouncementApi.fetchSpecificAnnouncement(props.announcementThread).then(({ data }) => {
       setParams({
         announcementable_id: data.announcementable_id,
         announcementable_type: data.announcementable_type,
         announcement_id: data.id,
         type: "comment"
       })
-      ThreadApi.fetchThread(data.id).then(({data})=> {
-        setAnnouncement(data.announcement)
-        setThreads(data.thread)
+      ThreadApi.fetchThread(data.id).then(({ data }) => {
+        setAnnouncement(data.announcement);
+        setIsLock(data.announcement.is_locked)
+        setThreads(data.thread);
         setLoading(false);
       })
 
     });
   }, []);
 
-  useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
-  }, [announcements]);
-
   function handleRefresh() {
-    ThreadApi.fetchThread(props.announcementThread).then(({data})=> {
+    ThreadApi.fetchThread(props.announcementThread).then(({ data }) => {
       setAnnouncement(data.announcement)
       setThreads(data.thread)
       setLoading(false);
@@ -55,16 +52,24 @@ export default function Thread(props) {
 
   function handleLock(id) {
     setLockLoading(true);
-    AnnouncementApi.lockSpecificAnnouncement(id).finally(
+    AnnouncementApi.lockSpecificAnnouncement(id).then(
       () => {
-        setLockLoading(false)
+        setLockLoading(false);
+        setIsLock(!isLock);
       });
     handleRefresh();
   }
 
+  useLayoutEffect(() => {
+    const lastDiv = document?.getElementById("threadWrapper");
+    lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
+  },
+    [threads]
+  );
+
   return !loading && (
     <div className="flex">
-      <div className="relative flex flex-col border-l-2 w-[30vw]">
+      <div className="relative flex flex-col border-l-2 w-[30vw]" >
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">
           Thread
           <button
@@ -73,41 +78,54 @@ export default function Thread(props) {
           >
             x
           </button>
-          
+
           {/* Lock button */}
-          <span className="mt-0 float-right" hidden={!(props.userRole==="admin")}>
+          <span className="mt-0 float-right" hidden={!(props.userRole === "admin")}>
             <button
               className="cursor-pointer"
               onClick={() => handleLock(props.announcementThread)}
             >
-              <FontAwesomeIcon icon={!lockLoading ? (announcements.is_locked ? faLock: faLockOpen) : faSpinner} size="lg" color="#162750" />
+              {lockLoading ? <FontAwesomeIcon icon={faSpinner} size="lg" color="#162750" spin /> : <FontAwesomeIcon icon={isLock ? faLock : faLockOpen} size="lg" color="#162750" />}
             </button>
           </span>
         </h1>
-          
+
         <div className="flex flex-col justify-between h-full">
           <div
-            id="announcementWrapper"
-            className="mt-12 overflow-y-scroll scroll"
+            id="threadWrapper"
+            className="mt-12 overflow-y-auto bg-danger"
           >
             <ThreadCard
-                thread={announcement}
-                user_detail={announcement.user}
-              />
-            {threads.map((thread) => (
-              <ThreadCard
-                key={thread.id.toString()}
-                userRole={"admin"}
-                thread={thread}
-                user_detail={thread.user}
-                handleRefresh={() => handleRefresh()}
-              />
-            ))}
+              thread={announcement}
+              user_detail={announcement.user}
+              isShown={false}
+            />
+
+            <div className="flex">
+              <div className="text-sm w-16 ml-2 text-gray-400">
+                {threads.length > 1 ? threads.length + " replies" : threads.length + " reply"}
+              </div>
+              <div className="h-0.5 w-full my-auto flex border-b-1 bg-gray-300 text-center">
+              </div>
+            </div>
+            {
+              threads.map((thread) => (
+                <ThreadCard
+                  key={thread.id.toString()}
+                  userRole={user?.role_user?.role_id}
+                  thread={thread}
+                  user_detail={thread.user}
+                  handleRefresh={() => handleRefresh()}
+                  isShown={true}
+                />
+              ))
+            }
           </div>
-          <div className="px-5" hidden={announcements.is_locked}>{
+
+          <div className="px-5 mt-2" hidden={isLock}>{
             <RichTextEditor
-                handleRefresh={() => handleRefresh()}
-                params={params}
+              handleRefresh={() => handleRefresh()}
+              params={params}
             />
           }
           </div>

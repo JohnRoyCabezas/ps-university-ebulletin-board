@@ -10,8 +10,8 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ThreadController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\UniversityController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
         Route::get('/all', [ThreadController::class, 'fetchAllThreads']);
         Route::delete('/destroy/{id}', [ThreadController::class, 'destroy']);
         Route::put('/update/{id}', [ThreadController::class, 'updateThread']);
+        Route::get('/specific/{id}', [ThreadController::class, 'fetchSpecificThread']);
     });
 
     Route::prefix('users')->group(function () {
