@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faPenToSquare, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faPenToSquare, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import AnnouncementApi from "../api/AnnouncementApi";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";

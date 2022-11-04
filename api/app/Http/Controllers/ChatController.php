@@ -36,7 +36,7 @@ class ChatController extends Controller
 
     public function show($id)
     {
-        $chat = Chat::find($id);
+        $chat = Chat::with('user')->find($id);
 
         return response()->json($chat);
     }

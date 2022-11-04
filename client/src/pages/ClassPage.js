@@ -5,11 +5,14 @@ import CourseApi from '../api/CourseApi';
 import ChatApi from '../api/ChatApi';
 import ChatCard from '../components/ChatCard';
 import ChatTextEditor from '../components/ChatTextEditor';
+import Comments from '../components/Comments';
 
 const ClassPage = () => {
   const { classid } = useParams();
   const [chats, setChats] = useState([]);
   const [course, setCourse] = useState({});
+  const [showComments, setShowComments] = useState(false);
+  const [chatId, setChatId] = useState(0);
 
   useEffect(() => {
     ChatApi.fetchCourseChats(classid);
@@ -50,13 +53,13 @@ const ClassPage = () => {
               </div>
             ) : (
               chats?.map((chat) => (
-                <div key={chat?.id}>
-                  <ChatCard
-                    chatid={chat?.id}
-                    chat={chat}
-                    handleRefresh={handleRefresh}
-                  />
-                </div>
+                <ChatCard
+                  key={chat?.id}
+                  chat={chat}
+                  handleRefresh={handleRefresh}
+                  setShowComments={setShowComments}
+                  setChatId={setChatId}
+                />
               ))
             )}
           </div>
@@ -65,6 +68,9 @@ const ClassPage = () => {
           </div>
         </div>
       </div>
+      {showComments && (
+        <Comments setShowComments={setShowComments} chat_id={chatId} />
+      )}
     </div>
   );
 };

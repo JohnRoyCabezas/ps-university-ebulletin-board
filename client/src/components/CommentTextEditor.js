@@ -3,28 +3,27 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperclip, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import ChatApi from '../api/ChatApi';
+import CommentApi from '../api/CommentApi';
 
-const ChatTextEditor = ({
-  classid,
-  chatid,
+const CommentTextEditor = ({
+  chatId,
+  commentId,
   handleRefresh,
   isEditing,
   setIsEditing,
 }) => {
   const initialParams = {
-    chatid: chatid,
-    course_id: classid,
-    chat: '<p><br></p>',
-    updateChat: '<p><br></p>',
+    chat_id: chatId,
+    comment_id: commentId,
+    comment: '<p><br></p>',
   };
   const [status, setStatus] = useState('');
   const [params, setParams] = useState(initialParams);
 
   useEffect(() => {
-    chatid &&
-      ChatApi.showChat(chatid).then((res) => {
-        setParams({ ...params, updateChat: res.data.chat });
+    commentId &&
+      CommentApi.showComment(commentId).then((res) => {
+        setParams({ ...params, updateComment: res.data.comment });
       });
   }, []);
 
@@ -33,13 +32,13 @@ const ChatTextEditor = ({
     setStatus('pending');
 
     isEditing
-      ? ChatApi.updateChat(params).then((res) => {
+      ? CommentApi.updateComment(params).then((res) => {
           setStatus('done');
           handleRefresh();
           setIsEditing(false);
           setParams(initialParams);
         })
-      : ChatApi.createChat(params).then((res) => {
+      : CommentApi.createComment(params).then((res) => {
           setStatus('done');
           handleRefresh();
           setParams(initialParams);
@@ -48,15 +47,15 @@ const ChatTextEditor = ({
 
   const handleChange = (e) => {
     isEditing
-      ? setParams({ ...params, updateChat: e })
-      : setParams({ ...params, chat: e });
+      ? setParams({ ...params, updateComment: e })
+      : setParams({ ...params, comment: e });
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit} className="rounded bg-white">
         <ReactQuill
-          value={isEditing ? params?.updateChat : params.chat}
+          value={isEditing ? params?.updateComment : params?.comment}
           placeholder={'Write a chat message...'}
           onChange={handleChange}
           className="block bottom-0"
@@ -76,9 +75,9 @@ const ChatTextEditor = ({
                 </button>
                 <button
                   onClick={() => handleSubmit}
-                  disabled={params?.updateChat === '<p><br></p>' && true}
+                  disabled={params?.updateComment === '<p><br></p>' && true}
                   className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
-                    params?.updateChat === '<p><br></p>'
+                    params?.updateComment === '<p><br></p>'
                       ? 'disabled bg-gray-300 text-gray-400'
                       : 'bg-blue-700 hover:bg-blue-800'
                   }`}
@@ -101,9 +100,9 @@ const ChatTextEditor = ({
             ) : (
               <button
                 onClick={() => handleSubmit}
-                disabled={params?.updateChat === params?.chat && true}
+                disabled={params?.comment === '<p><br></p>' && true}
                 className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
-                  params?.chat === '<p><br></p>'
+                  params?.comment === '<p><br></p>'
                     ? 'disabled bg-gray-300 text-gray-400'
                     : 'bg-blue-700 hover:bg-blue-800'
                 }`}
@@ -130,4 +129,4 @@ const ChatTextEditor = ({
   );
 };
 
-export default ChatTextEditor;
+export default CommentTextEditor;
