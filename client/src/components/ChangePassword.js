@@ -224,7 +224,7 @@ const EditPassword = () => {
                                         </div>
                                         <SubmitButton
                                             handleSubmit={handleSubmit}
-                                            buttonDisabled={reqOld && reqNew && reqRep && !passMatch
+                                            buttonDisabled={reqOld && reqNew && reqRep && !passMatch && validNew
                                                 ? true : false}
                                             processing={processing}
                                             buttonTitle={"Update Password"}

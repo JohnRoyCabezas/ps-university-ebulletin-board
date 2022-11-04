@@ -19,7 +19,7 @@ export default function NavBar(props) {
     e.preventDefault();
     setButtonState(true);
 
-    if(props.params?.type==="comment"){
+    if (props.params?.type === "comment") {
       ThreadApi.createThreadMessage({
         user_id: JSON.parse(Cookies.get('user') || '{}').id,
         announcement_id: props.params?.announcement_id,
@@ -49,11 +49,19 @@ export default function NavBar(props) {
 
   function handleEdit() {
     setButtonState(true);
-    AnnouncementApi.updateSpecificAnnouncement(props.id, { announcement_update: announcement }).then(
-      () => {
-        props.isChange(false)
-      }
-    )
+    if (props.type === 'university_thread') {
+      ThreadApi.updateSpecificThread({ thread_message: announcement }, props.id).then(
+        () => {
+          props.isChange(false)
+        }
+      )
+    } else {
+      AnnouncementApi.updateSpecificAnnouncement(props.id, { announcement_update: announcement }).then(
+        () => {
+          props.isChange(false)
+        }
+      )
+    }
   }
 
   const handleChange = (e) => {
@@ -76,7 +84,7 @@ export default function NavBar(props) {
 
         <div className="flex justify-between rte mb-1 p-2 h-14">
           <FontAwesomeIcon
-          className="mt-1"
+            className="mt-1"
             icon={faPaperclip}
             size="2x"
             color="#162750"

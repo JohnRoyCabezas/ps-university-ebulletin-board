@@ -2,33 +2,28 @@ import { React, useEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
 import Thread from '../components/Thread';
+import Cookies from 'js-cookie';
 
 const AnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
   const [isThread, setThread] = useState(false);
+  const user = JSON.parse(Cookies.get('user'));
 
   function setThreadValue(value) {
     setThread(value);
   }
 
-  // const today = new Date();
-  // const [time, setTime] = useState(today);
-
-  // useEffect(() => {
-  //     setTime(today);
-  // }, [today])
-
-
   useEffect(() => {
     const params = {
-      announcementable_id:1,
-      announcementable_type:"App/Models/University"
+      announcementable_id: 1,
+      announcementable_type: "App/Models/University"
     }
 
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
+        console.log(user?.role_user?.role_id);
       }
     );
   }, []);
@@ -41,7 +36,7 @@ const AnnouncementPage = () => {
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-      <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
+        <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
           {/* <span className="text-lg">{hr > 5 && hr < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
           <h1> Announcements</h1>
           {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
@@ -50,12 +45,12 @@ const AnnouncementPage = () => {
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
               announcements.map((announcement) => (
-                <AnnouncementCard 
+                <AnnouncementCard
                   key={announcement.id.toString()}
                   userRole={'student'}
                   announcement={announcement}
                   setValue={setThreadValue}
-                  setAnnouncementThread={setAnnouncementThread}/>
+                  setAnnouncementThread={setAnnouncementThread} />
               ))}
           </div>
         </div>
