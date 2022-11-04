@@ -254,7 +254,7 @@ class DatabaseSeeder extends Seeder
                 'fullname' => 'admin',
                 'password' => Hash::make('password'),
                 'email' => 'admin@ebulletin.com',
-                'avatar' => 'randomavatargenerator',
+                'avatar' => 'https://joeschmoe.io/api/v1/1',
                 'department_id' => null,
                 'is_verified' => false
             ],
@@ -294,27 +294,27 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'email' => 'user@ebulletin.com',
                 'department_id' => 1,
-                'avatar' => 'randomavatargenerator',
+                'avatar' => 'https://joeschmoe.io/api/v1/2',
                 'is_verified' => false,
-                "university_id" => 1,
+                'university_id' => 1,
             ],
             [
                 'fullname' => 'Sample Dean 1',
                 'password' => Hash::make('password'),
                 'email' => 'dean1@ebulletin.com',
                 'department_id' => null,
-                'avatar' => 'randomavatargenerator',
+                'avatar' => 'https://joeschmoe.io/api/v1/3',
                 'is_verified' => false,
-                "university_id" => 1,
+                'university_id' => 1,
             ],
             [
                 'fullname' => 'Sample Dean 2',
                 'password' => Hash::make('password'),
                 'department_id' => null,
                 'email' => 'dean2@ebulletin.com',
-                'avatar' => 'randomavatargenerator',
+                'avatar' => 'https://joeschmoe.io/api/v1/4',
                 'is_verified' => false,
-                "university_id" => 1,
+                'university_id' => 1,
             ]
         ]);
 

@@ -5,7 +5,7 @@ import ChatTextEditor from './ChatTextEditor';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
-const ChatCard = ({ chatid, chat, handleRefresh }) => {
+const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
   const [isShowOptions, setIsShowOptions] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
@@ -16,11 +16,11 @@ const ChatCard = ({ chatid, chat, handleRefresh }) => {
     if (user?.role_user?.role_id === 2) {
       setCanEdit(true);
       setCanDelete(true);
-    } else if (user.id === chat.user_id){
+    } else if (user.id === chat.user_id) {
       setCanEdit(true);
       setCanDelete(true);
     } else {
-      return
+      return;
     }
   }, []);
 
@@ -30,13 +30,16 @@ const ChatCard = ({ chatid, chat, handleRefresh }) => {
         onMouseEnter={() => setIsShowOptions(true)}
         onMouseLeave={() => setIsShowOptions(false)}
         className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
+        style={{
+          backgroundColor: isShowOptions ? '#EAE8E8' : '',
+        }}
       >
         <img
           className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
           src={chat?.user?.avatar}
           alt="avatar"
         />
-        <div className="flex flex-col ml-2">
+        <div className="flex w-full flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">{chat?.user?.fullname}</h5>
             <span className="ml-2 text-xs">
@@ -44,10 +47,10 @@ const ChatCard = ({ chatid, chat, handleRefresh }) => {
             </span>
           </div>
           {isEditing ? (
-            <div className="rounded w-full bg-white">
+            <div className="rounded ">
               <ChatTextEditor
                 handleRefresh={handleRefresh}
-                chatid={chatid}
+                chatid={chat?.id}
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
               />
@@ -59,11 +62,13 @@ const ChatCard = ({ chatid, chat, handleRefresh }) => {
 
         {isShowOptions && (
           <ChatOptions
-            chatid={chatid}
+            chat={chat}
+            setChatId={setChatId}
+            setShowComments={setShowComments}
             handleRefresh={handleRefresh}
             handleEdit={setIsEditing}
             canEdit={canEdit}
-            canDelete={canDelete}
+            canDelete={canDelete} 
           />
         )}
       </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChangepasswordController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CollegeController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
@@ -37,6 +38,8 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/college', CollegeController::class);
     Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
+    Route::apiResource('/comment', CommentController::class);
+    Route::get('/chat-comments', [CommentController::class, 'chatComments']);
 
     Route::prefix('thread')->group(function () {
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);

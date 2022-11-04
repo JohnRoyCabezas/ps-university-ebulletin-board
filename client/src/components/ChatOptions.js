@@ -1,17 +1,20 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faComment,
   faPenToSquare,
   faTrashAlt,
-} from "@fortawesome/free-regular-svg-icons";
-import ChatApi from "../api/ChatApi";
-import { useState } from "react";
-import DeleteModal from "./DeleteModal";
+} from '@fortawesome/free-regular-svg-icons';
+import ChatApi from '../api/ChatApi';
+import { useState } from 'react';
+import DeleteModal from './DeleteModal';
 
 const ChatOptions = ({
-  handleEdit,
-  chatid,
+  chat,
+  comment,
+  setChatId,
+  setShowComments,
   handleRefresh,
+  handleEdit,
   canEdit,
   canDelete,
 }) => {
@@ -21,20 +24,26 @@ const ChatOptions = ({
     setShowDeleteModal(true);
   }
 
+  const handleChatThread = () => {
+    setChatId(chat?.id);
+    setShowComments(true);
+  };
+
   function yesDelete() {
-    ChatApi.deleteChat(chatid);
+    ChatApi.deleteChat(chat?.id);
     handleRefresh();
   }
 
   return (
     <>
       <div className="absolute top-0 right-0 translate-y-1/2 -translate-x-1/2 drop-shadow-md px-2 py-0.5 bg-white text-gray-500 border-regal-blue border-2 rounded cursor-pointer">
-        {/* Show thread button */}
+        {/* Show comments thread button */}
         <span className="m-1">
-          <button className="cursor-pointer">
+          <button className="cursor-pointer" onClick={handleChatThread}>
             <FontAwesomeIcon icon={faComment} size="lg" color="#162750" />
           </button>
         </span>
+
         {canEdit && (
           <>
             {/* Edit button */}
