@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::apiResource('/university', UniversityController::class);
 
 // Private
 Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
@@ -34,7 +35,6 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/role', RoleController::class);
     Route::apiResource('/course', CourseController::class);
     Route::apiResource('/college', CollegeController::class);
-    Route::apiResource('/university', UniversityController::class);
     Route::apiResource('/department', DepartmentController::class);
     Route::apiResource('/announcement', AnnouncementController::class);
 

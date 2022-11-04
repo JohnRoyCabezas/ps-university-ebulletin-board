@@ -24,9 +24,6 @@ const LandingPage = () => {
       : navigate('/announcement');
   }, []);
 
-  const handleClick = () => {
-    navigate('/login');
-  }
   return (
     <div>
       <NavBar />
@@ -85,10 +82,19 @@ const LandingPage = () => {
           <div className="mt-12">
             <p className="mb-5">Already enrolled?</p>
             <button
-              onClick={handleClick}
+              onClick={() => navigate('/login')}
               className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded"
             >
               Login
+            </button>
+          </div>
+          <div className="mt-12">
+            <p className="mb-5">Register your university here</p>
+            <button
+              onClick={() => navigate('/createuniversity')}
+              className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded"
+            >
+              Create University
             </button>
           </div>
         </div>
