@@ -1,11 +1,24 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useLayoutEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
+import Thread from '../components/Thread';
+import Cookies from 'js-cookie';
+import RichTextEditor from '../components/RichTextEditor';
 
 const CollegePage = () => {
-  const {collegeid} = useParams();
+  const { collegeid } = useParams();
   const [announcements, setAnnouncement] = useState([]);
+  const [announcementThread, setAnnouncementThread] = useState();
+  const [isThread, setThread] = useState(false);
+  const [isAlter, setIsAlter] = useState(false);
+  const user = JSON.parse(Cookies.get('user'));
+
+  const params =
+  {
+    announcementable_id: collegeid,
+    announcementable_type: "App/Models/College",
+  }
 
   useEffect(() => {
     const params = {
@@ -17,10 +30,29 @@ const CollegePage = () => {
     });
   }, [collegeid]);
 
-  useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight)
-  }, [announcements])
+  useLayoutEffect(() => {
+    if (!isAlter) {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
+      setIsAlter(false);
+    }
+    setIsAlter(false);
+  },
+    [announcements]
+  );
+
+
+  function setThreadValue(value) {
+    setThread(value);
+  }
+
+  function handleRefresh() {
+    AnnouncementApi.fetchChannelAnnouncements(params).then(
+      (res) => {
+        setAnnouncement(res.data);
+      }
+    );
+  }
 
   return (
     <div className="flex">
@@ -30,12 +62,28 @@ const CollegePage = () => {
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
               announcements.map((announcement) => (
-                <AnnouncementCard key={announcement.id.toString()} userRole={'student'} announcement={announcement} />
+                <AnnouncementCard
+                  key={announcement.id.toString()}
+                  userRole={user?.role_user?.role_id}
+                  announcement={announcement}
+                  setValue={setThreadValue}
+                  handleRefresh={() => handleRefresh()}
+                  setAnnouncementThread={setAnnouncementThread}
+                  isAlter={() => setIsAlter(true)}
+                />
               ))}
           </div>
+          {
+          (user?.role_user?.role_id === 1 ? '' : <div className="p-2 rounded-3xl">
+          <RichTextEditor
+            handleRefresh={() => handleRefresh()}
+            params={params}
+          />
+        </div>)
+}
         </div>
       </div>
-
+      {isThread && <Thread userRole={'student'} setValue={setThreadValue} announcementThread={announcementThread} />}
     </div>
   );
 };

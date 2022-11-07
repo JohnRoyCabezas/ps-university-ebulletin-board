@@ -1,18 +1,28 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useLayoutEffect, useState } from "react";
 import Thread from "../components/Thread";
 import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
+import Cookies from "js-cookie";
 
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState()
   const [announcements, setAnnouncement] = useState([]);
+  const user = JSON.parse(Cookies.get('user'));
+  const [isAlter, setIsAlter] = useState(false);
   const params = {
-    announcementable_id: 1,
+    announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
   };
+
+  // const today = new Date();
+  // const [time, setTime] = useState(today);
+
+  // useEffect(() => {
+  //     setTime(today);
+  // }, [today])
 
   function setThreadValue(value) {
     setThread(value);
@@ -26,10 +36,16 @@ const AdminAnnouncementPage = () => {
     );
   }, []);
 
-  useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
-  }, [announcements]);
+  useLayoutEffect(() => {
+    if (!isAlter) {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
+      setIsAlter(false);
+    }
+    setIsAlter(false);
+  },
+    [announcements]
+  );
 
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
@@ -58,6 +74,7 @@ const AdminAnnouncementPage = () => {
                   handleRefresh={() => handleRefresh()}
                   setValue={setThreadValue}
                   setAnnouncementThread={setAnnouncementThread}
+                  isAlter={() => setIsAlter(true)}
                 />
               ))}
           </div>

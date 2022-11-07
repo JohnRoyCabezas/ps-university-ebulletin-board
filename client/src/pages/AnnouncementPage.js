@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 
 const AnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
-  const [announcementThread, setAnnouncementThread] = useState()
+  const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const user = JSON.parse(Cookies.get('user'));
 
@@ -16,14 +16,13 @@ const AnnouncementPage = () => {
 
   useEffect(() => {
     const params = {
-      announcementable_id: 1,
+      announcementable_id: user.university_id,
       announcementable_type: "App/Models/University"
     }
 
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
         setAnnouncement(res.data);
-        console.log(user?.role_user?.role_id);
       }
     );
   }, []);

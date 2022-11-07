@@ -16,10 +16,10 @@ export default function AdminMessageOptions(props) {
     props.handleEdit(props.id);
   }
 
-  function yesDelete() {
-    console.log(props.id)
+  function confirmDelete() {
     ThreadApi.deleteThread(props.id);
     props.handleRefresh();
+    props.handleDelete()
   }
 
   return (
@@ -33,7 +33,7 @@ export default function AdminMessageOptions(props) {
             buttonConfirmText='Yes'
             buttonCancelText='No'
             setShowModal={setShowModal}
-            delete={() => yesDelete()}
+            delete={() => confirmDelete()}
           />}
       </div></>
   );

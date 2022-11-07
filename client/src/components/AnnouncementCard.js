@@ -15,11 +15,11 @@ export default function AnnouncementCard(props) {
 
   function handleEdit(id) {
     setId(id);
-    setIsEdit(false)
+    props.isAlter();
     AnnouncementApi.fetchSpecificAnnouncement(id).then((res) => {
       setParams(res.data);
     });
-    setIsEdit(true);
+    setIsEdit(!isEdit);
   }
 
   function isChange(value) {
@@ -29,7 +29,7 @@ export default function AnnouncementCard(props) {
 
   function setThreadValue(value) {
     props.setValue(value);
-    props.setAnnouncementThread(props.announcement.id)
+    props.setAnnouncementThread(props.announcement.id);
   }
 
   function cancel() {
@@ -47,7 +47,12 @@ export default function AnnouncementCard(props) {
           backgroundColor: isShown ? "#EAE8E8" : "",
         }}
       >
-          <img className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src={props?.announcement?.user?.avatar} alt="JC" />
+        <img
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+          className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+          src={props?.announcement?.user?.avatar}
+          alt="JC"
+        />
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
@@ -70,7 +75,7 @@ export default function AnnouncementCard(props) {
                 </div>
               ) : (
                 <span className="cardText text-gray-700 text-base">
-                    {parse(props.announcement.announcement)}
+                  {parse(props.announcement.announcement)}
                 </span>
               )
             }
@@ -87,6 +92,7 @@ export default function AnnouncementCard(props) {
               handleRefresh={props.handleRefresh}
               handleEdit={(id) => handleEdit(id)}
               setValue={setThreadValue}
+              handleDelete={props.isAlter}
             />
           ))}
       </div>
