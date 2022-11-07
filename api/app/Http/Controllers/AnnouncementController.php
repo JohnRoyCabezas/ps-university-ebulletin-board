@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AnnouncementUpdate;
 use App\Models\Announcement;
 use App\Models\PermissionRole;
 use App\Models\User;
@@ -50,6 +51,8 @@ class AnnouncementController extends Controller
                 'announcement' => $validatedData['announcement'],
             ]);
 
+            event(new AnnouncementUpdate($announcement));
+
             $data = [
                 'message' => $user_fullname . ' successfully created an announcement!',
                 'user' => $user_fullname,
@@ -72,7 +75,6 @@ class AnnouncementController extends Controller
                         ]
                     );
             }
-
             return response()->json($data);
         } else {
             return response()->json([
@@ -134,6 +136,7 @@ class AnnouncementController extends Controller
                 'user' => $user_fullname,
                 'announcement_update' => $announcement_update,
             ];
+
             return response()->json($data);
         } else {
             return response()->json([
@@ -162,6 +165,7 @@ class AnnouncementController extends Controller
             $data = [
                 'message' => 'Successfully deleted announcement!',
             ];
+            
             return response()->json($data);
         } else {
             return response()->json([
