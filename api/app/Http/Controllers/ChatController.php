@@ -24,14 +24,16 @@ class ChatController extends Controller
             'chat' => 'required',
         ]);
 
-        Chat::create(
+        $chat = Chat::create(
         [
             'course_id' => $validatedData['course_id'],
             'user_id' => $user->id,
             'chat' => $validatedData['chat']
         ]);
 
-        return response()->json(['message' => 'Chat created!']);
+        event(new ChatUpdate($chat));
+
+        return response()->json(['message' => 'Chat created!'], 200);
     }
 
     public function show($id)
@@ -65,11 +67,8 @@ class ChatController extends Controller
     public function courseChats( Request $request)
     {
         $coursechats = Chat::where('course_id', $request->course_id)
-            ->with('user')->latest()->take(20)->get()->reverse()->values()->toJson();
+            ->with('user')->get();
             
-
-        event(new ChatUpdate($coursechats));
-
         return response()->json($coursechats);
     }
 }

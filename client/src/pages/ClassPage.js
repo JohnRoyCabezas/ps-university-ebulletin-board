@@ -16,30 +16,37 @@ const ClassPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const handleRefresh = () => {
+    ChatApi.fetchCourseChats(classid).then(res => {
+      setChats(res.data); 
+    })
+  };
+
   useEffect(() => {
-    ChatApi.fetchCourseChats(classid);
     CourseApi.fetchSpecificCourse(classid).then((res) => {
       setCourse(res.data);
     });
 
+    handleRefresh();
+  }, [classid]);
+
+  
+  useEffect(() => {
     const pusher = new Pusher('6d32a294e8e6b327e3c5', {
       cluster: 'ap1',
     });
-
+    
     const channel = pusher.subscribe('chat');
+  
     channel.bind('chat-update', function (data) {
-      setChats(JSON.parse(data?.messages));
+      handleRefresh();
     });
-  }, [classid]);
-
+  }, []);
+  
   useEffect(() => {
     const lastDiv = document.getElementById('chatswrapper');
     lastDiv.scrollTo(0, lastDiv.scrollHeight);
   }, [chats]);
-
-  const handleRefresh = () => {
-    ChatApi.fetchCourseChats(classid);
-  };
 
   return (
     <div className="flex h-screen">
