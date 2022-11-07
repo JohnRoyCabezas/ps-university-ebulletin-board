@@ -40,15 +40,19 @@ class UniversityController extends Controller
                 'password' => Hash::make($validatedData['password']),
                 'is_verified' => true,
             ]);
-    
+
             RoleUser::create([
                 'user_id' => $user->id,
                 'role_id' => 2,
             ]);
-    
-            University::create([
+
+            $university = University::create([
                 'user_id' => $user->id,
                 'university' => $validatedData['university'],
+            ]);
+
+            $user->update([
+                'university_id' => $university->id
             ]);
 
             DB::commit();
