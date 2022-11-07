@@ -1,27 +1,29 @@
 import { React, useState, useRef, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import Cookies from "js-cookie";
-import AuthApi from '../api/AuthApi';
+import AuthApi from "../api/AuthApi";
 import ErrMsg from "../components/ErrorMessage";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 const LoginPage = () => {
   const emailRef = useRef();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [validEmail, setvalidEmail] = useState(true);
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
     emailRef.current.focus();
-  }, [])
+  }, []);
 
   useEffect(() => {
     const Email = EMAIL_REGEX.test(email);
-    if (email === '' || Email) {
-      setErrMsg('')
-      setvalidEmail(true)
-    } else { setvalidEmail(false) }
+    if (email === "" || Email) {
+      setErrMsg("");
+      setvalidEmail(true);
+    } else {
+      setvalidEmail(false);
+    }
   }, [email]);
 
   const handleSubmit = (e) => {
@@ -31,24 +33,22 @@ const LoginPage = () => {
 
     AuthApi.login(params).then(
       (res) => {
-        Cookies.set('token', res.data.token);
-        Cookies.set('user', JSON.stringify(res.data.user));
-        setEmail('');
-        setPassword('');
-        
+        Cookies.set("token", res.data.token);
+        Cookies.set("user", JSON.stringify(res.data.user));
+        Cookies.set("university", JSON.parse(res.data.user)).university_id;
+        setEmail("");
+        setPassword("");
+
         if (res.data.user.role_user.role_id === 2) {
-          window.location.pathname = '/adminannouncement'
-        } else (
-          window.location.pathname = '/announcement'
-        )
+          window.location.pathname = "/adminannouncement";
+        } else window.location.pathname = "/announcement";
       },
       (err) => {
         setErrMsg(err.response.data.error);
       }
     );
-
   };
-  
+
   return (
     <div>
       <NavBar />
@@ -68,7 +68,11 @@ const LoginPage = () => {
                 placeholder="johndoe@gmail.com"
                 type="email"
                 ref={emailRef}
-                className={`block w-full px-4 py-2 mt-2 bg-white border rounded-md ${validEmail ? "focus:border-blue-400 focus:ring-blue-300" : "focus:border-red-400 focus:ring-red-300"} focus:outline-none focus:ring focus:ring-opacity-40`}
+                className={`block w-full px-4 py-2 mt-2 bg-white border rounded-md ${
+                  validEmail
+                    ? "focus:border-blue-400 focus:ring-blue-300"
+                    : "focus:border-red-400 focus:ring-red-300"
+                } focus:outline-none focus:ring focus:ring-opacity-40`}
                 onChange={(e) => [setEmail(e.target.value)]}
               />
             </div>
@@ -84,13 +88,20 @@ const LoginPage = () => {
                 placeholder="password"
                 type="password"
                 className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                onChange={(e) => [setPassword(e.target.value), setErrMsg(false)]}
+                onChange={(e) => [
+                  setPassword(e.target.value),
+                  setErrMsg(false),
+                ]}
               />
               <ErrMsg error={errMsg} />
             </div>
             <div className="mt-16">
               <button
-                className={`w-full px-4 py-2 tracking-wide transition-colors duration-200 transform ${!email || !password ? "bg-gray-300 text-gray-400" : "bg-regal-blue text-white shadow-lg shadow-regal-blue-500/50"} rounded-md focus:outline-none focus:bg-blue-900`}
+                className={`w-full px-4 py-2 tracking-wide transition-colors duration-200 transform ${
+                  !email || !password
+                    ? "bg-gray-300 text-gray-400"
+                    : "bg-regal-blue text-white shadow-lg shadow-regal-blue-500/50"
+                } rounded-md focus:outline-none focus:bg-blue-900`}
                 disabled={!email || !password ? true : false}
               >
                 Login
