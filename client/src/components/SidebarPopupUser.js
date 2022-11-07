@@ -29,14 +29,14 @@ const SideBarPopupUser = (props) => {
   })
 
   const [showModal, setShowModal] = React.useState(false);
-  
+
   return (
     <>
       <div className="flex justify-center items-center p-2">
         <img
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
           src={JSON.parse(Cookies.get('user')).avatar}
-          className="rounded-full w-12"
-          alt="Avatar"
+          className="rounded-full w-11 bg-white"
         />
         <label className="mx-2">Avatar</label>
         {showModal == true ? (

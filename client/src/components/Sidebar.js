@@ -22,6 +22,8 @@ const Sidebar = () => {
       Cookies.set("universityid", res.data?.university?.id || res.data?.university_id)
     });
   }, [id]);
+
+
   return (
     <div className="flex shrink-0 w-full h-screen">
       <div className="relative flex flex-col w-64 bg-regal-blue text-white">
@@ -38,9 +40,8 @@ const Sidebar = () => {
         <div className="flex flex-col h-full overflow-y-auto mb-16">
           <div>
             <div
-              className={`flex items-center px-5 py-2 ${
-                Object.keys(id) == 0 && 'bg-slate-800'
-              } cursor-pointer`}
+              className={`flex items-center px-5 py-2 ${Object.keys(id) == 0 && 'bg-slate-800'
+                } cursor-pointer`}
               onClick={() => {
                 user?.role_user?.role_id === ROLES['ADMIN']
                   ? navigate('/adminannouncement')

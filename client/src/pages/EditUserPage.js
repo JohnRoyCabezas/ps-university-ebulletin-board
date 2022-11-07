@@ -71,7 +71,7 @@ const EditUserPage = () => {
       setShowModal(true);
     });
   };
-  console.log(params)
+  
   return (
     <div className="flex">
       {showModal && (

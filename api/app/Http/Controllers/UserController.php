@@ -42,25 +42,25 @@ class UserController extends Controller
                 ->where('fullname', 'ilike', '%' . $request->keyword . '%')
                 ->orderBy($request->order_name, $request->order_direction)
                 ->paginate($request->items_per_page);
-                
+
                 return response()->json($users);
             }
-            
+
         $selectUsers = User::with(['roleUser.role', 'department'])->where('university_id', $request->university_id)
             ->orderBy($request->order_name, $request->order_direction)
             ->paginate($request->items_per_page);
 
         return response()->json($selectUsers);
     }
-    
-    public function getStudents(Request $request) 
+
+    public function getStudents(Request $request)
     {
         $students = User::student()->where('university_id', $request->university_id)->get();
 
         return response()->json($students);
     }
 
-    public function getInstructors(Request $request) 
+    public function getInstructors(Request $request)
     {
         $instructors = User::instructor()->where('university_id', $request->university_id)->get();
 

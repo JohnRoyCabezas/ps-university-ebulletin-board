@@ -14,10 +14,11 @@ export default function AnnouncementCard(props) {
 
   function handleEdit(id) {
     setId(id);
+    props.isAlter();
     ThreadApi.fetchSpecificThread(id).then((res) => {
       setParams({ announcement: res.data.thread.thread_message });
     });
-    setIsEdit(true);
+    setIsEdit(!isEdit);
   }
 
   function cancel() {
@@ -45,8 +46,9 @@ export default function AnnouncementCard(props) {
         }}
       >
         <img
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
           src={props?.user_detail?.avatar}
-          className="rounded-full w-12 h-12"
+          className="rounded-full w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
           alt="Avatar"
         />
         <div className="flex flex-col ml-2">
@@ -78,11 +80,12 @@ export default function AnnouncementCard(props) {
         </div>
         {
           threadOption() &&
-            <AdminThreadOptions
-              id={props.thread.id}
-              handleRefresh={props.handleRefresh}
-              handleEdit={(id) => handleEdit(id)}
-            />
+          <AdminThreadOptions
+            id={props.thread.id}
+            handleRefresh={props.handleRefresh}
+            handleEdit={(id) => handleEdit(id)}
+            handleDelete={props.isAlter}
+          />
         }
       </div>
     </div>

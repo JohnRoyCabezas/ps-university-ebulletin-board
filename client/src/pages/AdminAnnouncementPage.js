@@ -1,31 +1,21 @@
-import { React, useEffect, useState } from 'react';
-import Thread from '../components/Thread';
-import AnnouncementCard from '../components/AnnouncementCard';
-import RichTextEditor from '../components/RichTextEditor';
-import AnnouncementApi from '../api/AnnouncementApi';
-import Pusher from 'pusher-js';
+import { React, useEffect, useLayoutEffect, useState } from "react";
+import Thread from "../components/Thread";
+import AnnouncementCard from "../components/AnnouncementCard";
+import RichTextEditor from "../components/RichTextEditor";
+import AnnouncementApi from "../api/AnnouncementApi";
+import Pusher from "pusher-js";
+import Cookies from "js-cookie";
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
-  const [announcements, setAnnouncements] = useState([]);
+  const [announcements, setAnnouncement] = useState([]);
+  const user = JSON.parse(Cookies.get("universityid"));
+  const [isAlter, setIsAlter] = useState(false);
   const params = {
-    announcementable_id: 1,
-    announcementable_type: 'App/Models/University',
+    announcementable_id: user,
+    announcementable_type: "App/Models/University",
   };
-
-  // const today = new Date();
-  // const [time, setTime] = useState(today);
-
-  // useEffect(() => {
-  //     setTime(today);
-  // }, [today])
-
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-    });
-  }
 
   function setThreadValue(value) {
     setThread(value);
@@ -35,10 +25,20 @@ const AdminAnnouncementPage = () => {
     handleRefresh();
   }, []);
 
-  useEffect(() => {
-    const lastDiv = document.getElementById('announcementWrapper');
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
+  useLayoutEffect(() => {
+    if (!isAlter) {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
+      setIsAlter(false);
+    }
+    setIsAlter(false);
   }, [announcements]);
+
+  function handleRefresh() {
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncement(res.data);
+    });
+  }
 
   return (
     <div className="flex h-screen">
@@ -56,11 +56,12 @@ const AdminAnnouncementPage = () => {
             {announcements.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
-                userRole={'admin'}
+                userRole={"admin"}
                 announcement={announcement}
                 handleRefresh={() => handleRefresh()}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
+                isAlter={() => setIsAlter(true)}
               />
             ))}
           </div>
@@ -74,7 +75,7 @@ const AdminAnnouncementPage = () => {
       </div>
       {isThread && (
         <Thread
-          userRole={'admin'}
+          userRole={"admin"}
           setValue={setThreadValue}
           announcementThread={announcementThread}
         />

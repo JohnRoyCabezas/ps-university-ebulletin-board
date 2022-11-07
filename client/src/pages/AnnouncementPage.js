@@ -1,18 +1,18 @@
-import { React, useEffect, useCallback, useState, useMemo } from 'react';
-import AnnouncementCard from '../components/AnnouncementCard';
-import AnnouncementApi from '../api/AnnouncementApi';
-import Thread from '../components/Thread';
-import Pusher from 'pusher-js';
-import Cookies from 'js-cookie';
+import { React, useEffect, useCallback, useState, useMemo } from "react";
+import AnnouncementCard from "../components/AnnouncementCard";
+import AnnouncementApi from "../api/AnnouncementApi";
+import Thread from "../components/Thread";
+import Pusher from "pusher-js";
+import Cookies from "js-cookie";
 
 const AnnouncementPage = () => {
-  const [announcements, setAnnouncements] = useState([]);
+  const [announcements, setAnnouncement] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
-  const user = JSON.parse(Cookies.get('user'));
+  const user = JSON.parse(Cookies.get("user"));
   const params = {
     announcementable_id: 1,
-    announcementable_type: 'App/Models/University',
+    announcementable_type: "App/Models/University",
   };
 
   function setThreadValue(value) {
@@ -26,27 +26,33 @@ const AnnouncementPage = () => {
   //     setTime(today);
   // }, [today])
 
-  useEffect(() => {
+  function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
+      setAnnouncement(res.data);
     });
-  }, []);
+  }
 
   useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
+    const params = {
+      announcementable_id: user.university_id,
+      announcementable_type: "App/Models/University",
+    };
+
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
     });
 
-    const channel = pusher.subscribe('announcement-channel');
-    channel.bind('announcement-update', function (data) {
+    const channel = pusher.subscribe("announcement-channel");
+    channel.bind("announcement-update", function (data) {
       AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-        setAnnouncements(res.data);
+        setAnnouncement(res.data);
+        console.log(user?.role_user?.role_id);
       });
     });
   }, []);
 
   useEffect(() => {
-    const lastDiv = document.getElementById('announcementWrapper');
+    const lastDiv = document.getElementById("announcementWrapper");
     lastDiv.scrollTo(0, lastDiv.scrollHeight);
   }, [announcements]);
 
@@ -63,7 +69,7 @@ const AnnouncementPage = () => {
             {announcements.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
-                userRole={'student'}
+                userRole={"student"}
                 announcement={announcement}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
@@ -74,7 +80,7 @@ const AnnouncementPage = () => {
       </div>
       {isThread && (
         <Thread
-          userRole={'student'}
+          userRole={"student"}
           setValue={setThreadValue}
           announcementThread={announcementThread}
         />

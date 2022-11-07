@@ -75,7 +75,6 @@ const RegisterPage = () => {
 
   const [processing, setProcessing] = useState(false);
 
-  console.log(params);
   const handleSubmit = () => {
     setProcessing(true);
     AuthApi.register(params).then(
