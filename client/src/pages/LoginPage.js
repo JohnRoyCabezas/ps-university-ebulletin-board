@@ -35,7 +35,7 @@ const LoginPage = () => {
       (res) => {
         Cookies.set("token", res.data.token);
         Cookies.set("user", JSON.stringify(res.data.user));
-        Cookies.set("university", JSON.parse(res.data.user)).university_id;
+        Cookies.set("universityid", res.data.user.university_id);
         setEmail("");
         setPassword("");
 
