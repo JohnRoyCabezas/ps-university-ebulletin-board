@@ -1,6 +1,5 @@
 import { React, useEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
-import RichTextEditor from '../components/RichTextEditor';
 import Thread from "../components/Thread";
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
@@ -50,7 +49,7 @@ const DepartmentPage = () => {
               announcements.map((announcement) => (
                 <AnnouncementCard
                     key={announcement.id.toString()}
-                    userRole={'admin'}
+                    userRole={'student'}
                     announcement={announcement}
                     handleRefresh={() => handleRefresh()}
                     setValue={setThreadValue}
