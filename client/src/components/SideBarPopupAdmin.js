@@ -20,6 +20,7 @@ const SideBarPopupAdmin = (props) => {
       Cookies.remove('params');
       Cookies.remove('universityid');
       navigate('/');
+      document.title = "University | E-Bulletin";
     });
   };
 

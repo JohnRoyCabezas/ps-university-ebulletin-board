@@ -43,3 +43,31 @@
   border-width: 1px;
   border-top: 0px;
 }
+
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+.cardText li {
+  margin-left: 3rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 1.7rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+}

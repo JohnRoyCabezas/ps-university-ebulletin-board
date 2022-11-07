@@ -20,6 +20,7 @@ const SideBarPopupUser = (props) => {
       Cookies.remove('user');
       Cookies.remove('params');
       navigate('/');
+      document.title = "University | E-Bulletin";
     });
   };
 

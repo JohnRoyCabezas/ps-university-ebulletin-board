@@ -13,6 +13,8 @@ const ClassPage = () => {
   const [course, setCourse] = useState({});
   const [showComments, setShowComments] = useState(false);
   const [chatId, setChatId] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     ChatApi.fetchCourseChats(classid);
@@ -49,7 +51,7 @@ const ClassPage = () => {
           <div id="chatswrapper" className="mt-12 overflow-y-auto">
             {chats?.length === 0 ? (
               <div className="flex mt-10 italic justify-center">
-                There are no chat messages available.
+                {!loading ? "There are no chat messages available.": "Loading..."}
               </div>
             ) : (
               chats?.map((chat) => (
@@ -64,7 +66,7 @@ const ClassPage = () => {
             )}
           </div>
           <div className="p-2 rounded-3xl">
-            <ChatTextEditor handleRefresh={handleRefresh} classid={classid} />
+            <ChatTextEditor handleRefresh={handleRefresh} classid={classid} setIsEditing={setIsEditing}/>
           </div>
         </div>
       </div>

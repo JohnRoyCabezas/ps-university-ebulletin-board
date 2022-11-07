@@ -30,7 +30,6 @@ const AdminDepartment = () => {
     );
     DepartmentApi.fetchSpecificDepartment(departmentid).then(
       ({data})  => {
-        console.log(data)
         setDepartment(data)
       }
     );

@@ -23,7 +23,7 @@ export default function NavBar(props) {
       ThreadApi.createThreadMessage({
         user_id: JSON.parse(Cookies.get('user') || '{}').id,
         announcement_id: props.params?.announcement_id,
-        thread_message: parse(announcement).props.children,
+        thread_message: announcement,
       }).then(
         (res) => {
           setAnnouncement('');

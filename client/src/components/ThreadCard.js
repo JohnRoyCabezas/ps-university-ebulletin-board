@@ -57,25 +57,23 @@ export default function AnnouncementCard(props) {
             </span>
           </div>
           <div>
-            {
-              isEdit ? (
-                <div className="rounded bg-white w-full">
-                  <RichTextEditor
-                    isEdit={isEdit}
-                    isChange={(value) => isChange(value)}
-                    handleRefresh={() => props.handleRefresh()}
-                    id={id}
-                    type={'university_thread'}
-                    cancel={cancel}
-                    params={params}
-                  />
-                </div>
-              ) : (
-                <span className="text-gray-700 text-base">
-                  {props.thread.announcement ? parse(props.thread.announcement) : parse(props.thread.thread_message)}
-                </span>
-              )
-            }
+            {isEdit ? (
+              <div className="rounded bg-white w-full">
+                <RichTextEditor
+                  isEdit={isEdit}
+                  isChange={(value) => isChange(value)}
+                  handleRefresh={() => props.handleRefresh()}
+                  id={id}
+                  type={'university_thread'}
+                  cancel={cancel}
+                  params={params}
+                />
+              </div>
+            ) : (
+              <span className="cardText text-gray-700 text-base">
+                {props.thread.announcement ? parse(props.thread.announcement): parse(props.thread.thread_message)}
+              </span>
+            )}
           </div>
         </div>
         {
