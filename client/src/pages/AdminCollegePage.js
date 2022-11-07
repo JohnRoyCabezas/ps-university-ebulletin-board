@@ -4,11 +4,12 @@ import RichTextEditor from '../components/RichTextEditor';
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
 import Thread from '../components/Thread';
+import Pusher from 'pusher-js';
 
 const AdminCollegePage = () => {
   const { collegeid } = useParams();
   const [isThread, setThread] = useState(false);
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
   const [isAlter, setIsAlter] = useState(false);
   const params =
@@ -18,9 +19,22 @@ const AdminCollegePage = () => {
   }
 
   useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }, [collegeid]);
@@ -39,7 +53,7 @@ const AdminCollegePage = () => {
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }

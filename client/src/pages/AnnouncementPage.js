@@ -6,7 +6,7 @@ import Pusher from "pusher-js";
 import Cookies from "js-cookie";
 
 const AnnouncementPage = () => {
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const user = JSON.parse(Cookies.get("user"));
@@ -26,9 +26,15 @@ const AnnouncementPage = () => {
   //     setTime(today);
   // }, [today])
 
+  useEffect(() => {
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncements(res.data);
+    });
+  }, []);
+
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncement(res.data);
+      setAnnouncements(res.data);
     });
   }
 
@@ -45,8 +51,7 @@ const AnnouncementPage = () => {
     const channel = pusher.subscribe("announcement-channel");
     channel.bind("announcement-update", function (data) {
       AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-        setAnnouncement(res.data);
-        console.log(user?.role_user?.role_id);
+        setAnnouncements(res.data);
       });
     });
   }, []);

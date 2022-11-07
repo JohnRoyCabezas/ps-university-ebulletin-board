@@ -5,15 +5,15 @@ import { useParams } from 'react-router-dom';
 import Thread from '../components/Thread';
 import Cookies from 'js-cookie';
 import RichTextEditor from '../components/RichTextEditor';
+import Pusher from 'pusher-js';
 
 const CollegePage = () => {
-  const { collegeid } = useParams();
-  const [announcements, setAnnouncement] = useState([]);
+  const {collegeid} = useParams();
+  const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
   const user = JSON.parse(Cookies.get('user'));
-
   const params =
   {
     announcementable_id: collegeid,
@@ -21,12 +21,25 @@ const CollegePage = () => {
   }
 
   useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     const params = {
       announcementable_type: 'App/Models/College',
       announcementable_id: collegeid,
     };
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncement(res.data);
+      setAnnouncements(res.data);
     });
   }, [collegeid]);
 
@@ -49,7 +62,7 @@ const CollegePage = () => {
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }

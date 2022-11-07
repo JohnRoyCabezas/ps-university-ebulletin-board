@@ -12,7 +12,7 @@ import Cookies from 'js-cookie';
 
 const SideBarPopupUser = (props) => {
   const navigate = useNavigate();
-
+  const user = JSON.parse(Cookies.get('user') || '{}');
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
@@ -38,7 +38,7 @@ const SideBarPopupUser = (props) => {
           src={JSON.parse(Cookies.get('user')).avatar}
           className="rounded-full w-11 bg-white"
         />
-        <label className="mx-2">Avatar</label>
+        <label className="mx-2">{user ? user.fullname : 'User'}</label>
         {showModal == true ? (
           <button
             className="button-default"

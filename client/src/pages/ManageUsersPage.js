@@ -9,7 +9,7 @@ const ManageUsersPage = () => {
   const [isAscending, setIsAscending] = useState(true);
   const [params, setParams] = useState({
     page: 1,
-    items_per_page: 10,
+    items_per_page: 6,
     order_name: 'id',
     order_direction: 'asc',
     keyword: '',

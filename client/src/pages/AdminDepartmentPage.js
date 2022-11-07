@@ -5,12 +5,13 @@ import Thread from "../components/Thread";
 import AnnouncementApi from '../api/AnnouncementApi';
 import DepartmentApi from '../api/DepartmentApi';
 import { useParams } from 'react-router-dom';
+import Pusher from 'pusher-js';
 
 const AdminDepartment = () => {
   const { departmentid } = useParams();
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState()
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [department, setDepartment] = useState()
   const params =
   {
@@ -23,9 +24,22 @@ const AdminDepartment = () => {
   }
 
   useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
     DepartmentApi.fetchSpecificDepartment(departmentid).then(
@@ -43,7 +57,7 @@ const AdminDepartment = () => {
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }

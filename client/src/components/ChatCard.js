@@ -35,6 +35,7 @@ const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
         }}
       >
         <img
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
           className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
           src={chat?.user?.avatar}
           alt="avatar"
@@ -68,7 +69,7 @@ const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
             handleRefresh={handleRefresh}
             handleEdit={setIsEditing}
             canEdit={canEdit}
-            canDelete={canDelete} 
+            canDelete={canDelete}
           />
         )}
       </div>

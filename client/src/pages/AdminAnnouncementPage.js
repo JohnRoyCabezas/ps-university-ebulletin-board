@@ -12,10 +12,37 @@ const AdminAnnouncementPage = () => {
   const [announcements, setAnnouncement] = useState([]);
   const user = JSON.parse(Cookies.get("universityid"));
   const [isAlter, setIsAlter] = useState(false);
+  
   const params = {
     announcementable_id: user,
     announcementable_type: "App/Models/University",
   };
+
+  // const today = new Date();
+  // const [time, setTime] = useState(today);
+
+  // useEffect(() => {
+  //     setTime(today);
+  // }, [today])
+
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  function handleRefresh() {
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncements(res.data);
+    });
+  }
 
   function setThreadValue(value) {
     setThread(value);

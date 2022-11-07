@@ -52,8 +52,8 @@ const LoginPage = () => {
   return (
     <div>
       <NavBar />
-      <div className="relative flex flex-col justify-center overflow-hidden m-20">
-        <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl h-96">
+      <div className="relative flex flex-col justify-center h-screen items-center">
+        <div className="w-full p-8 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
           <h1 className="text-3xl font-bold text-center">LOGIN</h1>
           <form className="mt-6" onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -95,7 +95,7 @@ const LoginPage = () => {
               />
               <ErrMsg error={errMsg} />
             </div>
-            <div className="mt-16">
+            <div className="mt-10">
               <button
                 className={`w-full px-4 py-2 tracking-wide transition-colors duration-200 transform ${
                   !email || !password

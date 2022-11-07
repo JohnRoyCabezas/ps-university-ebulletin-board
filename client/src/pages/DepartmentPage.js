@@ -3,26 +3,57 @@ import AnnouncementCard from '../components/AnnouncementCard';
 import Thread from "../components/Thread";
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import Pusher from 'pusher-js';
+import RichTextEditor from '../components/RichTextEditor';
+
 
 const DepartmentPage = () => {
   const { departmentid } = useParams();
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState()
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const user = JSON.parse(Cookies.get('user'));
   const params =
   {
     announcementable_id: departmentid,
     announcementable_type: "App/Models/Department",
   }
 
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
   function setThreadValue(value) {
     setThread(value);
   }
 
   useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }, [departmentid]);
@@ -35,7 +66,7 @@ const DepartmentPage = () => {
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }
@@ -57,6 +88,14 @@ const DepartmentPage = () => {
                 />
               ))}
           </div>
+          {
+          (user?.role_user?.role_id === 1 ? '' : <div className="p-2 rounded-3xl">
+          <RichTextEditor
+            handleRefresh={() => handleRefresh()}
+            params={params}
+          />
+        </div>)
+}
         </div>
       </div>
       {isThread && <Thread userRole={'student'} setValue={setThreadValue} announcementThread={announcementThread}/>}

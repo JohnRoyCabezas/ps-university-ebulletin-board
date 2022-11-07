@@ -47,7 +47,7 @@ const EditPassword = () => {
     useEffect(() => {
         if (changeNew) {
             setReqNew(true)
-            const ValidNew = /^(?=.*[a-z])(?=.*[A-Z]).{4,24}/.test(changeNew)
+            const ValidNew = /^(?=.*[a-z])(?=.*[A-Z]).{8,24}/.test(changeNew)
             setValidNew(ValidNew)
         } else { setReqNew(false) }
     }, [changeNew])
@@ -177,7 +177,7 @@ const EditPassword = () => {
 
                                             {reqNew && (!validNew ? <span className=" text-sm italic">
                                                 <p className={!validNew ? "instructions text-red-600 rounded" : "offscreen"}>
-                                                    <FontAwesomeIcon icon={faInfoCircle} /> At least 4 character(s) With Upper case <br />
+                                                    <FontAwesomeIcon icon={faInfoCircle} /> At least 8 character(s) With Upper case <br />
                                                 </p>
                                             </span> : '')}
                                         </div>
