@@ -59,22 +59,22 @@ class AnnouncementController extends Controller
                 'announcement' => $announcement,
             ];
 
-            $mobile_numbers = User::whereNotNull("mobile_number")->pluck('mobile_number');
+            // $mobile_numbers = User::whereNotNull("mobile_number")->pluck('mobile_number');
 
-            $sid = env('TWILIO_SID');
-            $token = env('TWILIO_TOKEN');
-            $messageService = env('TWILIO_MESSAGING_SERVICE_SID');
+            // $sid = env('TWILIO_SID');
+            // $token = env('TWILIO_TOKEN');
+            // $messageService = env('TWILIO_MESSAGING_SERVICE_SID');
 
-            foreach ($mobile_numbers as $mobile_number) {
-                $twilio = new Client($sid, $token);
-                $twilio->messages
-                    ->create($mobile_number, // to
-                        [
-                            "body" => strip_tags($announcement->announcement),
-                            "messagingServiceSid" => $messageService,
-                        ]
-                    );
-            }
+            // foreach ($mobile_numbers as $mobile_number) {
+            //     $twilio = new Client($sid, $token);
+            //     $twilio->messages
+            //         ->create($mobile_number, // to
+            //             [
+            //                 "body" => strip_tags($announcement->announcement),
+            //                 "messagingServiceSid" => $messageService,
+            //             ]
+            //         );
+            // }
             return response()->json($data);
         } else {
             return response()->json([
@@ -165,7 +165,7 @@ class AnnouncementController extends Controller
             $data = [
                 'message' => 'Successfully deleted announcement!',
             ];
-            
+
             return response()->json($data);
         } else {
             return response()->json([

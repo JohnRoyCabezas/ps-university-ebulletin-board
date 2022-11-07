@@ -24,13 +24,15 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState(initialParams);
+  const [showDeptDropdown, setShowDeptDropdown] = useState(false);
 
   useEffect(() => {
     DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
     });
-    RoleApi.fetchRoles().then((res) => {
-      setRoles(res.data);
+    RoleApi.fetchRoles().then(({data}) => {
+      data.splice(1,1)
+      setRoles(data)
     });
     Cookies.get('params') &&
       setParams(JSON.parse(Cookies.get('params') || '{}'));
@@ -59,6 +61,12 @@ const RegisterPage = () => {
     Cookies.set('params', JSON.stringify({ ...params }));
   };
 
+  useEffect(() => {
+    if (params?.role_id === 1 || params?.role_id === 3 ) {
+      setShowDeptDropdown(true);
+    } else { setShowDeptDropdown(false) }
+  }, [params])
+
   const handleSelectChange = (type, value) => {
     setErrors({});
     if (type === 'department') {
@@ -75,7 +83,6 @@ const RegisterPage = () => {
 
   const [processing, setProcessing] = useState(false);
 
-  console.log(params);
   const handleSubmit = () => {
     setProcessing(true);
     AuthApi.register(params).then(
@@ -140,7 +147,37 @@ const RegisterPage = () => {
                   </svg>
                 </div>
               </div>
+
               <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-800">
+                  Role
+                  {params.role_id === '' && (
+                    <span className="text-s italic font-light text-red-800">
+                      *
+                    </span>
+                  )}
+                </label>
+                <Dropdown
+                  selectedLabel={
+                    params.role_id &&
+                    roles[
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
+                    ]?.role
+                  }
+                  selectedValue={
+                    params.role_id &&
+                    roles[
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
+                    ]?.id
+                  }
+                  handleChange={handleSelectChange}
+                  type="role"
+                  label="role"
+                  data={roles}
+                />
+              </div>
+
+              {showDeptDropdown && (<div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Department
                   {params.department_id === '' && (
@@ -171,35 +208,8 @@ const RegisterPage = () => {
                   label="department"
                   data={departments}
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-800">
-                  Role
-                  {params.role_id === '' && (
-                    <span className="text-s italic font-light text-red-800">
-                      *
-                    </span>
-                  )}
-                </label>
-                <Dropdown
-                  selectedLabel={
-                    params.role_id &&
-                    roles[
-                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
-                    ]?.role
-                  }
-                  selectedValue={
-                    params.role_id &&
-                    roles[
-                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
-                    ]?.id
-                  }
-                  handleChange={handleSelectChange}
-                  type="role"
-                  label="role"
-                  data={roles}
-                />
-              </div>
+              </div>)}
+              
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Fullname

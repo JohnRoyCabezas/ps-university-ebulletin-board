@@ -29,6 +29,9 @@ const RoutesList = () => {
   const ROLES = {
     Student: 1,
     Admin: 2,
+    Studen_Body: 3,
+    Dean: 4,
+    Instructor: 5
   };
 
   return (
@@ -38,7 +41,7 @@ const RoutesList = () => {
       <Route path="unauthorized" element={<Unauthorized />}></Route>
       <Route path="createuniversity" element={<CreateUniversityPage />} />
       <Route
-        element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student]} />}
+        element={<ProtectedRoute allowedRoles={[ROLES.Admin, ROLES.Student, ROLES.Studen_Body, ROLES.Dean, ROLES.Instructor]} />}
       >
         <Route element={<Sidebar />}>
           <Route path="announcement" element={<AnnouncementPage />} />

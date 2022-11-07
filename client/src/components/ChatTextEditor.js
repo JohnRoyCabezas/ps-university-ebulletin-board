@@ -102,7 +102,7 @@ const ChatTextEditor = ({
               <button
                 onClick={() => handleSubmit}
                 disabled={params?.updateChat === params?.chat && true}
-                className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
+                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
                   params?.chat === '<p><br></p>'
                     ? 'disabled bg-gray-300 text-gray-400'
                     : 'bg-blue-700 hover:bg-blue-800'

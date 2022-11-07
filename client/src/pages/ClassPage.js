@@ -25,6 +25,7 @@ const ClassPage = () => {
   useEffect(() => {
     CourseApi.fetchSpecificCourse(classid).then((res) => {
       setCourse(res.data);
+      setLoading(false);
     });
 
     handleRefresh();

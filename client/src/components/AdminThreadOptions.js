@@ -17,7 +17,6 @@ export default function AdminMessageOptions(props) {
   }
 
   function yesDelete() {
-    console.log(props.id)
     ThreadApi.deleteThread(props.id);
     props.handleRefresh();
   }

@@ -3,12 +3,14 @@ import AnnouncementCard from '../components/AnnouncementCard';
 import Thread from "../components/Thread";
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
+import Pusher from 'pusher-js';
+
 
 const DepartmentPage = () => {
   const { departmentid } = useParams();
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState()
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const params =
   {
     announcementable_id: departmentid,
@@ -20,9 +22,22 @@ const DepartmentPage = () => {
   }
 
   useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }, [departmentid]);
@@ -35,7 +50,7 @@ const DepartmentPage = () => {
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then(
       (res) => {
-        setAnnouncement(res.data);
+        setAnnouncements(res.data);
       }
     );
   }

@@ -2,10 +2,29 @@ import { React, useEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
+import Pusher from 'pusher-js';
 
 const CollegePage = () => {
   const {collegeid} = useParams();
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const params =
+  {
+    announcementable_id: collegeid,
+    announcementable_type: "App/Models/College",
+  }
+
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
 
   useEffect(() => {
     const params = {
@@ -13,7 +32,7 @@ const CollegePage = () => {
       announcementable_id: collegeid,
     };
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncement(res.data);
+      setAnnouncements(res.data);
     });
   }, [collegeid]);
 

@@ -21,6 +21,19 @@ const AdminAnnouncementPage = () => {
   //     setTime(today);
   // }, [today])
 
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
       setAnnouncements(res.data);

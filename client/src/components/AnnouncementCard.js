@@ -47,7 +47,11 @@ export default function AnnouncementCard(props) {
           backgroundColor: isShown ? "#EAE8E8" : "",
         }}
       >
-          <img className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src={props?.announcement?.user?.avatar} alt="JC" />
+          <img 
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+          className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" 
+          src={props?.announcement?.user?.avatar} 
+          alt="avatar" />
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
