@@ -50,9 +50,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <NavBar />
-      <div className="relative flex flex-col justify-center h-screen items-center">
+      <div className="relative flex flex-col justify-center h-full items-center">
         <div className="w-full p-8 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
           <h1 className="text-3xl font-bold text-center">LOGIN</h1>
           <form className="mt-6" onSubmit={handleSubmit}>

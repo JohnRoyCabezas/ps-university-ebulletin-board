@@ -30,7 +30,7 @@ const CommentCard = ({comment, handleRefresh}) => {
   return (
     <div>
       <div
-        className="relative flex shadow-lg  w-full border-b-2 p-6"
+        className="relative flex w-full px-6 py-4"
         onMouseEnter={() => setIsShowOptions(true)}
         onMouseLeave={() => setIsShowOptions(false)}
         style={{
@@ -43,7 +43,7 @@ const CommentCard = ({comment, handleRefresh}) => {
           alt="Avatar"
         />
         <div className="flex flex-col ml-2">
-          <div className="flex justify-start items-center mb-2">
+          <div className="flex justify-start items-center">
             <h5 className="font-bold">{comment?.user?.fullname}</h5>
             <span className="ml-2 text-xs">
               <i>{moment(comment.created_at).fromNow()}</i>
@@ -60,7 +60,7 @@ const CommentCard = ({comment, handleRefresh}) => {
                 />
               </div>
             ) : (
-              <span className="text-gray-700 text-base">
+              <span className="text-gray-700 text-sm">
                 {parse(comment?.comment)}
               </span>
             )}
