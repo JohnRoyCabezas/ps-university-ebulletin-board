@@ -78,6 +78,7 @@ const AnnouncementPage = () => {
                 announcement={announcement}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
+                threadOpen = {isThread}
               />
             ))}
           </div>

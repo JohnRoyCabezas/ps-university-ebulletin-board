@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import parse from "html-react-parser";
 import AdminMessageOptions from "./AdminMessageOptions";
@@ -10,6 +10,7 @@ import "../index.css"
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isThreadOpen, setIsThreadOpen] = useState(false);
   const [params, setParams] = useState({});
   const [id, setId] = useState("");
 
@@ -30,12 +31,17 @@ export default function AnnouncementCard(props) {
   function setThreadValue(value) {
     props.setValue(value);
     props.setAnnouncementThread(props.announcement.id);
+    setIsThreadOpen(!isThreadOpen);
   }
 
   function cancel() {
     setIsEdit(false);
-    setIsShown(false)
+    setIsShown(false);
   }
+
+  useEffect(()=> {
+    if(!props.threadOpen) setIsThreadOpen(false);
+  }, [props.threadOpen])
 
   return (
     <div>
@@ -44,7 +50,7 @@ export default function AnnouncementCard(props) {
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{
-          backgroundColor: isShown ? "#EAE8E8" : "",
+          backgroundColor: isShown || isThreadOpen ? "#EAE8E8" : "",
         }}
       >
         <img
@@ -84,7 +90,7 @@ export default function AnnouncementCard(props) {
         </div>
         {isShown &&
           (props.userRole === "student" ? (
-            <StudentMessageOptions setValue={setThreadValue} />
+            <StudentMessageOptions setValue={setThreadValue}/>
           ) : (
             <AdminMessageOptions
               id={props.announcement.id}

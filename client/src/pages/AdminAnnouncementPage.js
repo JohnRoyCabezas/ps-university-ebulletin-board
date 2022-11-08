@@ -17,13 +17,6 @@ const AdminAnnouncementPage = () => {
     announcementable_type: "App/Models/University",
   };
 
-  // const today = new Date();
-  // const [time, setTime] = useState(today);
-
-  // useEffect(() => {
-  //     setTime(today);
-  // }, [today])
-
   useEffect(() => {
     const pusher = new Pusher("6d32a294e8e6b327e3c5", {
       cluster: "ap1",
@@ -88,6 +81,7 @@ const AdminAnnouncementPage = () => {
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
                 isAlter={() => setIsAlter(true)}
+                threadOpen = {isThread}
               />
             ))}
           </div>

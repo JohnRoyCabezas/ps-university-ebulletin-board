@@ -5,11 +5,12 @@ import ChatTextEditor from './ChatTextEditor';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
-const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
+const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments, showComments }) => {
   const [isShowOptions, setIsShowOptions] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   const user = JSON.parse(Cookies.get('user') || '{}');
 
   useEffect(() => {
@@ -24,6 +25,10 @@ const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
     }
   }, []);
 
+  useEffect(()=> {
+    if(!showComments) setCommentsOpen(false);
+  }, [showComments])
+
   return (
     <div>
       <div
@@ -31,7 +36,7 @@ const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
         onMouseLeave={() => setIsShowOptions(false)}
         className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
         style={{
-          backgroundColor: isShowOptions ? '#EAE8E8' : '',
+          backgroundColor: isShowOptions || commentsOpen && showComments ? '#EAE8E8' : '',
         }}
       >
         <img
@@ -70,6 +75,7 @@ const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments }) => {
             handleEdit={setIsEditing}
             canEdit={canEdit}
             canDelete={canDelete}
+            setCardCommentsOpen={setCommentsOpen}
           />
         )}
       </div>
