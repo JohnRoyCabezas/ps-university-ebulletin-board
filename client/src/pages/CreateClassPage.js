@@ -8,7 +8,7 @@ import CourseApi from '../api/CourseApi';
 import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
 
-const CreateCollegePage = () => {
+const CreateClassPage = () => {
   const initialState = {
     user_ids: [],
     instructor_id: '',
@@ -182,4 +182,4 @@ const CreateCollegePage = () => {
   );
 };
 
-export default CreateCollegePage;
+export default CreateClassPage;

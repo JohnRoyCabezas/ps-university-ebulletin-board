@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\College;
+use App\Models\User;
 use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentController extends Controller
 {
@@ -23,7 +25,7 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(
+        $validatedData = $request->validate(
             [
                 'college_id' => ['required'],
                 'user_id' => ['required'],
@@ -32,18 +34,35 @@ class DepartmentController extends Controller
             ]
         );
 
-        Department::create([
-            'college_id' => $request['college_id'],
-            'user_id' => $request['user_id'],
-            'department' => $request['department'],
-            'department_information' => $request['department_information'],
-        ]);
+        try {
+            DB::beginTransaction();
 
-        return response()->json(
-            [
-                'status' => 'Department created!',
-            ]
-        );
+            $department = Department::create([
+                'college_id' => $request['college_id'],
+                'user_id' => $request['user_id'],
+                'department' => $request['department'],
+                'department_information' => $request['department_information'],
+            ]);
+
+            $user = User::findOrFail($validatedData['user_id']);
+            $user->department_id = $department->id;
+            $user->save();
+
+            DB::commit();
+
+            return response()->json(
+                [
+                    'status' => 'Department created!',
+                    'user' => $user,
+                ]
+            );
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function show($id)
