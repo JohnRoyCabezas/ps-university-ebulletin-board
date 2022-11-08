@@ -63,7 +63,7 @@ const AdminAnnouncementPage = () => {
 
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncement(res.data);
+      setAnnouncements(res.data);
     });
   }
 
