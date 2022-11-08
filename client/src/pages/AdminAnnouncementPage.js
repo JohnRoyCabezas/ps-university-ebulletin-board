@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const user = JSON.parse(Cookies.get("universityid"));
   const [isAlter, setIsAlter] = useState(false);
   
