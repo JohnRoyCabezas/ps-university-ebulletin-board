@@ -1,6 +1,7 @@
 import React from "react";
 import Dropdown from "../components/Dropdown";
 import DropdownMulti from '../components/DropdownMulti';
+import SubmitButton from "../components/submitButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
@@ -48,9 +49,12 @@ const EditClassPage = () => {
                 <DropdownMulti type="students" label="fullname"/>
               </div>
               <div className="mt-8">
-                <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md hover:bg-blue-900 focus:outline-none focus:bg-blue-900">
-                  Accept Changes
-                </button>
+                <SubmitButton
+                handleSubmit={''}
+                buttonDisabled={''}
+                processing={''}
+                buttonTitle={"Accept Changes"}
+              />
               </div>
             </form>
           </div>
