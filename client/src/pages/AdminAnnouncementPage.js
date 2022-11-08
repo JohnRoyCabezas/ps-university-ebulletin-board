@@ -12,7 +12,6 @@ const AdminAnnouncementPage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const user = JSON.parse(Cookies.get("universityid"));
   const [isAlter, setIsAlter] = useState(false);
-
   const params = {
     announcementable_id: user,
     announcementable_type: "App/Models/University",
