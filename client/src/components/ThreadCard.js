@@ -38,7 +38,7 @@ export default function AnnouncementCard(props) {
   return (
     <div>
       <div
-        className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
+        className="relative flex w-full px-6 py-4"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{
@@ -48,7 +48,7 @@ export default function AnnouncementCard(props) {
         <img
           onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
           src={props?.user_detail?.avatar}
-          className="rounded-full w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+          className="rounded-full w-11 h-11 ring-2 ring-gray-300 dark:ring-gray-500"
           alt="Avatar"
         />
         <div className="flex flex-col ml-2">
@@ -72,7 +72,7 @@ export default function AnnouncementCard(props) {
                 />
               </div>
             ) : (
-              <span className="cardText text-gray-700 text-base">
+              <span className="cardText text-gray-700 text-sm">
                 {props.thread.announcement ? parse(props.thread.announcement): parse(props.thread.thread_message)}
               </span>
             )}

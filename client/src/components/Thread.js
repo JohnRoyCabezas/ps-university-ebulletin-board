@@ -3,6 +3,7 @@ import { React, useEffect, useState, useLayoutEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
+import ThreadsHeader from '../components/ThreadsHeader';
 import ThreadCard from "../components/ThreadCard";
 import ThreadApi from "../api/ThreadApi";
 import Cookies from "js-cookie";
@@ -100,19 +101,18 @@ export default function Thread(props) {
         <div className="flex flex-col justify-even h-full">
           <div
             id="threadWrapper"
-            className="mt-12 overflow-y-auto bg-danger"
+            className="mt-14 overflow-y-auto"
           >
-            <ThreadCard
-              thread={announcement}
-              user_detail={announcement.user}
-              isShown={false}
-            />
+            
+            <ThreadsHeader thread={announcement} />
 
-            <div className="flex">
-              <div className="text-sm w-16 ml-2 text-gray-400">
-                {threads.length > 1 ? threads.length + " replies" : threads.length + " reply"}
+            <div className="flex my-2 mx-5">
+              <div className="mr-2 text-sm text-gray-400">
+                {threads.length > 1 
+                ? threads.length + " replies" 
+                : threads.length + " reply"}
               </div>
-              <div className="h-0.5 w-full my-auto flex border-b-1 bg-gray-300 text-center">
+              <div className="flex-1 h-0.5 my-auto border-b-1 text-center bg-gray-300 ">
               </div>
             </div>
             {
