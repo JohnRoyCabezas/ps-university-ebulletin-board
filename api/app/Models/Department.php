@@ -9,10 +9,7 @@ class Department extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'college_id',
-        'department'
-    ];
+    protected $guarded = [];
 
     public function courses() {
         return $this->hasMany(Course::class);
@@ -24,5 +21,13 @@ class Department extends Model
 
     public function announcements() {
         return $this->morphMany(Announcement::class, 'announcements');
+    }
+
+    public function university() {
+        return $this->belongsTo(University::class);
+    }
+
+    public function user() {
+        return $this->hasMany(User::class);
     }
 }

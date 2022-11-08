@@ -1,13 +1,44 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from '@fortawesome/free-regular-svg-icons';
 import moment from "moment";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
+import AdminMessageOptions from "./AdminMessageOptions";
+import StudentMessageOptions from "./StudentMessageOptions";
+import AnnouncementApi from "../api/AnnouncementApi";
+import RichTextEditor from "../components/RichTextEditor";
+import "../index.css"
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [params, setParams] = useState({});
+  const [id, setId] = useState("");
+
+  function handleEdit(id) {
+    setId(id);
+    props.isAlter();
+    AnnouncementApi.fetchSpecificAnnouncement(id).then((res) => {
+      setParams(res.data);
+    });
+    setIsEdit(!isEdit);
+  }
+
+  function isChange(value) {
+    setIsEdit(value);
+    props.handleRefresh();
+  }
+
+  function setThreadValue(value) {
+    props.setValue(value);
+    props.setAnnouncementThread(props.announcement.id);
+  }
+
+  function cancel() {
+    setIsEdit(false);
+    setIsShown(false)
+  }
+
   return (
-    <div id={props.id.toString()}>
+    <div>
       <div
         className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
         onMouseEnter={() => setIsShown(true)}
@@ -17,27 +48,53 @@ export default function AnnouncementCard(props) {
         }}
       >
         <img
-          src={props.announcement.user.avatar}
-          className="rounded-full w-12 h-12"
-          alt="Avatar"
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+          className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+          src={props?.announcement?.user?.avatar}
+          alt="JC"
         />
-
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
-            <h5 className="font-bold">{props.announcement.user.fullname}</h5>
-            <p className="ml-2 text-xs"><i>{moment(props.announcement.created_at).fromNow()}</i></p>
+            <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
+            <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
           </div>
           <div>
-            <p className="text-gray-700 text-base">
-              {parse(props.announcement.announcement)}
-            </p>
+
+            {
+              isEdit ? (
+                <div className="rounded w-[75vw] bg-white">
+                  <RichTextEditor
+                    style={{ backgroundColor: "white" }}
+                    cancel={cancel}
+                    isEdit={isEdit}
+                    isChange={(value) => isChange(value)}
+                    handleRefresh={() => props.handleRefresh()}
+                    id={id}
+                    params={params}
+                  />
+                </div>
+              ) : (
+                <span className="cardText text-gray-700 text-base">
+                  {parse(props.announcement.announcement)}
+                </span>
+              )
+            }
+
           </div>
         </div>
-        {isShown && (
-          <div className="absolute top-0 right-0 translate-y-1/2 -translate-x-1/2 drop-shadow-md px-2 py-0.5 bg-white text-gray-500 border-regal-blue border-2 rounded cursor-pointer">
-            <button className="cursor-pointer"><FontAwesomeIcon icon={faComment} size="lg" color="#162750" /></button>
-          </div>
-        )}
+        {isShown &&
+          (props.userRole === "student" ? (
+            <StudentMessageOptions setValue={setThreadValue} />
+          ) : (
+            <AdminMessageOptions
+              id={props.announcement.id}
+              cancel={cancel}
+              handleRefresh={props.handleRefresh}
+              handleEdit={(id) => handleEdit(id)}
+              setValue={setThreadValue}
+              handleDelete={props.isAlter}
+            />
+          ))}
       </div>
     </div>
   );

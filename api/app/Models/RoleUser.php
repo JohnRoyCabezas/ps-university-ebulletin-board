@@ -10,10 +10,7 @@ class RoleUser extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'role_id'
-    ];
+    protected $guarded = [];
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -21,5 +18,10 @@ class RoleUser extends Model
 
     public function role() {
         return $this->belongsTo(Role::class);
+    }
+
+    public function scopeDean($query) {
+
+        return $query->where('role_id', 4);
     }
 }

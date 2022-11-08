@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('fullname');
             $table->string('email')->unique();
-            $table->foreignId('department_id')->nullable();
+            $table->foreignId('department_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('university_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('avatar')->nullable();
             $table->string('password');
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
             $table->boolean('is_verified')->nullable();
             $table->timestamps();
         });
