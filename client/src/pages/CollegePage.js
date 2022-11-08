@@ -83,6 +83,7 @@ const CollegePage = () => {
                   handleRefresh={() => handleRefresh()}
                   setAnnouncementThread={setAnnouncementThread}
                   isAlter={() => setIsAlter(true)}
+                  threadOpen = {isThread}
                 />
               ))}
           </div>
