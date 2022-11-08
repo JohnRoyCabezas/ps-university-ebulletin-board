@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('announcementable_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('announcementable_id');
             $table->string('announcementable_type');
-            $table->foreignId('user_id');
-            $table->text('announcement');
+            $table->longText('announcement');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcementables');
+        Schema::dropIfExists('announcements');
     }
 };

@@ -9,11 +9,7 @@ class Thread extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'announcementable_id',
-        'thread_message',
-    ];
+    protected $guarded = [];
 
     public function announcement() {
         return $this->belongsTo(Announcement::class);
@@ -21,5 +17,9 @@ class Thread extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeThread($query) {
+        return $query->with('threads');
     }
 }
