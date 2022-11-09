@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentUpdate;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,8 @@ class CommentController extends Controller
             'chat_id' => $validatedData['chat_id'],
             'comment' => $validatedData['comment']
         ]);
+
+        event(new CommentUpdate($comment));
 
         $data = [
             'message' => 'Successfully created a comment!',

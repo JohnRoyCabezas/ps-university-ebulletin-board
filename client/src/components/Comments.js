@@ -4,6 +4,7 @@ import CommentApi from "../api/CommentApi";
 import CommentCard from "./CommentCard";
 import CommentsHeader from "./CommentsHeader";
 import CommentTextEditor from "./CommentTextEditor";
+import Pusher from "pusher-js";
 
 const Comments = ({ chat_id, setShowComments }) => {
   const [comments, setComments] = useState([]);
@@ -16,6 +17,19 @@ const Comments = ({ chat_id, setShowComments }) => {
 
     ChatApi.showChat(chat_id).then((res) => {
       setChat(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
+    });
+
+    const channel = pusher.subscribe("comment");
+    channel.bind("comment-update", function (data) {
+      CommentApi.fetchComments(chat_id).then((res) => {
+        setComments(res.data);
+      });
     });
   }, []);
 
