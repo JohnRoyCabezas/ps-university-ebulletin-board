@@ -43,7 +43,7 @@ class UserController extends Controller
                 ->orderBy($request->order_name, $request->order_direction)
                 ->paginate($request->items_per_page);
 
-                return response()->json($users);
+                return response()->json($selectUsers);
             }
 
         $selectUsers = User::with(['roleUser.role', 'department'])->where('university_id', $request->university_id)

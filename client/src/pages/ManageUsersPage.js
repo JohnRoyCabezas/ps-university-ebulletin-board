@@ -16,10 +16,10 @@ const ManageUsersPage = () => {
   });
 
   const handleSearch = (e) => {
-    if (e.target.value === '' ) {
+    if ((params.keyword !== '') && e.target.value === '' ) {
       setParams({...params, page: 1, keyword: ''})
     }
-
+      
     if (e.key === 'Enter') {
       setParams({...params, keyword: searchKeyword, page: 1})
     }
