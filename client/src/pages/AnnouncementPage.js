@@ -1,4 +1,4 @@
-import { React, useEffect, useCallback, useState, useMemo } from "react";
+import { React, useEffect, useState, useLayoutEffect } from "react";
 import AnnouncementCard from "../components/AnnouncementCard";
 import AnnouncementApi from "../api/AnnouncementApi";
 import Thread from "../components/Thread";
@@ -9,9 +9,10 @@ const AnnouncementPage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
+  const [isAlter, setIsAlter] = useState(false);
   const user = JSON.parse(Cookies.get("user"));
   const params = {
-    announcementable_id: 1,
+    announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
   };
 
@@ -56,9 +57,13 @@ const AnnouncementPage = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
+  useLayoutEffect(() => {
+    if (!isAlter) {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
+      setIsAlter(false);
+    }
+    setIsAlter(false);
   }, [announcements]);
 
   return (
@@ -79,6 +84,7 @@ const AnnouncementPage = () => {
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
                 threadOpen = {isThread}
+                isAlter={() => setIsAlter(true)}
               />
             ))}
           </div>

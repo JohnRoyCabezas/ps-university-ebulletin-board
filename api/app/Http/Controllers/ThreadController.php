@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ThreadUpdate;
 use App\Models\Announcement;
 use App\Models\Thread;
 use FFI\Exception;
@@ -54,7 +55,9 @@ class ThreadController extends Controller
             'thread_message' => ['required'],
         ]);
 
-        Thread::create($request->all());
+    $thread = Thread::create($request->all());
+
+        event(new ThreadUpdate($thread));
 
         return response()->json([
             'message' => 'Thread added',

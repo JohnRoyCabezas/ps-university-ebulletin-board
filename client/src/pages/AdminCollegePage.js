@@ -17,7 +17,7 @@ const AdminCollegePage = () => {
     announcementable_id: collegeid,
     announcementable_type: "App/Models/College",
   }
-
+  
   useEffect(() => {
     const pusher = new Pusher('6d32a294e8e6b327e3c5', {
       cluster: 'ap1',

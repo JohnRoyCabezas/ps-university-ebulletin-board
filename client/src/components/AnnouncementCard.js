@@ -6,12 +6,14 @@ import StudentMessageOptions from "./StudentMessageOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
 import "../index.css"
+import Cookies from "js-cookie";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isThreadOpen, setIsThreadOpen] = useState(false);
   const [params, setParams] = useState({});
+  const user = JSON.parse(Cookies.get('user'));
   const [id, setId] = useState("");
 
   function handleEdit(id) {
@@ -42,6 +44,10 @@ export default function AnnouncementCard(props) {
   useEffect(()=> {
     if(!props.threadOpen) setIsThreadOpen(false);
   }, [props.threadOpen])
+
+  function adminOption() {
+    return user?.role_user?.role_id === 2 ? true : (user?.role_user?.role_id === 4 ? (user?.id === props.announcement.user_id) : false)
+  }
 
   return (
     <div>
@@ -89,8 +95,8 @@ export default function AnnouncementCard(props) {
           </div>
         </div>
         {isShown &&
-          (props.userRole === "student" ? (
-            <StudentMessageOptions setValue={setThreadValue}/>
+          (!adminOption() ? (
+            <StudentMessageOptions setValue={setThreadValue} />
           ) : (
             <AdminMessageOptions
               id={props.announcement.id}

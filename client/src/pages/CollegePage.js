@@ -8,7 +8,7 @@ import RichTextEditor from '../components/RichTextEditor';
 import Pusher from 'pusher-js';
 
 const CollegePage = () => {
-  const {collegeid} = useParams();
+  const { collegeid } = useParams();
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
@@ -68,7 +68,7 @@ const CollegePage = () => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <div className="relative flex flex-col w-full h-screen">
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">College</h1>
         <div className="flex flex-col justify-between h-full">
@@ -77,7 +77,6 @@ const CollegePage = () => {
               announcements.map((announcement) => (
                 <AnnouncementCard
                   key={announcement.id.toString()}
-                  userRole={user?.role_user?.role_id}
                   announcement={announcement}
                   setValue={setThreadValue}
                   handleRefresh={() => handleRefresh()}
@@ -88,13 +87,13 @@ const CollegePage = () => {
               ))}
           </div>
           {
-          (user?.role_user?.role_id === 1 ? '' : <div className="p-2 rounded-3xl">
-          <RichTextEditor
-            handleRefresh={() => handleRefresh()}
-            params={params}
-          />
-        </div>)
-}
+            (user?.role_user?.role_id === 1 ? '' : <div className="p-2 rounded-3xl">
+              <RichTextEditor
+                handleRefresh={() => handleRefresh()}
+                params={params}
+              />
+            </div>)
+          }
         </div>
       </div>
       {isThread && <Thread userRole={'student'} setValue={setThreadValue} announcementThread={announcementThread} />}

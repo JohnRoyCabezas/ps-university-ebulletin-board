@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\AnnouncementUpdate;
+use App\Events\ThreadUpdate;
 use App\Models\Announcement;
 use App\Models\PermissionRole;
 use App\Models\User;
@@ -190,8 +191,9 @@ class AnnouncementController extends Controller
         //checks if user with role has canCreateAnnouncement permission
         if ($canUpdateAnnouncement) {
             $announcement = Announcement::find($id);
-            $locked = $announcement->update(['is_locked' => !$announcement['is_locked']]);
+            $thread = $announcement->update(['is_locked' => !$announcement['is_locked']]);
 
+            event(new ThreadUpdate($thread));
             $data = [
                 'message' => "Successfully" . ($announcement['is_locked'] ? " locked " : " unlocked ") . "announcement!",
                 'user' => $user_fullname,
