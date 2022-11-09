@@ -24,6 +24,7 @@ import ClassPage from "../pages/ClassPage";
 import DepartmentPage from '../pages/DepartmentPage';
 import AdminDepartmentPage from '../pages/AdminDepartmentPage';
 import EditPassword from '../components/ChangePassword';
+import EditClassPage from '../pages/EditClassPage';
 
 const RoutesList = () => {
   const ROLES = {
@@ -60,6 +61,7 @@ const RoutesList = () => {
           <Route path="admincollege/:collegeid/:departmentid/:classid" element={<ClassPage />} />
           <Route path="createcollege" element={<CreateCollegePage />} />
           <Route path="editcollege" element={<EditCollegePage />} />
+          <Route path="editclass" element={<EditClassPage />} />
           <Route path="createdepartment" element={<CreateDepartmentPage />} />
           <Route path="createclass" element={<CreateClassPage />} />
           <Route path="adminsettings/done" element={<AdminSettingsPage />} />
