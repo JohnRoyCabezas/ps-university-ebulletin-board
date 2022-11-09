@@ -10,10 +10,10 @@ const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState([]);
-  const user = JSON.parse(Cookies.get("universityid"));
+  const user = JSON.parse(Cookies.get('user'));
   const [isAlter, setIsAlter] = useState(false);
   const params = {
-    announcementable_id: user,
+    announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
   };
 

@@ -7,10 +7,11 @@ import ThreadsHeader from '../components/ThreadsHeader';
 import ThreadCard from "../components/ThreadCard";
 import ThreadApi from "../api/ThreadApi";
 import Cookies from "js-cookie";
+import Pusher from "pusher-js";
 
 export default function Thread(props) {
   const [lockLoading, setLockLoading] = useState(false);
-  const [announcement, setAnnouncement] = useState();
+  const [announcement, setAnnouncements] = useState();
   const [isAlter, setIsAlter] = useState(false);
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(Cookies.get('user'));
@@ -27,7 +28,7 @@ export default function Thread(props) {
         type: "comment"
       })
       ThreadApi.fetchThread(data.id).then(({ data }) => {
-        setAnnouncement(data.announcement);
+        setAnnouncements(data.announcement);
         setIsLock(data.announcement.is_locked)
         setThreads(data.thread);
         setLoading(false);
@@ -38,10 +39,32 @@ export default function Thread(props) {
 
   function handleRefresh() {
     ThreadApi.fetchThread(props.announcementThread).then(({ data }) => {
-      setThreads(data.thread)
+      setThreads(data.thread);
       setLoading(false);
     })
   }
+
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('thread');
+    channel.bind('thread-update', function (data) {
+
+
+      AnnouncementApi.fetchSpecificAnnouncement(props.announcementThread).then(({ data }) => {
+        ThreadApi.fetchThread(data.id).then(({ data }) => {
+          setAnnouncements(data.announcement);
+          setIsLock(data.announcement.is_locked)
+          setThreads(data.thread);
+          setLoading(false);
+        })
+      // ThreadApi.fetchThread(props.announcementThread).then(({ data }) => {
+      //   setThreads(data.thread);
+      })
+    });
+  }, []);
 
   function handleLock(id) {
     setLockLoading(true);

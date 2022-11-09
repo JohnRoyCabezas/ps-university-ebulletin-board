@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AnnouncementUpdate implements ShouldBroadcast
+class ThreadUpdate implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,12 +20,11 @@ class AnnouncementUpdate implements ShouldBroadcast
      * @return void
      */
 
-    public $announcement;
+     public $thread;
 
-    public function __construct($announcement)
+    public function __construct($thread)
     {
-        $this->announcement = $announcement;
-        // dd($announcement);
+        $this->thread = $thread;
     }
 
     /**
@@ -35,11 +34,11 @@ class AnnouncementUpdate implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('announcement-channel');
+        return new Channel('thread');
     }
 
     public function broadcastAs()
     {
-        return ('announcement-update');
+        return ('thread-update');
     }
 }
