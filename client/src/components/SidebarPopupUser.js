@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 
 const SideBarPopupUser = (props) => {
   const navigate = useNavigate();
+  const user = JSON.parse(Cookies.get('user') || '{}');
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
@@ -19,6 +20,7 @@ const SideBarPopupUser = (props) => {
       Cookies.remove('user');
       Cookies.remove('params');
       navigate('/');
+      document.title = "University | E-Bulletin";
     });
   };
 
@@ -27,15 +29,16 @@ const SideBarPopupUser = (props) => {
   })
 
   const [showModal, setShowModal] = React.useState(false);
+
   return (
     <>
       <div className="flex justify-center items-center p-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-          className="rounded-full w-12"
-          alt="Avatar"
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+          src={JSON.parse(Cookies.get('user')).avatar}
+          className="rounded-full w-11 bg-white"
         />
-        <label className="mx-2">Avatar</label>
+        <label className="mx-2">{user ? user.fullname : 'User'}</label>
         {showModal == true ? (
           <button
             className="button-default"
@@ -52,11 +55,10 @@ const SideBarPopupUser = (props) => {
       {showModal && (
         <>
           <div
-            onClick={() => console.log('redirect to user settings or reset password page')}
             className="flex justify-center items-center p-2 cursor-pointer"
           >
             <FontAwesomeIcon icon={faGear} />
-            <span className="mx-2">User Settings</span>
+            <span className="mx-2" onClick={() => navigate('/changepassword')}>User Settings</span>
           </div>
           <div className="flex justify-center items-center p-2">
             <FontAwesomeIcon icon={faRightFromBracket} />

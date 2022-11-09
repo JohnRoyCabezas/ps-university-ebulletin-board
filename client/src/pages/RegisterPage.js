@@ -5,14 +5,17 @@ import DepartmentApi from '../api/DepartmentApi';
 import AuthApi from '../api/AuthApi';
 import RoleApi from '../api/RoleApi';
 import RegistrationModal from '../components/RegistrationModal';
+import SubmitButton from '../components/submitButton';
 
 const RegisterPage = () => {
+  const university_id = Cookies.get('universityid');
   const initialParams = {
     fullname: '',
     email: '',
     department_id: '',
     role_id: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
+    university_id: parseInt(university_id),
   };
 
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
@@ -21,13 +24,15 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState(initialParams);
+  const [showDeptDropdown, setShowDeptDropdown] = useState(false);
 
   useEffect(() => {
-    DepartmentApi.fetchDepartments().then((res) => {
+    DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
     });
-    RoleApi.fetchRoles().then((res) => {
-      setRoles(res.data);
+    RoleApi.fetchRoles().then(({data}) => {
+      data.splice(1,1)
+      setRoles(data)
     });
     Cookies.get('params') &&
       setParams(JSON.parse(Cookies.get('params') || '{}'));
@@ -50,12 +55,17 @@ const RegisterPage = () => {
 
   const handleAvatarChange = () => {
     setErrors({});
-    const randomAvatar = `https://joeschmoe.io/api/v1/${
-      Math.floor(Math.random() * 90000) + 10000
-    }`;
+    const randomAvatar = `https://joeschmoe.io/api/v1/${Math.floor(Math.random() * 90000) + 10000
+      }`;
     setParams({ ...params, avatar: randomAvatar });
     Cookies.set('params', JSON.stringify({ ...params }));
   };
+
+  useEffect(() => {
+    if (params?.role_id === 1 || params?.role_id === 3 ) {
+      setShowDeptDropdown(true);
+    } else { setShowDeptDropdown(false) }
+  }, [params])
 
   const handleSelectChange = (type, value) => {
     setErrors({});
@@ -71,17 +81,20 @@ const RegisterPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [processing, setProcessing] = useState(false);
 
+  const handleSubmit = () => {
+    setProcessing(true);
     AuthApi.register(params).then(
       (res) => {
+        setProcessing(false);
         Cookies.remove('params');
         setParams(initialParams);
         setShowModal(true);
       },
       (err) => {
         setErrors(err.response.data.errors);
+        setProcessing(false);
       }
     );
   };
@@ -134,7 +147,37 @@ const RegisterPage = () => {
                   </svg>
                 </div>
               </div>
+
               <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-800">
+                  Role
+                  {params.role_id === '' && (
+                    <span className="text-s italic font-light text-red-800">
+                      *
+                    </span>
+                  )}
+                </label>
+                <Dropdown
+                  selectedLabel={
+                    params.role_id &&
+                    roles[
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
+                    ]?.role
+                  }
+                  selectedValue={
+                    params.role_id &&
+                    roles[
+                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
+                    ]?.id
+                  }
+                  handleChange={handleSelectChange}
+                  type="role"
+                  label="role"
+                  data={roles}
+                />
+              </div>
+
+              {showDeptDropdown && (<div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Department
                   {params.department_id === '' && (
@@ -165,35 +208,8 @@ const RegisterPage = () => {
                   label="department"
                   data={departments}
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-800">
-                  Role
-                  {params.role_id === '' && (
-                    <span className="text-s italic font-light text-red-800">
-                      *
-                    </span>
-                  )}
-                </label>
-                <Dropdown
-                  selectedLabel={
-                    params.role_id &&
-                    roles[
-                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
-                    ]?.role
-                  }
-                  selectedValue={
-                    params.role_id &&
-                    roles[
-                      roles.map((obj) => obj.id).indexOf(Number(params?.role_id))
-                    ]?.id
-                  }
-                  handleChange={handleSelectChange}
-                  type="role"
-                  label="role"
-                  data={roles}
-                />
-              </div>
+              </div>)}
+              
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Fullname
@@ -232,32 +248,18 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="mt-16">
-                <button
-                  disabled={
-                    !errors.email &&
-                    params.fullname &&
-                    params.avatar &&
-                    params.email &&
-                    params.role_id
-                      ? false
-                      : true
-                  }
-                  onClick={handleSubmit}
-                  className={`w-full px-4 py-2 tracking-wide rounded-md 
-                ${
-                  !errors.email &&
+              <SubmitButton
+                handleSubmit={() => handleSubmit()}
+                buttonDisabled={!errors.email &&
                   params.fullname &&
                   params.avatar &&
                   params.email &&
                   params.role_id
-                    ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
-                    : `bg-gray-300 text-gray-400`
-                }`}
-                >
-                  Create Account
-                </button>
-              </div>
+                   ? true : false}
+                processing={processing}
+                buttonTitle={"Create Account"}
+              />
+              
             </form>
           </div>
         </div>
@@ -265,4 +267,5 @@ const RegisterPage = () => {
     </div>
   );
 };
+
 export default RegisterPage;

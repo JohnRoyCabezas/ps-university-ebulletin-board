@@ -21,9 +21,10 @@ const EditUserPage = () => {
   const [roles, setRoles] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState(initialParams);
+  const university_id = Cookies.get('universityid');
 
   useEffect(() => {
-    DepartmentApi.fetchDepartments().then((res) => {
+    DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
     });
     RoleApi.fetchRoles().then((res) => {
@@ -70,7 +71,7 @@ const EditUserPage = () => {
       setShowModal(true);
     });
   };
-
+  
   return (
     <div className="flex">
       {showModal && (

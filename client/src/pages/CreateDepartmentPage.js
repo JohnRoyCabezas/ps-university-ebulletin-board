@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
 import Dropdown from "../components/Dropdown";
 import UserApi from "../api/UserApi";
 import SuccessModal from "../components/SuccessModal";
 import DepartmentApi from "../api/DepartmentApi";
 import CollegeApi from "../api/CollegeApi";
+import SubmitButton from "../components/submitButton";
+import Cookies from "js-cookie";
 
 const CreateDepartmentPage = () => {
   const initialParams = {
@@ -18,15 +19,17 @@ const CreateDepartmentPage = () => {
   const [data, setData] = useState([]);
   const [college, setCollege] = useState([]);
   const [params, setParams] = useState(initialParams);
+  const [processing, setProcessing] = useState(false);
+  const universityid = Cookies.get('universityid')
 
   useEffect(() => {
-    UserApi.fetchDeans().then((res) => {
+    UserApi.fetchDeans(universityid).then((res) => {
       setData(res.data);
     });
-    CollegeApi.fetchColleges().then((res) => {
+    CollegeApi.fetchColleges(universityid).then((res) => {
       setCollege(res.data);
     });
-  }, []);
+  }, [universityid]);
 
   const handleSelectChange = (type, value) => {
     setErrors({});
@@ -43,15 +46,17 @@ const CreateDepartmentPage = () => {
     setParams({ ...params, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    setProcessing(true);
     DepartmentApi.createDepartment(params).then(
       (res) => {
         setShowModal(true);
         setParams(initialParams);
+        setProcessing(false);
       },
       (err) => {
         setErrors(err.response.data);
+        setProcessing(false);
       }
     );
   };
@@ -72,7 +77,7 @@ const CreateDepartmentPage = () => {
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
           <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
             <form onSubmit={handleSubmit} className="mt-1">
-            <div className="mb-4">
+              <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   College
                   {params?.college_id === null && (
@@ -143,6 +148,7 @@ const CreateDepartmentPage = () => {
                     </span>
                   )}
                 </label>
+                {/* -----bug start----- */}
                 <Dropdown
                   selectedLabel={
                     params.user_id &&
@@ -161,35 +167,24 @@ const CreateDepartmentPage = () => {
                   label="fullname"
                   data={data}
                 />
+                {/* -----bug end----- */}
               </div>
               {errors?.message && (
                 <div className="text-xs italic font-light text-red-800">
                   Fill the required fields.
                 </div>
               )}
-              <div className="mt-8">
-                <button
-                  disabled={
-                    params.department &&
-                    params.department_information &&
-                    params.user_id
-                      ? false
-                      : true
-                  }
-                  onClick={handleSubmit}
-                  className={`w-full px-4 py-2 tracking-wide rounded-md 
-                    ${
-                      params.department &&
-                      params.department_information &&
-                      params.user_id
-                        ? `w-full px-4 py-2 text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
-                        : `bg-gray-300 text-gray-400`
-                    }
-                    `}
-                >
-                  Create Department
-                </button>
-              </div>
+
+              <SubmitButton
+                handleSubmit={() => handleSubmit()}
+                buttonDisabled={params.department &&
+                  params.department_information &&
+                  params.user_id
+                  ? true : false}
+                processing={processing}
+                buttonTitle={"Create Department"}
+              />
+              
             </form>
           </div>
         </div>
@@ -197,4 +192,5 @@ const CreateDepartmentPage = () => {
     </div>
   );
 };
+
 export default CreateDepartmentPage;

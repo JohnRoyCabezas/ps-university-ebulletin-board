@@ -1,23 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import parse from "html-react-parser";
 import AdminMessageOptions from "./AdminMessageOptions";
 import StudentMessageOptions from "./StudentMessageOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
+import "../index.css"
+import Cookies from "js-cookie";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isThreadOpen, setIsThreadOpen] = useState(false);
   const [params, setParams] = useState({});
+  const user = JSON.parse(Cookies.get('user'));
   const [id, setId] = useState("");
 
   function handleEdit(id) {
     setId(id);
+    props.isAlter();
     AnnouncementApi.fetchSpecificAnnouncement(id).then((res) => {
       setParams(res.data);
     });
-    setIsEdit(true);
+    setIsEdit(!isEdit);
   }
 
   function isChange(value) {
@@ -27,6 +32,21 @@ export default function AnnouncementCard(props) {
 
   function setThreadValue(value) {
     props.setValue(value);
+    props.setAnnouncementThread(props.announcement.id);
+    setIsThreadOpen(!isThreadOpen);
+  }
+
+  function cancel() {
+    setIsEdit(false);
+    setIsShown(false);
+  }
+
+  useEffect(()=> {
+    if(!props.threadOpen) setIsThreadOpen(false);
+  }, [props.threadOpen])
+
+  function adminOption() {
+    return user?.role_user?.role_id === 2 ? true : (user?.role_user?.role_id === 4 ? (user?.id === props.announcement.user_id) : false)
   }
 
   return (
@@ -36,47 +56,55 @@ export default function AnnouncementCard(props) {
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{
-          backgroundColor: isShown ? "#EAE8E8" : "",
+          backgroundColor: isShown || isThreadOpen ? "#EAE8E8" : "",
         }}
       >
         <img
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+          className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
           src={props?.announcement?.user?.avatar}
-          className="rounded-full w-12 h-12"
-          alt="Avatar"
+          alt="JC"
         />
-
         <div className="flex flex-col ml-2">
           <div className="flex justify-start items-center mb-2">
             <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
             <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
           </div>
           <div>
-            {isEdit ? (
-              <div className="px-5 w-full">
-                <RichTextEditor
-                  isEdit={isEdit}
-                  isChange={(value) => isChange(value)}
-                  handleRefresh={() => props.handleRefresh()}
-                  id={id}
-                  params={params}
-                />
-              </div>
-            ) : (
-              <span className="text-gray-700 text-base">
-                {parse(props.announcement.announcement)}
-              </span>
-            )}
+
+            {
+              isEdit ? (
+                <div className="rounded w-[75vw] bg-white">
+                  <RichTextEditor
+                    style={{ backgroundColor: "white" }}
+                    cancel={cancel}
+                    isEdit={isEdit}
+                    isChange={(value) => isChange(value)}
+                    handleRefresh={() => props.handleRefresh()}
+                    id={id}
+                    params={params}
+                  />
+                </div>
+              ) : (
+                <span className="cardText text-gray-700 text-base">
+                  {parse(props.announcement.announcement)}
+                </span>
+              )
+            }
+
           </div>
         </div>
         {isShown &&
-          (props.userRole === "student" ? (
+          (!adminOption() ? (
             <StudentMessageOptions setValue={setThreadValue} />
           ) : (
             <AdminMessageOptions
               id={props.announcement.id}
+              cancel={cancel}
               handleRefresh={props.handleRefresh}
               handleEdit={(id) => handleEdit(id)}
               setValue={setThreadValue}
+              handleDelete={props.isAlter}
             />
           ))}
       </div>

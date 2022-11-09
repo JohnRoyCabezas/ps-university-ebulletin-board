@@ -13,11 +13,16 @@ class Announcement extends Model
         'announcementable_id',
         'announcementable_type',
         'user_id',
-        'announcement'
+        'announcement',
+        'is_locked'
     ];
 
     public function announcementable() {
         return $this->morphTo();
+    }
+
+    public function thread() {
+        return $this->hasMany(Thread::class);
     }
 
     public function user() {

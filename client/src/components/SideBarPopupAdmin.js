@@ -12,13 +12,16 @@ import Cookies from 'js-cookie';
 
 const SideBarPopupAdmin = (props) => {
   const navigate = useNavigate();
+  const user = JSON.parse(Cookies.get('user') || '{}');
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
       Cookies.remove('token');
       Cookies.remove('user');
       Cookies.remove('params');
+      Cookies.remove('universityid');
       navigate('/');
+      document.title = "University | E-Bulletin";
     });
   };
 
@@ -27,15 +30,16 @@ const SideBarPopupAdmin = (props) => {
   })
 
   const [showModal, setShowModal] = React.useState(false);
+
   return (
     <>
       <div className="flex justify-center items-center p-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-          className="rounded-full w-12"
-          alt="Avatar"
+          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+          src={JSON.parse(Cookies.get('user')).avatar}
+          className="rounded-full w-11 bg-white"
         />
-        <label className="mx-2">Avatar</label>
+        <label className="mx-2 text-center">{user ? user.fullname : 'User'}</label>
         {showModal == true ? (
           <button
             className="button-default"

@@ -1,56 +1,91 @@
-import { React, useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar";
+import { React, useEffect, useLayoutEffect, useState } from "react";
 import Thread from "../components/Thread";
 import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
-
+import Pusher from "pusher-js";
+import Cookies from "js-cookie";
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
-  const [announcements, setAnnouncement] = useState([]);
+  const [announcementThread, setAnnouncementThread] = useState();
+  const [announcements, setAnnouncements] = useState([]);
+  const user = JSON.parse(Cookies.get('user'));
+  const [isAlter, setIsAlter] = useState(false);
   const params = {
-    announcementable_id: 1,
+    announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
   };
+
+  useEffect(() => {
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
+    });
+
+    const channel = pusher.subscribe("announcement-channel");
+    channel.bind("announcement-update", function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []);
+
+  function handleRefresh() {
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncements(res.data);
+    });
+  }
 
   function setThreadValue(value) {
     setThread(value);
   }
 
   useEffect(() => {
-    AnnouncementApi.fetchChannelAnnouncements(params).then(
-      (res) => {
-        setAnnouncement(res.data);
-      }
-    );
+    handleRefresh();
   }, []);
 
-  useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
+  useLayoutEffect(() => {
+    if (!isAlter) {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
+      setIsAlter(false);
+    }
+    setIsAlter(false);
   }, [announcements]);
 
   function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then(
-      (res) => {
-        setAnnouncement(res.data);
-      }
-    );
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncements(res.data);
+    });
   }
 
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">Announcements</h1>
+        <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
+          {/* <span className="text-lg">{time.getHours() > 5 && time.getHours() < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
+          <h1> Announcements</h1>
+          {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
+        </div>
         <div className="flex flex-col justify-between h-full">
-          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
-            {
-              announcements.map((announcement) => (
-                <AnnouncementCard key={announcement.id.toString()} userRole={'admin'} announcement={announcement} handleRefresh={() => handleRefresh()} setValue={setThreadValue}/>
-              ))}
+          <div
+            id="announcementWrapper"
+            className="mt-12 overflow-y-auto bg-danger"
+          >
+            {announcements.map((announcement) => (
+              <AnnouncementCard
+                key={announcement.id.toString()}
+                userRole={"admin"}
+                announcement={announcement}
+                handleRefresh={() => handleRefresh()}
+                setValue={setThreadValue}
+                setAnnouncementThread={setAnnouncementThread}
+                isAlter={() => setIsAlter(true)}
+                threadOpen = {isThread}
+              />
+            ))}
           </div>
-          <div className="px-5">
+          <div className="p-2 rounded-3xl">
             <RichTextEditor
               handleRefresh={() => handleRefresh()}
               params={params}
@@ -58,7 +93,13 @@ const AdminAnnouncementPage = () => {
           </div>
         </div>
       </div>
-      {isThread && <Thread userRole={'admin'} setValue={setThreadValue}/>}
+      {isThread && (
+        <Thread
+          userRole={"admin"}
+          setValue={setThreadValue}
+          announcementThread={announcementThread}
+        />
+      )}
     </div>
   );
 };

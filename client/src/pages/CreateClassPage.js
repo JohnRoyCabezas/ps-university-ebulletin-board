@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import Dropdown from '../components/Dropdown';
 import DropdownMulti from '../components/DropdownMulti';
 import UserApi from '../api/UserApi';
 import DepartmentApi from '../api/DepartmentApi';
 import CourseApi from '../api/CourseApi';
 import SuccessModal from '../components/SuccessModal';
+import SubmitButton from '../components/submitButton';
 
-const CreateCollegePage = () => {
+const CreateClassPage = () => {
   const initialState = {
     user_ids: [],
     instructor_id: '',
@@ -19,15 +21,17 @@ const CreateCollegePage = () => {
   const [departments, setDepartments] = useState([]);
   const [params, setParams] = useState(initialState);
   const [selected, setSelected] = useState([]);
+  const [processing, setProcessing] = useState(false);
+  const university_id = Cookies.get('universityid');
 
   useEffect(() => {
-    UserApi.fetchStudents().then((res) => {
+    UserApi.fetchStudents(university_id).then((res) => {
       setStudents(res.data);
     });
-    UserApi.fetchInstructors().then((res) => {
+    UserApi.fetchInstructors(university_id).then((res) => {
       setInstructors(res.data);
     });
-    DepartmentApi.fetchDepartments().then((res) => {
+    DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
     });
   }, []);
@@ -52,13 +56,13 @@ const CreateCollegePage = () => {
     setParams({ ...params, user_ids: selectedStudents });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
+    setProcessing(true);
     CourseApi.createCourse(params).then((res) => {
       setParams(initialState);
       setShowModal(true);
       setSelected([]);
+      setProcessing(false);
     });
   };
 
@@ -158,30 +162,18 @@ const CreateCollegePage = () => {
                   handleMultiChange={handleMultiSelectChange}
                 />
               </div>
-              <div className="mt-8">
-                <button
-                  disabled={ 
-                    params.course &&
-                    params.department_id &&
-                    params.instructor_id &&
-                    params.user_ids.length>0
-                      ? false
-                      : true
-                  }
-                  onClick={handleSubmit}
-                  className={`w-full px-4 py-2 tracking-wide rounded-md 
-                ${
-                  params.course &&
+
+              <SubmitButton
+                handleSubmit={() => handleSubmit()}
+                buttonDisabled={params.course &&
                   params.department_id &&
                   params.instructor_id &&
                   params.user_ids.length>0
-                    ? `text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`
-                    : `bg-gray-300 text-gray-400`
-                }`}
-                >
-                  Create Class
-                </button>
-              </div>
+                   ? true : false}
+                processing={processing}
+                buttonTitle={"Create Class"}
+              />
+
             </form>
           </div>
         </div>
@@ -189,4 +181,5 @@ const CreateCollegePage = () => {
     </div>
   );
 };
-export default CreateCollegePage;
+
+export default CreateClassPage;

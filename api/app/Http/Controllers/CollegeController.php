@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\College;
+use App\Models\University;
 use App\Models\RoleUser;
 use Illuminate\Http\Request;
 
 class CollegeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         //
-        $college = College::all();
+        $college = College::where('university_id', $request->university_id)->get();
 
         return response()->json($college);
     }
@@ -20,14 +21,16 @@ class CollegeController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'university' => 'required',
+            'user_id' => 'required',
             'dean' => 'required',
             'college_information' => 'required',
             'college' => 'required',
         ]);
+        
+        $universityid = University::where('user_id', $validatedData['user_id'])->value('id');
 
         College::create([
-            'university_id' => $validatedData['university'],
+            'university_id' => $universityid,
             'user_id' => $validatedData['dean'],
             'college_information' => $validatedData['college_information'],
             'college' => $validatedData['college'],

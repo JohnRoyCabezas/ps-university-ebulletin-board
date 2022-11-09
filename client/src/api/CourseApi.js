@@ -10,7 +10,14 @@ const CourseApi = {
       }
     }
     return instance.request(config)
-  }
+  },
+  fetchSpecificCourse: (id) => {
+    const config = {
+      method: "GET",
+      url: `/course/${id}`,
+    };
+    return instance.request(config);
+  },
 }
 
 export default CourseApi;

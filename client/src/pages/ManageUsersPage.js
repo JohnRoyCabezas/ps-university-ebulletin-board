@@ -9,17 +9,17 @@ const ManageUsersPage = () => {
   const [isAscending, setIsAscending] = useState(true);
   const [params, setParams] = useState({
     page: 1,
-    items_per_page: 3,
+    items_per_page: 6,
     order_name: 'id',
     order_direction: 'asc',
     keyword: '',
   });
 
   const handleSearch = (e) => {
-    if (e.target.value === '' ) {
+    if ((params.keyword !== '') && e.target.value === '' ) {
       setParams({...params, page: 1, keyword: ''})
     }
-
+      
     if (e.key === 'Enter') {
       setParams({...params, keyword: searchKeyword, page: 1})
     }
@@ -69,7 +69,7 @@ const ManageUsersPage = () => {
           </div>
         </h1>
 
-        <div className="container mx-auto mt-[5vh]">
+        <div className="container mx-auto mt-[3vh]">
           <UsersTable
             params={params}
             isAscending={isAscending}

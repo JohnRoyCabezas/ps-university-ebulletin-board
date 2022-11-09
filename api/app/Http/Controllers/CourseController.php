@@ -27,35 +27,29 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate(
-            [
+        $validatedData = $request->validate([
                 'course' => ['required'],
                 'department_id' => ['required'],
                 'user_ids' => ['required'],
-                'instructor_id' => ['required']
-            ]
-        );
+                'instructor_id' => ['required'],
+            ]);
 
         try {
             DB::beginTransaction();
 
-            $course = Course::create(
-                [
+            $course = Course::create([
                     'department_id' => $validatedData['department_id'],
                     'course' => $validatedData['course'],
-                ]
-            );
+                ]);
 
             $course->user()->attach($validatedData['user_ids']);
             $course->user()->attach($validatedData['instructor_id']);
 
             DB::commit();
 
-            return response()->json(
-                [
-                    'message' => 'Class created!',
-                ]
-            );
+            return response()->json([
+                'message' => 'Class created!',
+            ]);
 
         } catch (Exception $e) {
             DB::rollBack();
@@ -74,7 +68,9 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        $course = Course::find($id);
+
+        return response()->json($course);
     }
 
     /**

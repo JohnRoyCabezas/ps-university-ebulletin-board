@@ -18,14 +18,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'fullname',
-        'email',
-        'password',
-        'avatar',
-        'department_id',
-        'is_verified',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -66,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function files()
     {
         return $this->hasMany(File::class);
@@ -76,7 +74,7 @@ class User extends Authenticatable
         return $this->hasOne(RoleUser::class);
     }
 
-    public function courseUsers()
+    public function courseUser()
     {
         return $this->hasMany(CourseUser::class);
     }
