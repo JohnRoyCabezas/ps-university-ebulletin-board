@@ -76,6 +76,7 @@ const AdminDepartment = () => {
                     handleRefresh={() => handleRefresh()}
                     setValue={setThreadValue}
                     setAnnouncementThread={setAnnouncementThread}
+                    threadOpen = {isThread}
                 />
               ))}
           </div>

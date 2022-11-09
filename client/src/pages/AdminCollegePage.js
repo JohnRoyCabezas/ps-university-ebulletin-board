@@ -74,6 +74,7 @@ const AdminCollegePage = () => {
                   setValue={(value) => setThread(value)}
                   setAnnouncementThread={setAnnouncementThread}
                   isAlter={() => setIsAlter(true)}
+                  threadOpen = {isThread}
                 />
               ))}
           </div>

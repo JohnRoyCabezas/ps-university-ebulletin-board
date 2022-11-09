@@ -69,6 +69,7 @@ const ClassPage = () => {
                   handleRefresh={handleRefresh}
                   setShowComments={setShowComments}
                   setChatId={setChatId}
+                  showComments = {showComments}
                 />
               ))
             )}

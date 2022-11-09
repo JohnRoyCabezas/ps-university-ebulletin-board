@@ -17,6 +17,7 @@ const ChatOptions = ({
   handleEdit,
   canEdit,
   canDelete,
+  setCardCommentsOpen,
 }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -27,6 +28,7 @@ const ChatOptions = ({
   const handleChatThread = () => {
     setChatId(chat?.id);
     setShowComments(true);
+    setCardCommentsOpen(true);
   };
 
   function yesDelete() {
