@@ -19,7 +19,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const universityid = Cookies.get('universityid')
 
   useEffect(() => {
-    UserApi.fetchAllUsers({...params, university_id: universityid}).then((res) => {
+    UserApi.fetchAllUsers({ ...params, university_id: universityid }).then((res) => {
       setPaginateData(res.data);
       setUsers(res.data.data);
       setLoading(false);
@@ -69,7 +69,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
                 >
                   ID
                   {params?.order_name === "id" &&
-                  params?.order_direction === "desc" ? (
+                    params?.order_direction === "desc" ? (
                     <span className="mx-2 cursor-pointer">
                       <FontAwesomeIcon icon={faChevronUp} />
                     </span>
@@ -94,7 +94,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
                 >
                   FullName
                   {params?.order_name === "fullname" &&
-                  params?.order_direction === "desc" ? (
+                    params?.order_direction === "desc" ? (
                     <span className="mx-2 cursor-pointer">
                       <FontAwesomeIcon icon={faChevronUp} />
                     </span>
@@ -113,7 +113,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
                 >
                   Email
                   {params?.order_name === "email" &&
-                  params?.order_direction === "desc" ? (
+                    params?.order_direction === "desc" ? (
                     <span className="mx-2 cursor-pointer">
                       <FontAwesomeIcon icon={faChevronUp} />
                     </span>
@@ -156,6 +156,8 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
                       </td>
                       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                         <img
+
+                          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
                           src={user.avatar}
                           alt="avatar"
                           style={{ width: 40, height: 40 }}
@@ -215,8 +217,8 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
         </div>
       ) : (
         <div className="mt-8 flex justify-center">
-        <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-xl">{!loading ? "No Registered User" : "Loading..."}</h1>
-      </div>
+          <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-xl">{!loading ? "No Registered User" : "Loading..."}</h1>
+        </div>
       )}
     </div>
   );
