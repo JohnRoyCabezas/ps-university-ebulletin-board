@@ -16,10 +16,10 @@ class DepartmentController extends Controller
         $allDepartments = collect();
         $university = University::findOrFail($request->university_id);
         $colleges = College::whereBelongsTo($university)->get();
-        foreach ($colleges as $college){
+        foreach ($colleges as $college) {
             $allDepartments = $allDepartments->merge(Department::whereBelongsTo($college)->get());
         }
-        
+
         return response()->json($allDepartments);
     }
 
