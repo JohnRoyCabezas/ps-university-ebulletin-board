@@ -19,7 +19,7 @@ const ThreadsHeader = ({thread}) => {
           </span>
         </div>
         <div>
-          <span className="text-gray-700 text-base">
+          <span className="text-gray-700 text-base ql-editor card">
             {parse(String(thread?.announcement))}
           </span>
         </div>

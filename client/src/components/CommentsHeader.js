@@ -18,7 +18,7 @@ const CommentsHeader = ({chat}) => {
           </span>
         </div>
         <div>
-          <span className="text-gray-700 text-base">
+          <span className="text-gray-700 text-base ql-editor">
             {parse(String(chat?.chat))}
           </span>
         </div>
