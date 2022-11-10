@@ -61,7 +61,7 @@ const RoutesList = () => {
           <Route path="admincollege/:collegeid/:departmentid/:classid" element={<ClassPage />} />
           <Route path="createcollege" element={<CreateCollegePage />} />
           <Route path="editcollege" element={<EditCollegePage />} />
-          <Route path="editclass" element={<EditClassPage />} />
+          <Route path="editclass/:classid" element={<EditClassPage />} />
           <Route path="createdepartment" element={<CreateDepartmentPage />} />
           <Route path="createclass" element={<CreateClassPage />} />
           <Route path="adminsettings/done" element={<AdminSettingsPage />} />

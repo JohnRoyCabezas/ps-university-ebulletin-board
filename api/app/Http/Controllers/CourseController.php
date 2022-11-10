@@ -3,28 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseUser;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -60,37 +50,75 @@ class CourseController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $course = Course::find($id);
 
+        $instructor = CourseUser::with('user')->where('course_id', $id)->whereHas('user', function($query){
+            $query->whereHas('roleUser', function ($query) {
+                $query->where('role_id', '=', 5);
+            });
+        })->get()->first();
+
+        $students = CourseUser::with('user')->where('course_id', $id)->whereHas('user', function($query){
+            $query->whereHas('roleUser', function ($query) {
+                $query->where('role_id', '=', 1);
+            });
+        })->get();
+
+        $course->instructor = $instructor;
+        $course->students = $students;
+
         return response()->json($course);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'course' => ['required'],
+            'department_id' => ['required'],
+            'instructor_id' => ['required'],
+            'user_ids' => ['required'],
+            'old_instructor_id' => ['required'],
+            'old_user_ids' => ['required'],
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $course = Course::find($id);
+            
+            if($validatedData['instructor_id']!=$validatedData['old_instructor_id']) {
+                $course->user()->detach($validatedData['old_instructor_id']);
+                $course->user()->attach($validatedData['instructor_id']);
+            }
+
+            if($validatedData['user_ids']!=$validatedData['old_user_ids']) {
+                $course->user()->detach($validatedData['old_user_ids']);
+                $course->user()->attach($validatedData['user_ids']);
+            }
+
+            $course->update([
+                'department_id' => $validatedData['department_id'],
+                'course' => $validatedData['course'],
+            ]);
+
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Class Updated!',
+            ]);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
