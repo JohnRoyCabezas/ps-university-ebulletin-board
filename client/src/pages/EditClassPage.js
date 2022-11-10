@@ -17,10 +17,7 @@ const EditClassPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [course, setCourse] = useState();
-  const [departments, setDepartments] = useState();
-  const [students, setStudents] = useState();
-  const [instructors, setInstructors] = useState();
+  const [classData, setClassData] = useState();
   const [params, setParams] = useState();
   const [selected, setSelected] = useState();
   const [showModal, setShowModal] = useState({
@@ -32,28 +29,29 @@ const EditClassPage = () => {
   const university_id = Cookies.get('universityid');
 
   useEffect(()=> {
-    CourseApi.fetchSpecificCourse(classid).then(({data}) => {
-      setCourse(data);
-    })
+    const fetchData = async () => {
+      const course = await CourseApi.fetchSpecificCourse(classid);
+      const departments = await DepartmentApi.fetchDepartments(university_id);
+      const students = await UserApi.fetchStudents(university_id);
+      const instructors = await UserApi.fetchInstructors(university_id);
 
-    DepartmentApi.fetchDepartments(university_id).then(({data}) => {
-      setDepartments(data);
-    });
+      setClassData({
+        course:course.data,
+        departments:departments.data,
+        students:students.data,
+        instructors:instructors.data,
+      })
+    }
 
-    UserApi.fetchStudents(university_id).then(({data}) => {
-      setStudents(data);
-    });
-
-    UserApi.fetchInstructors(university_id).then(({data}) => {
-      setInstructors(data);
-    });
+    fetchData();
   }, [])
 
   useEffect(()=> {
-    if(course && departments && students && instructors) {
+    // if(course && departments && students && instructors) {
+    if(classData) {
       setLoading(false);
 
-      const classList = course.students?.map((item) => {
+      const classList = classData.course.students?.map((item) => {
         return {
           label: item.user.fullname,
           value: item.user.id,
@@ -61,20 +59,20 @@ const EditClassPage = () => {
       });
 
       setOldData({
-        old_instructor_id: course.instructor.user_id,
+        old_instructor_id: classData.course.instructor.user_id,
         old_user_ids: classList.map((value) => value.value)
       })
 
       setParams({...params,
-        course: course.course,
-        department_id: course.department_id,
-        instructor_id: course.instructor.user_id,
+        course: classData.course.course,
+        department_id: classData.course.department_id,
+        instructor_id: classData.course.instructor.user_id,
         user_ids: classList.map((value) => value.value)
       })
 
       setSelected(classList);
     }
-  }, [course, departments, students, instructors])
+  }, [classData])
 
   const handleInputChange = (e) => {
     setParams({ ...params, [e.target.name]: e.target.value });
@@ -95,7 +93,7 @@ const EditClassPage = () => {
 
   const handleSubmit = () => {
     setProcessing(true);
-    CourseApi.updateCourse(params, oldData, course.id).then(() => {
+    CourseApi.updateCourse(params, oldData, classData.course.id).then(() => {
       setProcessing(false);
       setShowModal({...showModal, updateSucess: true});
     });
@@ -160,7 +158,7 @@ const EditClassPage = () => {
                 </label>
                 <input
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
-                  defaultValue={course?.course || ""}
+                  defaultValue={classData?.course?.course || ""}
                   name="course"
                   onChange={handleInputChange}
                 />
@@ -172,16 +170,16 @@ const EditClassPage = () => {
                 <Dropdown
                   selectedLabel={
                     params?.department_id &&
-                    departments[
-                      departments
+                    classData.departments[
+                      classData.departments
                         .map((obj) => obj.id)
                         .indexOf(Number(params?.department_id))
                     ]?.department
                   }
                   selectedValue={
                     params?.department_id &&
-                    departments[
-                      departments
+                    classData.departments[
+                      classData.departments
                         .map((obj) => obj.id)
                         .indexOf(Number(params?.department_id))
                     ]?.id
@@ -189,7 +187,7 @@ const EditClassPage = () => {
                   handleChange={handleSelectChange}
                   type="department"
                   label="department"
-                  data={departments}
+                  data={classData.departments}
                 />
               </div>
               <div className="mb-4">
@@ -199,16 +197,16 @@ const EditClassPage = () => {
                 <Dropdown
                   selectedLabel={
                     params?.instructor_id &&
-                    instructors[
-                      instructors
+                    classData.instructors[
+                      classData.instructors
                         .map((obj) => obj.id)
                         .indexOf(Number(params?.instructor_id))
                     ]?.fullname
                   }
                   selectedValue={
                     params?.instructor_id &&
-                    instructors[
-                      instructors
+                    classData.instructors[
+                      classData.instructors
                         .map((obj) => obj.id)
                         .indexOf(Number(params?.instructor_id))
                     ]?.id
@@ -216,7 +214,7 @@ const EditClassPage = () => {
                   handleChange={handleSelectChange}
                   type="instructor"
                   label="fullname"
-                  data={instructors}
+                  data={classData.instructors}
                 />
               </div>
               <div className="mb-4">
@@ -227,7 +225,7 @@ const EditClassPage = () => {
                   selected={selected}
                   type="students"
                   label="fullname"
-                  data={students}
+                  data={classData.students}
                   handleMultiChange={handleMultiSelectChange}
                 />
               </div>
