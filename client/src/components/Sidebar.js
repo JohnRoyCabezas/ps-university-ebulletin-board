@@ -23,24 +23,25 @@ const Sidebar = () => {
     });
   }, [id]);
 
+  console.log(window.color)
 
   return (
     <div className="flex shrink-0 w-full h-screen">
-      <div className="relative flex flex-col w-64 bg-regal-blue text-white">
+      <div className={`relative flex flex-col w-64 bg-regal-blue dark:bg-secondary-background text-white`}>
         <div
           onClick={() => navigate('/')}
-          className="flex justify-center items-center h-16 px-4 sticky top-0 bg-regal-blue border-b-2 z-50 opacity-1 cursor-pointer"
+          className="flex justify-center items-center h-16 px-4 sticky top-0 bg-regal-blue dark:bg-background border-b-2 z-50 opacity-1 cursor-pointer"
         >
-          <span className="text-xl font-bold bg-regal-blue">
+          <span className="text-xl font-bold bg-regal-blue dark:bg-background">
             {user?.role_user?.role_id === ROLES['ADMIN']
               ? userData?.university?.university
               : userData?.department?.college?.university?.university}
           </span>
         </div>
-        <div className="flex flex-col h-full overflow-y-auto mb-16">
+        <div className={`flex flex-col h-full overflow-y-auto mb-16 dark:${window.color}400`}>
           <div>
             <div
-              className={`flex items-center px-5 py-2 ${Object.keys(id) == 0 && 'bg-slate-800'
+              className={`flex items-center px-5 py-2 ${Object.keys(id) == 0 && 'bg-slate-800 dark:bg-secondary-background'
                 } cursor-pointer`}
               onClick={() => {
                 user?.role_user?.role_id === ROLES['ADMIN']
@@ -74,7 +75,7 @@ const Sidebar = () => {
           </div>
         </div>
         <div
-          className="absolute w-full bottom-0 bg-dark-blue"
+          className="absolute w-full bottom-0 bg-dark-blue dark:border-t-2"
           onMouseEnter={() => setShowModal(true)}
           onMouseLeave={() => setShowModal(false)}
         >

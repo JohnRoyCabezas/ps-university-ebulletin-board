@@ -7,6 +7,9 @@ import ChangePasswordApi from "../api/ChangePasswordApi";
 
 const EditPassword = () => {
 
+    const html = document.querySelector("html");
+    const [dark, setDark] = useState(false);
+
     const oldPassRef = useRef();
     const userCookie = Cookies.get('user');
 
@@ -96,6 +99,7 @@ const EditPassword = () => {
         });
     }
 
+    console.log(window.color)
     return (
         <>
             <div className="relative w-full items-center">
@@ -111,6 +115,25 @@ const EditPassword = () => {
                                 <img className="w-48 h-48 rounded-full p-1 ring-2 ring-gray-400" src={JSON.parse(userCookie).avatar} alt="Rounded avatar">
                                 </img>
                                 <span className="flex mt-6 font-bold text-2xl justify-evenly">{JSON.parse(userCookie).fullname}</span>
+                                <button
+                                    className="bg-third-background text-white p-3 rounded mx-auto mt-5 flex"
+                                    onClick={() => { setDark(!dark); !dark ? html.classList.add("dark") : html.classList.remove("dark") }}
+                                >
+                                    Switch</button>
+                                <div className={`${dark ? '' : 'hidden'} flex justify-evenly mt-5 my-auto`}>
+
+                                    <div className="flex items-center mr-4">
+                                        <input id="inline-radio" type="radio" onClick={() => {window.color = 'bg-teal-'}} value="" name="inline-radio-group" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label htmlFor="inline-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-white-300">Teal</label>
+                                    </div>
+                                    <div className="flex items-center mr-4">
+                                        <input id="inline-2-radio" type="radio" onClick={() => {window.color = 'bg-cyan-'}} value="" name="inline-radio-group" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label htmlFor="inline-2-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-white-300">Cyan</label>
+                                    </div>
+
+
+                                </div>
+
                             </div>
 
                             <div className="w-2/5 bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50 pb-5">
@@ -185,7 +208,7 @@ const EditPassword = () => {
                                         <div>
                                             <label
                                                 htmlFor="password"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Repeat password
+                                                className="block mb-2 text-sm font-medium text-gray-900">Repeat password
                                                 {!reqRep && (<span className="text-red-400"> *</span>)}
                                             </label>
 
@@ -196,7 +219,7 @@ const EditPassword = () => {
                                                     value={changeRep}
                                                     onChange={(e) => setChangeRep(e.target.value)}
                                                     placeholder="••••••••"
-                                                    className="bg-gray-50 border border-gray-300 mb-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                    className="bg-gray-50 border border-gray-300 mb-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                                     required
                                                 />
                                                 {reqRep && (<button

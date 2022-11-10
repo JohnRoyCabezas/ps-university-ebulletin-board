@@ -33,7 +33,7 @@ const SideBarPopupAdmin = (props) => {
 
   return (
     <>
-      <div className="flex justify-center items-center p-2">
+      <div className="flex justify-center dark:bg-background items-center p-2">
         <img
           onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
           src={JSON.parse(Cookies.get('user')).avatar}
@@ -57,12 +57,12 @@ const SideBarPopupAdmin = (props) => {
         <>
           <div
             onClick={() => navigate('/adminsettings')}
-            className="flex justify-center items-center p-2 cursor-pointer"
+            className="flex justify-center items-center p-2 cursor-pointer dark:bg-background"
           >
             <FontAwesomeIcon icon={faGear} />
             <span className="mx-2">Admin settings</span>
           </div>
-          <div className="flex justify-center items-center p-2">
+          <div className="flex justify-center items-center p-2 dark:bg-background">
             <FontAwesomeIcon icon={faRightFromBracket} />
             <button onClick={handleLogout} className="mx-2">
               Logout

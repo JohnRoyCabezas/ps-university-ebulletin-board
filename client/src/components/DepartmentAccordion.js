@@ -22,8 +22,8 @@ const DepartmentAccordion = ({ handleDropdown, data, courses }) => {
     <div className="accordion-item">
       <div>
         <div
-          className={`accordion-title flex px-2 py-1 rounded-lg my-1 items-center text-sm hover:bg-slate-600 ${
-            isActive && 'bg-slate-700'
+          className={`accordion-title flex px-2 py-1 rounded-lg my-1 items-center text-sm hover:bg-slate-600 dark:hover:bg-background ${
+            isActive && 'bg-slate-700 dark:bg-background'
           } cursor-pointer`}
         >
           <div className="flex justify-between items-center w-full">
@@ -37,14 +37,14 @@ const DepartmentAccordion = ({ handleDropdown, data, courses }) => {
             {isActive ? (
               <span
                 onClick={() => setIsActive(false)}
-                className="flex items-center justify-center w-5 h-5 rounded hover:bg-gray-700"
+                className="flex items-center justify-center w-5 h-5 rounded hover:bg-gray-700 dark:hover:bg-secondary-background"
               >
                 <FontAwesomeIcon icon={faChevronUp} size="xs" />
               </span>
             ) : (
               <div
                 onClick={() => setIsActive(true)}
-                className="flex items-center justify-center w-5 h-5 rounded hover:bg-gray-700"
+                className="flex items-center justify-center w-5 h-5 rounded hover:bg-gray-700 dark:hover:bg-secondary-background"
               >
                 <FontAwesomeIcon icon={faChevronDown} size="xs" />
               </div>

@@ -29,8 +29,8 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
       <div
       onMouseEnter={() => setIsEditing(true)}
       onMouseLeave={() => setIsEditing(false)}
-        className={`accordion-title flex items-center justify-between pl-5 py-2 rounded-lg hover:bg-slate-800 ${
-          data?.id == collegeid && 'bg-slate-800'
+        className={`accordion-title flex items-center justify-between pl-5 py-2 rounded-lg hover:bg-slate-800 dark:hover:bg-background ${
+          data?.id == collegeid && 'dark:hover:bg-background'
         } cursor-pointer`}
         onClick={handleClick}
       >
@@ -57,7 +57,7 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
       {user?.role_user?.role_id === ROLES['ADMIN']
         ? data?.id == collegeid && departments?.length > 0 &&
           isActive && (
-            <div className="absolute z-50 bg-slate-800 text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
+            <div className="absolute z-50 bg-slate-800 dark:bg-secondary-background text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
               {departments?.map((department) => {
                 return (
                   <div key={department.id}>
@@ -74,7 +74,7 @@ const CollegeAccordion = ({ userData, data, departments, department }) => {
         : data?.id == collegeid &&
           isActive &&
           department && (
-            <div className="absolute z-50 bg-slate-800 text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
+            <div className="absolute z-50 bg-slate-800 dark:bg-secondary-background text-white border w-52 rounded-lg flex flex-col p-2 mt-2 left-1/2 -translate-x-1/2">
               <DepartmentAccordion
                 handleDropdown={setIsActive}
                 data={department}
