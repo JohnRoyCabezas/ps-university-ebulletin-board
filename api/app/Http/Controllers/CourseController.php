@@ -119,8 +119,34 @@ class CourseController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'old_user_ids' => ['required'],
+            'old_instructor_id' => ['required'],
+        ]);
+
+    try {
+        DB::beginTransaction();
+
+        $course = Course::find($id);
+
+        $course->user()->detach($validatedData['old_user_ids']);
+        $course->user()->detach($validatedData['old_instructor_id']);
+
+        Course::destroy($id);
+        DB::commit();
+
+        return response()->json([
+            'message' => 'Class deleted!',
+        ]);
+
+    } catch (Exception $e) {
+        DB::rollBack();
+
+        return response()->json([
+            'message' => $e->getMessage(),
+        ], 500);
+    }
     }
 }

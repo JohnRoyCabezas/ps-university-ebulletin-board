@@ -30,6 +30,17 @@ const CourseApi = {
     }
     return instance.request(config)
   },
+
+  deleteCourse: (id, params) => {
+    const config = {
+      method: "DELETE",
+      url: `/course/${id}`,
+      params: {
+        ...params,
+      }
+    };
+    return instance.request(config);
+  },
 }
 
 export default CourseApi;

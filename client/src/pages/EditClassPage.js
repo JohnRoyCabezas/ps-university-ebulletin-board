@@ -7,6 +7,7 @@ import Dropdown from "../components/Dropdown";
 import DropdownMulti from '../components/DropdownMulti';
 import SubmitButton from "../components/submitButton";
 import SuccessModal from "../components/SuccessModal";
+import DeleteModal from "../components/DeleteModal";
 import CourseApi from "../api/CourseApi";
 import UserApi from '../api/UserApi';
 import DepartmentApi from '../api/DepartmentApi';
@@ -22,7 +23,11 @@ const EditClassPage = () => {
   const [instructors, setInstructors] = useState();
   const [params, setParams] = useState();
   const [selected, setSelected] = useState();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({
+    updateSucess: false,
+    deleteSucess: false,
+    delete: false,
+  });
   const [oldData, setOldData] = useState();
   const university_id = Cookies.get('universityid');
 
@@ -92,9 +97,19 @@ const EditClassPage = () => {
     setProcessing(true);
     CourseApi.updateCourse(params, oldData, course.id).then(() => {
       setProcessing(false);
-      setShowModal(true);
+      setShowModal({...showModal, updateSucess: true});
     });
   };
+
+  function handleDelete() {
+    setShowModal({...showModal, delete:true});
+  }
+
+  function handleYes() {
+    CourseApi.deleteCourse(classid, oldData).then(() => {
+      setShowModal({...showModal, delete:false, deleteSucess: true});
+    })
+  }
 
   return loading ?
     <div className="relative h-full flex flex-col justify-center items-center">  
@@ -102,18 +117,35 @@ const EditClassPage = () => {
     </div>
     : (
     <div className="flex">
-      {showModal && (
+      {showModal.updateSucess && (
         <SuccessModal
         title="Class Update"
         message="The class has been updated!"
         setShowModal={() => navigate('/adminsettings')}/>
       )}
+
+      {showModal.deleteSucess && (
+        <SuccessModal
+          title="Deleted"
+          message="The class has been deleted!"
+          setShowModal={() => navigate('/adminsettings')}/>
+      )}
+
+      {showModal.delete &&
+          <DeleteModal
+            message={'Are you sure you want to remove this class?'}
+            buttonConfirmText={'Yes'}
+            buttonCancelText={'No'}
+            setShowModal={(value)=> setShowModal({...showModal, delete: value})}
+            delete={() => handleYes()}
+          />}
       <div className="flex flex-col w-full  h-screen">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2 fex">
           Edit Class
           <button
             type="button"
             className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            onClick={handleDelete}
           >
             <FontAwesomeIcon icon={faTrashAlt} className="mr-1" />
             Delete
