@@ -6,6 +6,7 @@ import DepartmentApi from "../api/DepartmentApi";
 import CollegeApi from "../api/CollegeApi";
 import SubmitButton from "../components/submitButton";
 import Cookies from "js-cookie";
+import BackButton from '../components/BackButton';
 
 const CreateDepartmentPage = () => {
   const initialParams = {
@@ -72,6 +73,7 @@ const CreateDepartmentPage = () => {
       )}
       <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
+          <BackButton link={'/adminsettings'} />
           Create Department
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
@@ -184,7 +186,7 @@ const CreateDepartmentPage = () => {
                 processing={processing}
                 buttonTitle={"Create Department"}
               />
-              
+
             </form>
           </div>
         </div>

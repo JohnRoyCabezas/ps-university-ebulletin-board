@@ -1,15 +1,21 @@
 import { React, useEffect, useState } from "react";
-import SelectDropDownComponent from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import CollegeApi from "../api/CollegeApi";
 import DeleteModal from "../components/DeleteModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SuccessModal from "../components/SuccessModal";
 import SubmitButton from "../components/submitButton";
+import Cookies from "js-cookie";
+import Dropdown from "../components/Dropdown";
+import UserApi from "../api/UserApi";
+import BackButton from "../components/BackButton";
+
 
 const EditCollegePage = () => {
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const [collegeInfo, setCollegeInfo] = useState('');
   const [college, setCollege] = useState('');
   const [deansList, setDeansList] = useState([]);
@@ -19,22 +25,24 @@ const EditCollegePage = () => {
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
-  const navigate = useNavigate();
-
-  // Const id can become dynamic afterwards
-  const id = 20;
+  const user = JSON.parse(Cookies.get('user'));
+  const id = location.state.collegeid;
 
   useEffect(() => {
     CollegeApi.fetchSpecificCollege(id).then((res) => {
-      setCollegeInfo(res.data?.college?.college_information);
-      setCollege(res.data?.college?.college);
-      res.data.deans.map((data) => {
-        setDeansList(current => [...current, data.user]);
-        if (data.user_id === res.data.college.user_id) {
-          setDefaultValue(data.user_id);
-          setDefaultLabel(data.user.fullname);
-        }
-      });
+      setCollege(res?.data?.college?.college);
+      setCollegeInfo(res?.data?.college?.college_information);
+      setDefaultValue(res?.data?.college?.user_id);
+
+      UserApi.fetchDeans(user?.university_id).then((deans) => {
+        deans.data.forEach((data, index) => {
+          if (data.id === res?.data?.college?.user_id) {
+            // setDefaultLabel(deans.data.splice(index, 1)[0].fullname);
+            setDefaultLabel(deans?.data[index].fullname)
+          }
+        })
+        setDeansList(deans.data);
+      })
     })
   }, [])
 
@@ -57,8 +65,8 @@ const EditCollegePage = () => {
   const handleSubmit = () => {
     setProcessing(true)
     CollegeApi.updateCollege({ collegeInfo, college, defaultValue }, id).then((res) => {
-        setProcessing(false);
-        setShowModal(true);
+      setProcessing(false);
+      setShowModal(true);
     })
   }
 
@@ -78,6 +86,7 @@ const EditCollegePage = () => {
         />)}
       <div className="flex flex-col w-full h-screen">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2 fex">
+          <BackButton link={`/admincollege/${id}`} />
           Edit College
           <button
             type="button"
@@ -134,12 +143,20 @@ const EditCollegePage = () => {
                     : <span className="text-red-600">*</span>
                   </span>
                 </label>
-                <SelectDropDownComponent defaultLabel={defaultLabel} defaultValue={defaultValue} data={deansList} type={"fullname"} handleChange={handleSelectChange} />
+
+                <Dropdown
+                  selectedLabel={defaultLabel}
+                  selectedValue={defaultValue}
+                  data={deansList}
+                  type={"dean"}
+                  label={"fullname"}
+                  handleChange={handleSelectChange}
+                />
               </div>
 
               <SubmitButton
                 handleSubmit={() => handleSubmit()}
-                buttonDisabled={!collegeInfo || !college || !defaultValue ? true : false}
+                buttonDisabled={collegeInfo && college && defaultValue ? true : false}
                 processing={processing}
                 buttonTitle={"Accept Changes"}
               />

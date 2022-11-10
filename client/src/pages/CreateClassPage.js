@@ -7,6 +7,7 @@ import DepartmentApi from '../api/DepartmentApi';
 import CourseApi from '../api/CourseApi';
 import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
+import BackButton from '../components/BackButton';
 
 const CreateClassPage = () => {
   const initialState = {
@@ -70,6 +71,7 @@ const CreateClassPage = () => {
     <div className="flex">
       <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
+          <BackButton link={'/adminsettings'} />
           Create Class
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
@@ -168,8 +170,8 @@ const CreateClassPage = () => {
                 buttonDisabled={params.course &&
                   params.department_id &&
                   params.instructor_id &&
-                  params.user_ids.length>0
-                   ? true : false}
+                  params.user_ids.length > 0
+                  ? true : false}
                 processing={processing}
                 buttonTitle={"Create Class"}
               />

@@ -3,6 +3,7 @@ import UsersTable from '../components/UsersTable';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import BackButton from '../components/BackButton';
 
 const ManageUsersPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -16,20 +17,20 @@ const ManageUsersPage = () => {
   });
 
   const handleSearch = (e) => {
-    if ((params.keyword !== '') && e.target.value === '' ) {
-      setParams({...params, page: 1, keyword: ''})
+    if ((params.keyword !== '') && e.target.value === '') {
+      setParams({ ...params, page: 1, keyword: '' })
     }
-      
+
     if (e.key === 'Enter') {
-      setParams({...params, keyword: searchKeyword, page: 1})
+      setParams({ ...params, keyword: searchKeyword, page: 1 })
     }
     setSearchKeyword(e.target.value)
   };
-  
+
   const handleSearchSubmit = () => {
-    setParams({...params, keyword: searchKeyword})
+    setParams({ ...params, keyword: searchKeyword })
   }
-  
+
   const handlePageChange = ({ selected }) => {
     setParams({ ...params, page: selected + 1 });
   };
@@ -44,6 +45,7 @@ const ManageUsersPage = () => {
       <div className="flex flex-col w-full">
         <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
           <div>
+            <BackButton link={'/adminsettings'} />
             <span>Manage Users</span>
             <Link to="/register">
               <button
