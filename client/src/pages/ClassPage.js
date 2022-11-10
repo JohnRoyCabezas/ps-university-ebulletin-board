@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Pusher from 'pusher-js';
+import Cookies from 'js-cookie';
 import CourseApi from '../api/CourseApi';
 import ChatApi from '../api/ChatApi';
 import ChatCard from '../components/ChatCard';
@@ -18,6 +19,7 @@ const ClassPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const role = JSON.parse(Cookies.get('user')).role_user.role_id;
 
   const handleRefresh = () => {
     ChatApi.fetchCourseChats(classid).then(res => {
@@ -57,14 +59,16 @@ const ClassPage = () => {
       <div className="relative flex flex-col w-full">
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">
           {course?.course}
-          <button
-              type="button"
-              className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-              onClick={()=> navigate(`/editclass/${classid}`)}
-            >
-              <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />
-              Edit
-          </button>
+          {role === 2 && !loading &&
+            <button
+                type="button"
+                className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                onClick={()=> navigate(`/editclass/${classid}`)}
+              >
+                <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />
+                Edit
+            </button>
+          }
         </h1>
         <div className="flex flex-col justify-between h-full">
           <div id="chatswrapper" className="mt-12 overflow-y-auto">
