@@ -18,6 +18,29 @@ const CourseApi = {
     };
     return instance.request(config);
   },
+
+  updateCourse: (params, oldData, id) => {
+    const config = {
+      method: "PUT",
+      url: `/course/${id}`,
+      params: {
+        ...params,
+        ...oldData,
+      }
+    }
+    return instance.request(config)
+  },
+
+  deleteCourse: (id, params) => {
+    const config = {
+      method: "DELETE",
+      url: `/course/${id}`,
+      params: {
+        ...params,
+      }
+    };
+    return instance.request(config);
+  },
 }
 
 export default CourseApi;
