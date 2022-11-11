@@ -89,7 +89,10 @@ const RoutesList = () => {
           <Route path="editcollege" element={<EditCollegePage />} />
           <Route path="editclass/:classid" element={<EditClassPage />} />
           <Route path="createdepartment" element={<CreateDepartmentPage />} />
-          <Route path="editdepartment" element={<EditDepartmentPage />} />
+          <Route
+            path="editdepartment/:departmentid"
+            element={<EditDepartmentPage />}
+          />
           <Route path="createclass" element={<CreateClassPage />} />
           <Route path="adminsettings/done" element={<AdminSettingsPage />} />
           <Route path="register" element={<RegisterPage />} />

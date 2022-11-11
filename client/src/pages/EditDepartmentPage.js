@@ -4,11 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import DepartmentApi from "../api/DepartmentApi";
 import DeleteModal from "../components/DeleteModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SuccessModal from "../components/SuccessModal";
 import SubmitButton from "../components/submitButton";
 
 const EditDepartmentPage = () => {
+  const { departmentid } = useParams();
   const [departmentInfo, setdepartmentInfo] = useState("");
   const [department, setdepartment] = useState("");
   const [deansList, setDeansList] = useState([]);
@@ -20,7 +21,7 @@ const EditDepartmentPage = () => {
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
   const navigate = useNavigate();
 
-  const id = 10;
+  const id = departmentid;
 
   useEffect(() => {
     DepartmentApi.fetchSpecificDepartment(id).then((res) => {
