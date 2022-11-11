@@ -19,6 +19,12 @@ class UniversityController extends Controller
         return response()->json($universities);
     }
 
+    public function show($id){
+        $university = University::findorFail($id);
+
+        return response()->json($university);
+    }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([

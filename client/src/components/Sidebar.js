@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
 import SideBarPopupAdmin from './SideBarPopupAdmin';
 import AnnouncementIcon from '../shared/AnnouncementIcon';
 import UserApi from '../api/UserApi';
+import UniversityApi from '../api/UniversityApi';
 import ROLES from './Roles';
 import Cookies from 'js-cookie';
 import CollegeAccordion from './CollegeAccordion';
@@ -11,9 +12,10 @@ import SideBarPopupUser from './SidebarPopupUser';
 const Sidebar = () => {
   const id = useParams();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState();
   const user = JSON.parse(Cookies.get('user') || '{}');
   const [Show, setShowModal] = useState(false);
+  const [university, setUniversity] = useState();
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
@@ -23,18 +25,23 @@ const Sidebar = () => {
     });
   }, [id]);
 
+  useEffect(()=> {
+    if(userData) {
+      UniversityApi.fetchSpecificUniversity(userData.university_id).then(({data})=>{
+        setUniversity(data)
+      })
+    }
+  }, [userData])
 
   return (
     <div className="flex shrink-0 w-full h-screen">
       <div className="relative flex flex-col w-64 bg-regal-blue text-white">
         <div
           onClick={() => navigate('/')}
-          className="flex justify-center items-center h-16 px-4 sticky top-0 bg-regal-blue border-b-2 z-50 opacity-1 cursor-pointer"
+          className="flex justify-center items-center px-4 sticky top-0 bg-regal-blue border-b-2 z-50 opacity-1 cursor-pointer"
         >
-          <span className="text-xl font-bold bg-regal-blue">
-            {user?.role_user?.role_id === ROLES['ADMIN']
-              ? userData?.university?.university
-              : userData?.department?.college?.university?.university}
+          <span className="text-xl font-bold py-2 bg-regal-blue">
+            {university?.university}
           </span>
         </div>
         <div className="flex flex-col h-full overflow-y-auto mb-16">
@@ -62,7 +69,7 @@ const Sidebar = () => {
                   </Link>
                 );
               })
-            ) : (
+            ) : userData?.department && (
               <Link to={`/college/${userData?.department?.college_id}`}>
                 <CollegeAccordion
                   userData={userData}
