@@ -20,8 +20,6 @@ const Sidebar = () => {
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
-      document.title = (res.data?.university?.university || res.data?.department?.college?.university?.university)+" | E-Bulletin"
-      Cookies.set("universityid", res.data?.university?.id || res.data?.university_id)
     });
   }, [id]);
 
@@ -29,6 +27,8 @@ const Sidebar = () => {
     if(userData) {
       UniversityApi.fetchSpecificUniversity(userData.university_id).then(({data})=>{
         setUniversity(data)
+        document.title = data.university+" | E-Bulletin";
+        Cookies.set("universityid", data.id);
       })
     }
   }, [userData])
