@@ -18,6 +18,14 @@ const UniversityApi = {
     };
     return instance.request(config);
   },
+
+  fetchSpecificUniversity: (id) => {
+    const config = {
+      method: "GET",
+      url: `/university/${id}`,
+    };
+    return instance.request(config);
+  },
 };
 
 export default UniversityApi;
