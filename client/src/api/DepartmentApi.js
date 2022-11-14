@@ -47,7 +47,7 @@ const DepartmentApi = {
     return instance.request(config);
   },
   updateDepartment: (
-    { department_information, college_id, user_id, department },
+    { department_information, user_id, department },
     id
   ) => {
     const config = {
@@ -57,7 +57,6 @@ const DepartmentApi = {
         department_information,
         department,
         user_id,
-        college_id,
       },
     };
     return instance.request(config);

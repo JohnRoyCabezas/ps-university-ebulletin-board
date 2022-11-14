@@ -72,30 +72,67 @@ class DepartmentController extends Controller
         return response()->json($department);
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     $request->validate(
+    //         [
+    //             'college_id' => ['required'],
+    //             'user_id' => ['required'],
+    //             'department' => ['required', 'unique:departments'],
+    //             'department_information' => ['required'],
+    //         ]
+    //     );
+
+    //     $department = Department::findOrFail($id);
+    //     $department->update($request->all());
+
+    //     return response()->json(
+    //         [
+    //             'status' => 'Department Updated!',
+
+    //         ]
+    //     );
+    // }
+
     public function update(Request $request, $id)
     {
-        $request->validate(
-            [
-                'college_id' => ['required'],
-                'user_id' => ['required'],
-                'department' => ['required', 'unique:departments'],
-                'department_information' => ['required'],
-            ]
-        );
+        try {
+            DB::beginTransaction();
 
-        $department = Department::findOrFail($id);
-        $department->update($request->all());
+            $department = Department::findOrFail($id);
+            if ($department->user_id != $request->user_id) {
+                $user = User::findOrFail($department->user_id);
+                $user->department_id = null;
+                $user->save();
+                $user = User::findOrFail($request->user_id);
+                $user->department_id = $id;
+                $user->save();
+            }
+            $department->update($request->all());
 
-        return response()->json(
-            [
-                'status' => 'Department Updated!',
+            DB::commit();
 
-            ]
-        );
+            return response()->json(
+                [
+                    'status' => 'Department Updated!',
+                    'user' => $user,
+                ]
+            );
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function destroy($id)
     {
+        $department = Department::findOrFail($id);
+        $user = User::findOrFail($department->user_id);
+        $user->department_id = null;
+        $user->save();
         Department::destroy($id);
 
         return response()->json(

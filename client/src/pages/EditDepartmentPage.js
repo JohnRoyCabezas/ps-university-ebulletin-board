@@ -3,37 +3,49 @@ import SelectDropDownComponent from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import DepartmentApi from "../api/DepartmentApi";
+import UserApi from "../api/UserApi";
 import DeleteModal from "../components/DeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
 import SuccessModal from "../components/SuccessModal";
 import SubmitButton from "../components/submitButton";
+import Cookies from "js-cookie";
 
 const EditDepartmentPage = () => {
   const { departmentid } = useParams();
-  const [departmentInfo, setdepartmentInfo] = useState("");
+  const [department_information, setdepartment_information] = useState("");
   const [department, setdepartment] = useState("");
+  const [currentDean, setCurrentDean] = useState("");
   const [deansList, setDeansList] = useState([]);
   const [defaultLabel, setDefaultLabel] = useState("");
   const [defaultValue, setDefaultValue] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
   const navigate = useNavigate();
+  const university_id = Cookies.get("universityid");
 
   const id = departmentid;
 
   useEffect(() => {
     DepartmentApi.fetchSpecificDepartment(id).then((res) => {
-      setdepartmentInfo(res.data?.department_information);
-      setdepartment(res.data?.department);
-      res.data.user_id.map((data) => {
-        setDeansList((current) => [...current, data.user]);
-        if (data.user_id === res.data.department.user_id) {
-          setDefaultValue(data.user_id);
-          setDefaultLabel(data.user.fullname);
-        }
+      setdepartment_information(res.data?.department_information);
+      setdepartment(res?.data?.department);
+      setCurrentDean(res?.data?.user_id);
+
+      UserApi.fetchDeans(university_id).then((deans) => {
+        deans.data.map((dean, index) => {
+          console.log(dean?.id == res?.data?.user_id);
+          if (dean?.id == res?.data?.user_id) {
+            setDefaultValue(res?.data?.user_id);
+            setDefaultLabel(dean?.fullname);
+          }
+        });
+
+        setDeansList(deans.data);
       });
+      setLoading(false);
     });
   }, []);
 
@@ -54,9 +66,10 @@ const EditDepartmentPage = () => {
   }
 
   const handleSubmit = () => {
+    const user_id = defaultValue;
     setProcessing(true);
     DepartmentApi.updateDepartment(
-      { departmentInfo, department, defaultValue },
+      { department_information, department, user_id },
       id
     ).then((res) => {
       setProcessing(false);
@@ -64,8 +77,13 @@ const EditDepartmentPage = () => {
     });
   };
 
-  return (
+  return loading ? (
+    <div className="relative h-full flex flex-col justify-center items-center">
+      Loading...
+    </div>
+  ) : (
     <div className="flex">
+      {console.log(defaultLabel)}
       {showModal && (
         <SuccessModal
           title="department Update"
@@ -122,13 +140,17 @@ const EditDepartmentPage = () => {
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Department Information
-                  <span className={!departmentInfo ? "inline-block" : "hidden"}>
+                  <span
+                    className={
+                      !department_information ? "inline-block" : "hidden"
+                    }
+                  >
                     : <span className="text-red-600">*</span>
                   </span>
                 </label>
                 <input
-                  value={departmentInfo || ""}
-                  onChange={(e) => setdepartmentInfo(e.target.value)}
+                  value={department_information || ""}
+                  onChange={(e) => setdepartment_information(e.target.value)}
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
                 />
               </div>
@@ -140,18 +162,20 @@ const EditDepartmentPage = () => {
                   </span>
                 </label>
                 <SelectDropDownComponent
-                  defaultLabel={defaultLabel}
-                  defaultValue={defaultValue}
+                  selectedLabel={defaultLabel}
+                  selectedValue={defaultValue}
                   data={deansList}
                   type={"fullname"}
+                  label={"fullname"}
                   handleChange={handleSelectChange}
                 />
               </div>
-
               <SubmitButton
                 handleSubmit={() => handleSubmit()}
                 buttonDisabled={
-                  !departmentInfo || !department || !defaultValue ? true : false
+                  !department_information || !department || defaultValue
+                    ? true
+                    : false
                 }
                 processing={processing}
                 buttonTitle={"Accept Changes"}
