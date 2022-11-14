@@ -119,7 +119,7 @@ const EditClassPage = () => {
         <SuccessModal
         title="Class Update"
         message="The class has been updated!"
-        setShowModal={() => navigate('/adminsettings')}/>
+        setShowModal={() => navigate(-1)}/>
       )}
 
       {showModal.deleteSucess && (

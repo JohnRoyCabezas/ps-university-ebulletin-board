@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\ChatUpdate;
+use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return view('welcome');
-
-    return User::find(1);
+    return view('welcome');
 });

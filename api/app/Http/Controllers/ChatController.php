@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ChatUpdate;
+use App\Events\CommentUpdate;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,7 @@ class ChatController extends Controller
 
     public function show($id)
     {
-        $chat = Chat::with('user')->find($id);
+        $chat = Chat::with('user', 'comments.user')->find($id);
 
         return response()->json($chat);
     }
@@ -53,6 +54,8 @@ class ChatController extends Controller
 
         $chat->update(['chat' => $validatedData['chat']]);
 
+        event(new ChatUpdate($chat));
+
         return response()->json(['message' => 'Updated chat message!']);
     }
 
@@ -61,13 +64,16 @@ class ChatController extends Controller
         $chat = Chat::find($id);
 
         $chat->delete();
+
+        event(new ChatUpdate($chat));
+
         return response()->json(['message' => 'Soft deleted a chat message!']);
     }
 
     public function courseChats( Request $request)
     {
-        $coursechats = Chat::where('course_id', $request->course_id)
-            ->with('user')->get();
+        $coursechats = Chat::with('comments.user')->where('course_id', $request->course_id)
+            ->with('user')->orderBy('created_at')->get();
             
         return response()->json($coursechats);
     }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChatUpdate;
 use App\Events\CommentUpdate;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -31,7 +33,8 @@ class CommentController extends Controller
             'comment' => $validatedData['comment']
         ]);
 
-        event(new CommentUpdate($comment));
+        event(new CommentUpdate($comment)); 
+        event(new ChatUpdate($comment));
 
         $data = [
             'message' => 'Successfully created a comment!',
@@ -58,6 +61,8 @@ class CommentController extends Controller
 
         $comment->update(['comment' => $validatedData['comment']]);
 
+        event(new CommentUpdate($comment));
+
         return response()->json(['message' => 'Updated comment!']);
     }
 
@@ -65,7 +70,11 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
 
+        event(new CommentUpdate($comment));
+        event(new ChatUpdate($comment));
+
         $comment->delete();
+
         return response()->json(['message' => 'Soft deleted a comment!']);
     }
 

@@ -8,7 +8,6 @@ import CommentApi from '../api/CommentApi';
 const CommentTextEditor = ({
   chatId,
   commentId,
-  handleRefresh,
   isEditing,
   setIsEditing,
 }) => {
@@ -34,13 +33,11 @@ const CommentTextEditor = ({
     isEditing
       ? CommentApi.updateComment(params).then((res) => {
           setStatus('done');
-          handleRefresh();
           setIsEditing(false);
           setParams(initialParams);
         })
-      : CommentApi.createComment(params).then((res) => {
+      : CommentApi.createComment({...params, chat_id: chatId}).then((res) => {
           setStatus('done');
-          handleRefresh();
           setParams(initialParams);
         });
   };
@@ -61,7 +58,7 @@ const CommentTextEditor = ({
           className="block bottom-0"
         ></ReactQuill>
 
-        <div className="flex justify-between rte mb-2 p-2">
+        <div className="flex justify-between rte p-2">
           <FontAwesomeIcon icon={faPaperclip} size="2x" color="#162750" />
           <div>
             {isEditing ? (
@@ -101,7 +98,7 @@ const CommentTextEditor = ({
               <button
                 onClick={() => handleSubmit}
                 disabled={params?.comment === '<p><br></p>' && true}
-                className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
+                className={`text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
                   params?.comment === '<p><br></p>'
                     ? 'disabled bg-gray-300 text-gray-400'
                     : 'bg-blue-700 hover:bg-blue-800'

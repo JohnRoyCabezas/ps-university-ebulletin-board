@@ -1,30 +1,32 @@
-import { React, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Pusher from 'pusher-js';
-import Cookies from 'js-cookie';
-import CourseApi from '../api/CourseApi';
-import ChatApi from '../api/ChatApi';
-import ChatCard from '../components/ChatCard';
-import ChatTextEditor from '../components/ChatTextEditor';
-import Comments from '../components/Comments';
+import { React, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Pusher from "pusher-js";
+import CourseApi from "../api/CourseApi";
+import ChatApi from "../api/ChatApi";
+import ChatCard from "../components/ChatCard";
+import ChatTextEditor from "../components/ChatTextEditor";
+import Comments from "../components/Comments";
+import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 const ClassPage = () => {
   const { classid } = useParams();
+
+  const [chatObj, setChatObj] = useState({});
   const [chats, setChats] = useState([]);
   const [course, setCourse] = useState({});
+
   const [showComments, setShowComments] = useState(false);
-  const [chatId, setChatId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const role = JSON.parse(Cookies.get('user')).role_user.role_id;
 
-  const handleRefresh = () => {
-    ChatApi.fetchCourseChats(classid).then(res => {
-      setChats(res.data); 
-    })
+  const fetchCourseChats = () => {
+    ChatApi.fetchCourseChats(classid).then((res) => {
+      setChats(res.data);
+    });
   };
 
   useEffect(() => {
@@ -32,32 +34,35 @@ const ClassPage = () => {
       setCourse(res.data);
       setLoading(false);
     });
+    fetchCourseChats();
+  }, []);
 
-    handleRefresh();
-  }, [classid]);
-
-  
   useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
     });
-    
-    const channel = pusher.subscribe('chat');
-  
-    channel.bind('chat-update', function (data) {
-      handleRefresh();
+
+    const channel = pusher.subscribe("chat");
+    channel.bind("chat-update", function (data) {
+      fetchCourseChats();
     });
   }, []);
-  
+
+  const scrollToBottom = () => {
+    const elem = document.getElementById("chatsWrapper");
+    elem.scrollTo({ top: elem.scrollHeight, behavior: "smooth" });
+  };
+
+  // bugfix: only run this on first render and on new ChatMessage
+  // bugfix: should not be called if there is a new comment
   useEffect(() => {
-    const lastDiv = document.getElementById('chatswrapper');
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
+    scrollToBottom();
   }, [chats]);
 
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-50 w-full font-bold text-lg bg-white border-b-2">
           {course?.course}
           {role === 2 && !loading &&
             <button
@@ -71,31 +76,40 @@ const ClassPage = () => {
           }
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id="chatswrapper" className="mt-12 overflow-y-auto">
+          <div id="chatsWrapper" className="mt-14 pt-6 overflow-y-auto">
             {chats?.length === 0 ? (
               <div className="flex mt-10 italic justify-center">
-                {!loading ? "There are no chat messages available.": "Loading..."}
+                {!loading
+                  ? "There are no chat messages available."
+                  : "Loading..."}
               </div>
             ) : (
               chats?.map((chat) => (
                 <ChatCard
                   key={chat?.id}
                   chat={chat}
-                  handleRefresh={handleRefresh}
+                  chatObj={chatObj}
+                  setChatObj={setChatObj}
                   setShowComments={setShowComments}
-                  setChatId={setChatId}
-                  showComments = {showComments}
                 />
               ))
             )}
           </div>
-          <div className="p-2 rounded-3xl">
-            <ChatTextEditor handleRefresh={handleRefresh} classid={classid} setIsEditing={setIsEditing}/>
+          <div className="p-2">
+            <ChatTextEditor
+              classid={classid}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+            />
           </div>
         </div>
       </div>
       {showComments && (
-        <Comments setShowComments={setShowComments} chat_id={chatId} />
+        <Comments
+          chat={chatObj}
+          setChat={setChatObj}
+          setShowComments={setShowComments}
+        />
       )}
     </div>
   );
