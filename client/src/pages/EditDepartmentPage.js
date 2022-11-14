@@ -36,7 +36,6 @@ const EditDepartmentPage = () => {
 
       UserApi.fetchDeans(university_id).then((deans) => {
         deans.data.map((dean, index) => {
-          console.log(dean?.id == res?.data?.user_id);
           if (dean?.id == res?.data?.user_id) {
             setDefaultValue(res?.data?.user_id);
             setDefaultLabel(dean?.fullname);
@@ -83,10 +82,9 @@ const EditDepartmentPage = () => {
     </div>
   ) : (
     <div className="flex">
-      {console.log(defaultLabel)}
       {showModal && (
         <SuccessModal
-          title="department Update"
+          title="Department Update"
           message="The department has been updated!"
           setShowModal={() => navigate("/adminsettings")}
         />

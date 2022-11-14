@@ -72,28 +72,6 @@ class DepartmentController extends Controller
         return response()->json($department);
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate(
-    //         [
-    //             'college_id' => ['required'],
-    //             'user_id' => ['required'],
-    //             'department' => ['required', 'unique:departments'],
-    //             'department_information' => ['required'],
-    //         ]
-    //     );
-
-    //     $department = Department::findOrFail($id);
-    //     $department->update($request->all());
-
-    //     return response()->json(
-    //         [
-    //             'status' => 'Department Updated!',
-
-    //         ]
-    //     );
-    // }
-
     public function update(Request $request, $id)
     {
         try {
@@ -115,7 +93,6 @@ class DepartmentController extends Controller
             return response()->json(
                 [
                     'status' => 'Department Updated!',
-                    'user' => $user,
                 ]
             );
         } catch (Exception $e) {
