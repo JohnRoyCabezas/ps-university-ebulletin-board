@@ -4,6 +4,7 @@ import UserApi from '../api/UserApi';
 import CollegeApi from '../api/CollegeApi';
 import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
+import BackButton from '../components/BackButton';
 import Cookies from 'js-cookie';
 
 const CreateCollegePage = () => {
@@ -65,6 +66,7 @@ const CreateCollegePage = () => {
       )}
       <div className="flex flex-col w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
+          <BackButton link={'/adminsettings'} />
           Create College
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
@@ -140,9 +142,9 @@ const CreateCollegePage = () => {
 
               <SubmitButton
                 handleSubmit={() => handleSubmit()}
-                buttonDisabled={params.college &&
+                buttonDisabled={(params.college &&
                   params.college_information &&
-                  params.dean || processing ? true : false}
+                  params.dean) || processing ? true : false}
                 processing={processing}
                 buttonTitle={"Create College"}
               />
