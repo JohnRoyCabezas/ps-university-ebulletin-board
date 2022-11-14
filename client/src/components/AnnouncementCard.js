@@ -86,7 +86,7 @@ export default function AnnouncementCard(props) {
                   />
                 </div>
               ) : (
-                <span className="cardText text-gray-700 text-base">
+                <span className="text-gray-700 text-base ql-editor card">
                   {parse(props.announcement.announcement)}
                 </span>
               )

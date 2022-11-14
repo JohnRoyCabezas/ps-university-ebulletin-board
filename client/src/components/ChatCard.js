@@ -62,7 +62,7 @@ const ChatCard = ({ chat, handleRefresh, setChatId, setShowComments, showComment
               />
             </div>
           ) : (
-            <span className="text-gray-700 text-base">{parse(chat.chat)}</span>
+            <span className="text-gray-700 text-base card ql-editor">{parse(chat.chat)}</span>
           )}
         </div>
 

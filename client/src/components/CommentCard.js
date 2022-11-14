@@ -60,7 +60,7 @@ const CommentCard = ({comment, handleRefresh}) => {
                 />
               </div>
             ) : (
-              <span className="text-gray-700 text-sm">
+              <span className="text-gray-700 text-sm ql-editor card">
                 {parse(comment?.comment)}
               </span>
             )}
