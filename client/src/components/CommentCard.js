@@ -5,7 +5,7 @@ import parse from 'html-react-parser';
 import Cookies from "js-cookie";
 import CommentTextEditor from "./CommentTextEditor";
 
-const CommentCard = ({comment, handleRefresh}) => {
+const CommentCard = ({comment}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
@@ -30,12 +30,9 @@ const CommentCard = ({comment, handleRefresh}) => {
   return (
     <div>
       <div
-        className="relative flex w-full px-6 py-4"
+        className="relative flex w-full px-6 py-4 hover:bg-gray-200"
         onMouseEnter={() => setIsShowOptions(true)}
         onMouseLeave={() => setIsShowOptions(false)}
-        style={{
-          backgroundColor: isShowOptions ? '#EAE8E8' : '',
-        }}
       >
         <img
           src={comment?.user?.avatar}
@@ -54,7 +51,6 @@ const CommentCard = ({comment, handleRefresh}) => {
               <div className="px-5 w-full">
                 <CommentTextEditor
                   commentId={comment?.id}
-                  handleRefresh={handleRefresh}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
                 />
@@ -69,7 +65,6 @@ const CommentCard = ({comment, handleRefresh}) => {
         {isShowOptions && (
           <CommentOptions
             comment={comment}
-            handleRefresh={handleRefresh}
             handleEdit={setIsEditing}
             canEdit={canEdit}
             canDelete={canDelete}

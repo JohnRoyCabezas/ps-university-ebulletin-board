@@ -1,24 +1,11 @@
-import { React, useEffect, useState } from "react";
-import ChatApi from "../api/ChatApi";
-import CommentApi from "../api/CommentApi";
+import { React, useEffect } from "react";
 import CommentCard from "./CommentCard";
 import CommentsHeader from "./CommentsHeader";
 import CommentTextEditor from "./CommentTextEditor";
 import Pusher from "pusher-js";
+import ChatApi from "../api/ChatApi";
 
-const Comments = ({ chat_id, setShowComments }) => {
-  const [comments, setComments] = useState([]);
-  const [chat, setChat] = useState({});
-
-  useEffect(() => {
-    CommentApi.fetchComments(chat_id).then((res) => {
-      setComments(res.data);
-    });
-
-    ChatApi.showChat(chat_id).then((res) => {
-      setChat(res.data);
-    });
-  }, []);
+const Comments = ({ chat, setChat, setShowComments }) => {
 
   useEffect(() => {
     const pusher = new Pusher("6d32a294e8e6b327e3c5", {
@@ -26,32 +13,38 @@ const Comments = ({ chat_id, setShowComments }) => {
     });
 
     const channel = pusher.subscribe("comment");
+    
     channel.bind("comment-update", function (data) {
-      CommentApi.fetchComments(chat_id).then((res) => {
-        setComments(res.data);
-      });
+      if(chat?.id === data.comment.chat_id) {
+        ChatApi.showChat(data.comment.chat_id).then(res => {
+          setChat(res.data)
+        })
+      }
     });
-  }, []);
-
+  }, [chat, setChat]);
+  
   // scroll to the bottom of comments thread
-  useEffect(() => {
-    const lastDiv = document.getElementById("commentsWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
-  }, [comments]);
+  const scrollToBottom = () => {
+    const elem = document.getElementById("commentsWrapper");
+    elem.scrollTo({ top: elem.scrollHeight, behavior: "smooth" });
+  };
 
-  const handleRefresh = () => {
-    CommentApi.fetchComments(chat_id).then((res) => {
-      setComments(res.data);
-    });
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat, chat.comments]);
+
+  const handleClose = () => {
+    setShowComments(false);
+    setChat(null);
   };
 
   return (
     <div className="flex">
       <div className="relative flex flex-col border-l-2 w-[30vw]">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-50 w-full font-bold text-lg bg-white border-b-2">
           Chat Comments
           <button
-            onClick={() => setShowComments(false)}
+            onClick={handleClose}
             className="cursor-pointer p-1.5 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-7"
           >
             x
@@ -59,32 +52,28 @@ const Comments = ({ chat_id, setShowComments }) => {
         </h1>
 
         <div className="flex flex-col justify-even h-full">
-          <div id="commentsWrapper" className="mt-14 overflow-y-auto">
-            
+          <div id="commentsWrapper" className="flex flex-col mt-14 overflow-y-auto">
             <CommentsHeader chat={chat} />
-            
-            <div className="flex my-2 mx-5">
+
+            <div className="flex my-3 mx-6">
               <div className="mr-2 text-sm text-gray-400">
-                {comments.length > 1
-                  ? comments.length + " replies"
-                  : comments.length + " reply"}
+                {chat?.comments?.length > 1
+                  ? chat?.comments?.length + " replies"
+                  : chat?.comments?.length + " reply"}
               </div>
-              <div className="flex-1 h-0.5 my-auto border-b-1 text-center bg-gray-300 "></div>
+              <div className="flex-1 h-0.5 my-auto border-b-1 text-center bg-gray-200"></div>
             </div>
 
-            {comments?.map((comment) => {
+            {chat?.comments?.map((comment) => {
               return (
                 <div key={comment?.id}>
-                  <CommentCard
-                    handleRefresh={handleRefresh}
-                    comment={comment}
-                  />
+                  <CommentCard comment={comment} />
                 </div>
               );
             })}
+          <div className="p-2">
+            <CommentTextEditor chatId={chat?.id} />
           </div>
-          <div className="px-4 mt-2">
-            <CommentTextEditor chatId={chat_id} handleRefresh={handleRefresh} />
           </div>
         </div>
       </div>

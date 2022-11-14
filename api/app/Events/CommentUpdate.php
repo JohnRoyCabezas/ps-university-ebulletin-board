@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Models\Chat;
+use App\Models\Comment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -18,10 +20,11 @@ class CommentUpdate implements ShouldBroadcast
      * Create a new event instance.
      *
      * @return void
-     */
+    */
     public $comment;
     public function __construct($comment)
     {
+        $comment = Comment::with('user')->find($comment->id);
         $this->comment = $comment;
     }
 

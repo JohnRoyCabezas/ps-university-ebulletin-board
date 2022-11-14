@@ -1,16 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
-import DeleteModal from './DeleteModal';
-import CommentApi from '../api/CommentApi';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { useState } from "react";
+import DeleteModal from "./DeleteModal";
+import CommentApi from "../api/CommentApi";
 
-const CommentOptions = ({
-  comment,
-  handleRefresh,
-  handleEdit,
-  canEdit,
-  canDelete,
-}) => {
+const CommentOptions = ({ comment, handleEdit, canEdit, canDelete }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   function handleDelete() {
@@ -19,47 +13,30 @@ const CommentOptions = ({
 
   function yesDelete() {
     CommentApi.deleteComment(comment?.id);
-    handleRefresh();
   }
 
   return (
     <>
       {(canDelete || canEdit) && (
-        <div className="absolute top-0 right-0 translate-y-1/2 -translate-x-1/2 drop-shadow-md px-2 py-0.5 bg-white text-gray-500 border-regal-blue border-2 rounded cursor-pointer">
+        <div className="absolute top-0 right-4 -translate-y-1/2 drop-shadow-md p-0.5 bg-white text-gray-600 border-gray-600 border rounded cursor-pointer">
           {/* Edit button */}
           {canEdit && (
-            <>
-              <span className="m-1">
-                <button
-                  className="cursor-pointer"
-                  onClick={() => handleEdit(true)}
-                >
-                  <FontAwesomeIcon
-                    icon={faPenToSquare}
-                    size="lg"
-                    color="#162750"
-                  />
-                </button>
-              </span>
-            </>
+            <button
+              className="cursor-pointer rounded text-gray-600 py-1 px-2 hover:bg-gray-200"
+              onClick={() => handleEdit(true)}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </button>
           )}
 
           {/* Delete button */}
           {canDelete && (
-            <>
-              <span className="m-1">
-                <button
-                  className="cursor-pointer"
-                  onClick={() => handleDelete()}
-                >
-                  <FontAwesomeIcon
-                    icon={faTrashAlt}
-                    size="lg"
-                    color="#162750"
-                  />
-                </button>
-              </span>
-            </>
+            <button
+              className="cursor-pointer rounded text-gray-600 py-1 px-2 hover:bg-gray-200"
+              onClick={() => handleDelete()}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
           )}
         </div>
       )}

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Chat;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -20,11 +21,11 @@ class ChatUpdate implements ShouldBroadcast
      * @return void
      */
 
-    public $messages;
+    public $message;
 
-    public function __construct($messages)
+    public function __construct($message)
     {   
-        $this->messages = $messages;    
+        $this->message = $message;    
     }
 
     /**

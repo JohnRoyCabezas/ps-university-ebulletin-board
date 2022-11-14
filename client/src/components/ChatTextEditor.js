@@ -8,7 +8,6 @@ import ChatApi from '../api/ChatApi';
 const ChatTextEditor = ({
   classid,
   chatid,
-  handleRefresh,
   isEditing,
   setIsEditing,
 }) => {
@@ -35,13 +34,11 @@ const ChatTextEditor = ({
     isEditing
       ? ChatApi.updateChat(params).then((res) => {
           setStatus('done');
-          handleRefresh();
           setIsEditing(false);
           setParams(initialParams);
         })
       : ChatApi.createChat(params).then((res) => {
           setStatus('done');
-          handleRefresh();
           setParams(initialParams);
         });
   };
@@ -62,7 +59,7 @@ const ChatTextEditor = ({
           className="block bottom-0"
         ></ReactQuill>
 
-        <div className="flex justify-between rte mb-2 p-2">
+        <div className="flex justify-between rte p-2">
           <FontAwesomeIcon icon={faPaperclip} size="2x" color="#162750" />
           <div>
             {isEditing ? (
@@ -102,7 +99,7 @@ const ChatTextEditor = ({
               <button
                 onClick={() => handleSubmit}
                 disabled={params?.updateChat === params?.chat && true}
-                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
+                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
                   params?.chat === '<p><br></p>'
                     ? 'disabled bg-gray-300 text-gray-400'
                     : 'bg-blue-700 hover:bg-blue-800'
