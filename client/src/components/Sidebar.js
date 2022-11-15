@@ -9,6 +9,9 @@ import Cookies from 'js-cookie';
 import CollegeAccordion from './CollegeAccordion';
 import SideBarPopupUser from './SidebarPopupUser';
 import { ThemeContext } from './ThemeContext';
+import AdminSettingsModal from './AdminSettingsModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
   const id = useParams();
@@ -18,6 +21,7 @@ const Sidebar = () => {
   const { theme, setTheme } = useContext(ThemeContext);
   const [Show, setShowModal] = useState(false);
   const [university, setUniversity] = useState();
+  const [adminSettingsModal, setAdminSettingsModal] = useState(false);
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
@@ -38,14 +42,25 @@ const Sidebar = () => {
 
   return (
     <div className={`flex shrink-0 w-full h-screen`}>
+      {
+        adminSettingsModal && <AdminSettingsModal
+        setShowModal = {setAdminSettingsModal}
+        ></AdminSettingsModal>
+      }
       <div className={`relative flex flex-col w-64 text-white`}>
         <div
-          onClick={() => navigate('/')}
-          className={`flex justify-center items-center px-4 sticky top-0 border-b-2 z-50 cursor-pointer ${theme}`}
-        >
-          <span className="text-xl font-bold py-2">
+          className={`flex justify-between items-center px-4 sticky top-0 border-b-2 z-10 cursor-pointer ${theme}`}
+          >
+          <span className="text-xl font-bold py-2 mx-auto" onClick={() => navigate('/')}>
             {university?.university}
           </span>
+          {user?.role_user?.role_id === ROLES['ADMIN'] &&
+            <div
+              className="flex my-auto"
+              onClick={()=> setAdminSettingsModal(true)}>
+              <FontAwesomeIcon icon={faGear} size="lg" color="white"/>
+            </div>
+          }
         </div>
         {/* Edit here */}
         <div className={`flex flex-col h-full overflow-y-auto ${theme} bg-opacity-70`}>
