@@ -1,50 +1,50 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
-  content: ["./src/**/*.{js,jsx,ts,tsx}",],
+  darkMode: "class",
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       translate: {
-        '3': '-6rem',
-        '2': '-2.3rem'
+        3: "-6rem",
+        2: "-2.3rem",
       },
       margin: {
-        '100': '-1.2rem'
+        100: "-1.2rem",
       },
       colors: {
-        "regal-blue": "#162750", 
-        "dark-blue": "#0B1428", 
-        "custom-gray": "#F5F5F5", 
+        "regal-blue": "#162750",
+        "dark-blue": "#0B1428",
+        "custom-gray": "#F5F5F5",
 
-        "background": "#4C0033",
+        background: "#4C0033",
         "secondary-background": "#790252",
         "third-background": "#AF0171",
         "fourth-background": "#E80F88",
 
-        "primary": {
+        primary: {
           100: "#3C2317",
           200: "#AC7D88",
         },
-        "secondary": {
+        secondary: {
           100: "#4C0033",
           200: "#790252",
         },
-        "tertiary": {
+        tertiary: {
           100: "#2C3333",
           200: "#4C3575",
         },
-        "quinary": {
+        quinary: {
           100: "#247881",
           200: "#43919B",
         },
-        "senary": {
+        senary: {
           100: "#345B63",
           200: "#D4ECDD",
         },
       },
       spacing: {
-        '184px': '184px',
-      }
+        "184px": "184px",
+      },
     },
   },
   plugins: [],
