@@ -78,4 +78,21 @@ class UniversityController extends Controller
         }
     }
 
+    public function updateName(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+                'university' => ['required'],
+            ]
+        );
+
+        $university = University::findOrFail($id);
+        $university->update(['university' => $validatedData['university']]);
+
+        return response()->json(
+            [
+                'status' => 'University Name Updated!',
+
+            ]
+        );
+    }
 }

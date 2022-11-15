@@ -43,9 +43,10 @@ const Sidebar = () => {
   return (
     <div className={`flex shrink-0 w-full h-screen`}>
       {
-        adminSettingsModal && <AdminSettingsModal
+        adminSettingsModal && <div className="z-1">
+        <AdminSettingsModal
         setShowModal = {setAdminSettingsModal}
-        ></AdminSettingsModal>
+        ></AdminSettingsModal></div>
       }
       <div className={`relative flex flex-col w-64 text-white`}>
         <div

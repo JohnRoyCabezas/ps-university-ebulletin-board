@@ -26,6 +26,17 @@ const UniversityApi = {
     };
     return instance.request(config);
   },
+
+  editUniversityName: (id, name) => {
+    const config = {
+      method: "GET",
+      url: `/university/${id}/edit`,
+      params: {
+        university: name,
+      },
+    };
+    return instance.request(config);
+  },
 };
 
 export default UniversityApi;
