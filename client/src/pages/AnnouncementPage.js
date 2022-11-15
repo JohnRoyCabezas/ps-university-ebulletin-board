@@ -69,8 +69,8 @@ const AnnouncementPage = () => {
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
-          {/* <span className="text-lg">{hr > 5 && hr < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
+        <div className={`absolute top-0 z-30 w-full font-bold flex justify-between p-2 text-2xl bg-white bg-opacity-10 font-weight-bold border-b-2`}>
+          {/* <span className="text-lg">{4 > 5 && 21 < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
           <h1> Announcements</h1>
           {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
         </div>
@@ -83,7 +83,7 @@ const AnnouncementPage = () => {
                 announcement={announcement}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
-                threadOpen = {isThread}
+                threadOpen={isThread}
                 isAlter={() => setIsAlter(true)}
               />
             ))}

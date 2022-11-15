@@ -20,15 +20,27 @@ class ChangepasswordController extends Controller
             User::whereId(auth()->user()->id)->update(
                 [
                     'password' => Hash::make($request->new_password),
-                    'is_verified' => true
+                    'is_verified' => true,
                 ]
             );
 
             return response()->json(['Message' => 'Password updated!', 'Status' => true]);
-        } else { return response()->json(
+        } else {return response()->json(
             [
                 'Message' => 'Old password does not match!',
-                'Status' => false
-        ]); }
+                'Status' => false,
+            ]);}
+    }
+
+    public function ChangeTheme(Request $request, $id)
+    {
+        $request->validate([
+            'theme' => 'required',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return response()->json(['message' => 'Theme Changed!']);
     }
 }

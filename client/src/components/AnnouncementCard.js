@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import moment from "moment";
 import parse from "html-react-parser";
 import AdminMessageOptions from "./AdminMessageOptions";
@@ -7,6 +7,7 @@ import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
 import "../index.css"
 import Cookies from "js-cookie";
+import { ThemeContext } from "./ThemeContext";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
@@ -15,6 +16,7 @@ export default function AnnouncementCard(props) {
   const [params, setParams] = useState({});
   const user = JSON.parse(Cookies.get('user'));
   const [id, setId] = useState("");
+  const { theme } = useContext(ThemeContext);
 
   function handleEdit(id) {
     setId(id);
@@ -41,8 +43,8 @@ export default function AnnouncementCard(props) {
     setIsShown(false);
   }
 
-  useEffect(()=> {
-    if(!props.threadOpen) setIsThreadOpen(false);
+  useEffect(() => {
+    if (!props.threadOpen) setIsThreadOpen(false);
   }, [props.threadOpen])
 
   function adminOption() {
@@ -50,64 +52,66 @@ export default function AnnouncementCard(props) {
   }
 
   return (
-    <div>
-      <div
-        className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{
-          backgroundColor: isShown || isThreadOpen ? "#EAE8E8" : "",
-        }}
-      >
-        <img
-          onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
-          className="mr-3 w-11 h-11 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-          src={props?.announcement?.user?.avatar}
-          alt="JC"
-        />
-        <div className="flex flex-col ml-2">
-          <div className="flex justify-start items-center mb-2">
-            <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
-            <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
-          </div>
-          <div>
+    <>
+      <div>
+        <div
+          className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
+          onMouseEnter={() => setIsShown(true)}
+          onMouseLeave={() => setIsShown(false)}
+          style={{
+            backgroundColor: isShown || isThreadOpen ? "#EAE8E8" : "",
+          }}
+        >
+          <img
+            onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+            className={`mr-3 w-11 h-11 rounded-full ${theme} bg-opacity-70`}
+            src={props?.announcement?.user?.avatar}
+            alt="JC"
+          />
+          <div className="flex flex-col ml-2">
+            <div className="flex justify-start items-center mb-2">
+              <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
+              <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
+            </div>
+            <div>
 
-            {
-              isEdit ? (
-                <div className="rounded w-[75vw] bg-white">
-                  <RichTextEditor
-                    style={{ backgroundColor: "white" }}
-                    cancel={cancel}
-                    isEdit={isEdit}
-                    isChange={(value) => isChange(value)}
-                    handleRefresh={() => props.handleRefresh()}
-                    id={id}
-                    params={params}
-                  />
-                </div>
-              ) : (
-                <span className="text-gray-700 text-base ql-editor card">
-                  {parse(props.announcement.announcement)}
-                </span>
-              )
-            }
+              {
+                isEdit ? (
+                  <div className="rounded w-[75vw] bg-white">
+                    <RichTextEditor
+                      style={{ backgroundColor: "white" }}
+                      cancel={cancel}
+                      isEdit={isEdit}
+                      isChange={(value) => isChange(value)}
+                      handleRefresh={() => props.handleRefresh()}
+                      id={id}
+                      params={params}
+                    />
+                  </div>
+                ) : (
+                  <span className="text-gray-700 text-base ql-editor card">
+                    {parse(props.announcement.announcement)}
+                  </span>
+                )
+              }
 
+            </div>
           </div>
+          {isShown &&
+            (!adminOption() ? (
+              <StudentMessageOptions setValue={setThreadValue} />
+            ) : (
+              <AdminMessageOptions
+                id={props.announcement.id}
+                cancel={cancel}
+                handleRefresh={props.handleRefresh}
+                handleEdit={(id) => handleEdit(id)}
+                setValue={setThreadValue}
+                handleDelete={props.isAlter}
+              />
+            ))}
         </div>
-        {isShown &&
-          (!adminOption() ? (
-            <StudentMessageOptions setValue={setThreadValue} />
-          ) : (
-            <AdminMessageOptions
-              id={props.announcement.id}
-              cancel={cancel}
-              handleRefresh={props.handleRefresh}
-              handleEdit={(id) => handleEdit(id)}
-              setValue={setThreadValue}
-              handleDelete={props.isAlter}
-            />
-          ))}
       </div>
-    </div>
+    </>
   );
 }

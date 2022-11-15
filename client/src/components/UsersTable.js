@@ -2,12 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Paginate from "./Paginate";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import DeleteModal from "./DeleteModal";
 import AuthApi from "../api/AuthApi";
 import { useNavigate } from "react-router-dom";
 import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
+import { ThemeContext } from "./ThemeContext";
 
 const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const [users, setUsers] = useState([]);
@@ -16,7 +17,8 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
   const [loading, setLoading] = useState(true);
-  const universityid = Cookies.get('universityid')
+  const universityid = Cookies.get('universityid');
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     UserApi.fetchAllUsers({ ...params, university_id: universityid }).then((res) => {
@@ -179,7 +181,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
                         <button
                           onClick={() => handleEdit(user.id)}
                           type="button"
-                          className="py-2.5 mr-2 bg-regal-blue text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                          className={`py-2.5 mr-2 ${theme} text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-opacity-80 hover:shadow-lg transition duration-150 ease-in-out`}
                         >
                           <FontAwesomeIcon
                             icon={faPenToSquare}

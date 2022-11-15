@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 
 import AdminAnnouncementPage from '../pages/AdminAnnouncementPage';
 import CreateCollegePage from '../pages/CreateCollegePage';
@@ -27,6 +27,7 @@ import EditPassword from '../components/ChangePassword';
 import EditClassPage from '../pages/EditClassPage';
 
 const RoutesList = () => {
+
   const ROLES = {
     Student: 1,
     Admin: 2,
@@ -37,6 +38,7 @@ const RoutesList = () => {
 
   return (
     <Routes>
+
       <Route path="/" element={<LandingPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="unauthorized" element={<Unauthorized />}></Route>
@@ -71,7 +73,7 @@ const RoutesList = () => {
         </Route>
       </Route>
       <Route path="*" element={<ErrorPage />}></Route>
-    </Routes>
+    </Routes >
   );
 };
 

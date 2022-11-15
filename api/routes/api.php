@@ -63,7 +63,11 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
         Route::put('/announcement/{id}/lock', [AnnouncementController::class, 'lock']);
     });
 
-    Route::put('/changepassword', [ChangepasswordController::class, 'ChangePassword']);
+    Route::prefix('settings')->group(function () {
+        Route::put('/changepassword', [ChangepasswordController::class, 'ChangePassword']);
+        Route::put('/changetheme/{id}', [ChangepasswordController::class, 'ChangeTheme']);
+    });
+
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/course-chats', [ChatController::class, 'courseChats']);
 });
