@@ -108,7 +108,7 @@ const EditPassword = () => {
                             <div className={`flex flex-col justify-center ${theme} shadow-lg shadow-gray-500/50 px-14`}>
                                 <img className={`w-52 h-auto rounded-full p-1 ring-2 ${theme} bg-opacity-80 ring-gray-400`} src={JSON.parse(userCookie).avatar} alt="Rounded avatar">
                                 </img>
-                                <span className="flex font-bold text-2xl mx-auto mt-5">{JSON.parse(userCookie).fullname}</span>
+                                <span className="flex text-gray-200 font-bold text-2xl mx-auto mt-5">{JSON.parse(userCookie).fullname}</span>
                             </div>
                             {/* Other half */}
                             <div className="w-full flex flex-col justify-center bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50">

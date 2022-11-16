@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import SettingsApi from "../api/ChangePasswordApi";
 import Cookies from "js-cookie";
 
-export const ThemePick = () => {
+const ThemePick = () => {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const user = JSON.parse(Cookies.get('user'));
@@ -93,3 +93,5 @@ export const ThemePick = () => {
         </>
     );
 }
+
+export default ThemePick;

@@ -100,7 +100,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
           Create User
@@ -236,7 +236,7 @@ const RegisterPage = () => {
                     </span>
                   )}
                   <span className="ml-2 text-s italic font-light text-red-800">
-                    {errors.email}
+                    {errors?.email}
                   </span>
                 </label>
                 <input

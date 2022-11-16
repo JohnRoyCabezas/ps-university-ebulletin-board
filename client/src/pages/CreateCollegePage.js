@@ -56,7 +56,7 @@ const CreateCollegePage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex w-full h-screen">
       {showModal && (
         <SuccessModal
           title="College Creation"

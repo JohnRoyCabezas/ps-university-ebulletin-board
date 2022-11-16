@@ -70,7 +70,7 @@ const CollegePage = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full h-screen">
         <h1 className={`absolute top-0 z-40 w-full font-bold p-3 text-lg ${theme} border-b-2 bg-opacity-10`}>College</h1>
         <div className="flex flex-col justify-between h-full">

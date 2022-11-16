@@ -15,7 +15,7 @@ const Comments = ({ chat, setChat, setShowComments }) => {
     const channel = pusher.subscribe("comment");
     
     channel.bind("comment-update", function (data) {
-      if(chat?.id === data.comment.chat_id) {
+      if(Number(chat?.id) === data.comment.chat_id) {
         ChatApi.showChat(data.comment.chat_id).then(res => {
           setChat(res.data)
         })
@@ -40,7 +40,7 @@ const Comments = ({ chat, setChat, setShowComments }) => {
 
   return (
     <div className="flex">
-      <div className="relative flex flex-col border-l-2 w-[30vw]">
+      <div className="relative flex flex-col border-l-2 w-80">
         <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-50 w-full font-bold text-lg bg-white border-b-2">
           Chat Comments
           <button

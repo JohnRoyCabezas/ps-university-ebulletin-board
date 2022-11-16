@@ -1,22 +1,22 @@
-import { Route, Routes } from "react-router-dom";
-import React from "react";
-import AdminAnnouncementPage from "../pages/AdminAnnouncementPage";
-import CreateCollegePage from "../pages/CreateCollegePage";
-import EditCollegePage from "../pages/EditCollegePage";
-import CreateDepartmentPage from "../pages/CreateDepartmentPage";
-import CreateClassPage from "../pages/CreateClassPage";
-import AnnouncementPage from "../pages/AnnouncementPage";
-import RegisterPage from "../pages/RegisterPage";
-import LoginPage from "../pages/LoginPage";
-import LandingPage from "../pages/LandingPage";
-import ManageUsersPage from "../pages/ManageUsersPage";
+import { Route, Routes } from 'react-router-dom';
+import React from 'react';
+
+import AdminAnnouncementPage from '../pages/AdminAnnouncementPage';
+import CreateCollegePage from '../pages/CreateCollegePage';
+import EditCollegePage from '../pages/EditCollegePage';
+import CreateDepartmentPage from '../pages/CreateDepartmentPage';
+import CreateClassPage from '../pages/CreateClassPage';
+import AnnouncementPage from '../pages/AnnouncementPage';
+import RegisterPage from '../pages/RegisterPage';
+import LoginPage from '../pages/LoginPage';
+import LandingPage from '../pages/LandingPage';
+import ManageUsersPage from '../pages/ManageUsersPage';
 import EditUserPage from "../pages/EditUserPage";
-import AdminSettingsPage from "../pages/AdminSettingsPage";
-import Unauthorized from "../pages/Unauthorized";
-import ProtectedRoute from "./utilities/ProtectedRoute";
-import ErrorPage from "../pages/ErrorPage";
-import Sidebar from "../components/Sidebar";
-import CollegePage from "../pages/CollegePage";
+import AdminSettingsPage from '../pages/AdminSettingsPage';
+import Unauthorized from '../pages/Unauthorized';
+import ProtectedRoute from './utilities/ProtectedRoute';
+import ErrorPage from '../pages/ErrorPage';
+import CollegePage from '../pages/CollegePage';
 import AdminCollegePage from "../pages/AdminCollegePage";
 import CreateUniversityPage from "../pages/CreateUniversityPage";
 import ClassPage from "../pages/ClassPage";
@@ -25,6 +25,8 @@ import AdminDepartmentPage from "../pages/AdminDepartmentPage";
 import EditPassword from "../components/ChangePassword";
 import EditClassPage from "../pages/EditClassPage";
 import EditDepartmentPage from "../pages/EditDepartmentPage";
+import UserSidebar from '../components/UserSidebar';
+import AdminSidebar from '../components/AdminSidebar';
 
 const RoutesList = () => {
 
@@ -56,7 +58,7 @@ const RoutesList = () => {
           />
         }
       >
-        <Route element={<Sidebar />}>
+        <Route element={<UserSidebar />}>
           <Route path="announcement" element={<AnnouncementPage />} />
           <Route path="college/:collegeid" element={<CollegePage />} />
           <Route
@@ -71,7 +73,7 @@ const RoutesList = () => {
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={[ROLES.Admin]} />}>
-        <Route element={<Sidebar />}>
+        <Route element={<AdminSidebar />}>
           <Route path="adminsettings" element={<AdminSettingsPage />} />
           <Route path="adminannouncement" element={<AdminAnnouncementPage />} />
           <Route

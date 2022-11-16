@@ -71,7 +71,7 @@ const EditCollegePage = () => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex w-full">
       {showModal && (
         <SuccessModal
           title="College Update"

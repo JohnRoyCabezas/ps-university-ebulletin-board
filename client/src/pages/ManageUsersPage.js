@@ -43,7 +43,7 @@ const ManageUsersPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex w-full h-screen">
       <div className="flex flex-col w-full">
         <h1 className="flex justify-between font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
           <div>

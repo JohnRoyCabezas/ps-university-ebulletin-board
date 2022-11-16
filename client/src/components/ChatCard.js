@@ -6,7 +6,6 @@ import moment from "moment";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRight,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -54,8 +53,8 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
         />
         <div className="flex w-full flex-col ml-2">
           <div className="flex justify-start items-center">
-            <h5 className="font-bold">{chat?.user?.fullname}</h5>
-            <span className="ml-2 text-xs">
+            <h5 className="font-bold max-w-[50%] truncate">{chat?.user?.fullname}</h5>
+            <span className="ml-2 text-xs whitespace-nowrap">
               <i>{moment(chat?.created_at).fromNow()}</i>
             </span>
           </div>
@@ -92,11 +91,11 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
                       alt="avatar"
                     />
                     <span
-                      className={`text-xs font-bold text-regal-blue ${
-                        hoverReply && "underline decoration-slate-400"
+                      className={`text-xs font-bold text-sky-600 ${
+                        hoverReply && "underline decoration-sky-500"
                       }`}
                     >
-                      {chat?.comments?.length} replies
+                      {chat?.comments?.length} {chat?.comments?.length > 1 ? "replies" : "reply"}
                     </span>
                     {hoverReply ? (
                       <span className="ml-1 text-xs">View replies</span>

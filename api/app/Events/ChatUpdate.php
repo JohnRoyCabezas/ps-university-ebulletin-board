@@ -21,11 +21,13 @@ class ChatUpdate implements ShouldBroadcast
      * @return void
      */
 
-    public $message;
+    public $chat;
 
-    public function __construct($message)
+    public function __construct($id)
     {   
-        $this->message = $message;    
+        $chat = Chat::with('user')->find($id);
+        $this->chat = $chat;
+
     }
 
     /**

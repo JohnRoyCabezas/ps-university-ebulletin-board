@@ -32,7 +32,7 @@ class ChatController extends Controller
             'chat' => $validatedData['chat']
         ]);
 
-        event(new ChatUpdate($chat));
+        event(new ChatUpdate($chat->id));
 
         return response()->json(['message' => 'Chat created!'], 200);
     }
@@ -54,7 +54,7 @@ class ChatController extends Controller
 
         $chat->update(['chat' => $validatedData['chat']]);
 
-        event(new ChatUpdate($chat));
+        event(new ChatUpdate($id));
 
         return response()->json(['message' => 'Updated chat message!']);
     }
@@ -65,7 +65,7 @@ class ChatController extends Controller
 
         $chat->delete();
 
-        event(new ChatUpdate($chat));
+        event(new ChatUpdate($id));
 
         return response()->json(['message' => 'Soft deleted a chat message!']);
     }

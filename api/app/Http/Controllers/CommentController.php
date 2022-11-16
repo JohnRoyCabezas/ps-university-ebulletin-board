@@ -34,7 +34,7 @@ class CommentController extends Controller
         ]);
 
         event(new CommentUpdate($comment)); 
-        event(new ChatUpdate($comment));
+        event(new ChatUpdate($comment->chat_id));
 
         $data = [
             'message' => 'Successfully created a comment!',
@@ -71,7 +71,7 @@ class CommentController extends Controller
         $comment = Comment::find($id);
 
         event(new CommentUpdate($comment));
-        event(new ChatUpdate($comment));
+        event(new ChatUpdate($comment->chat_id));
 
         $comment->delete();
 

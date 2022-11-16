@@ -30,7 +30,7 @@ const CommentCard = ({comment}) => {
   return (
     <div>
       <div
-        className="relative flex w-full px-6 py-4 hover:bg-gray-200"
+        className="relative flex w-full px-6 py-4 hover:bg-gray-200 text-sm"
         onMouseEnter={() => setIsShowOptions(true)}
         onMouseLeave={() => setIsShowOptions(false)}
       >
@@ -40,9 +40,9 @@ const CommentCard = ({comment}) => {
           alt="Avatar"
         />
         <div className="flex flex-col ml-2">
-          <div className="flex justify-start items-center">
-            <h5 className="font-bold">{comment?.user?.fullname}</h5>
-            <span className="ml-2 text-xs">
+          <div className="flex justify-start w-52 items-center whitespace-nowrap">
+            <h5 className="font-bold max-w-[50%] truncate">{comment?.user?.fullname}</h5>
+            <span className="ml-2 text-xs whitespace-nowrap">
               <i>{moment(comment.created_at).fromNow()}</i>
             </span>
           </div>

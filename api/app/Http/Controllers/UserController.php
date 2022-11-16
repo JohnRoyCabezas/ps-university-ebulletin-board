@@ -18,9 +18,12 @@ class UserController extends Controller
         $user = Auth::user();
 
         if ($user->isAdmin()) {
-            $user = User::with('university.colleges.departments.courses')->find($user->id);
-        } else {
-            $user = User::with('courseUser.course')->with('department.college.university')->find($user->id);
+            $user = User::with(['roleUser.role', 'university.colleges.departments.courses'])->find($user->id);
+        } else if ($user->isStudent()) {
+            $user = User::with(['courseUser.course', 'university', 'department.college.university'])->find($user->id);
+        } else { 
+            //if the user has no assigned department_id
+            $user = User::with(['university', 'department.college.university'])->find($user->id);
         }
 
         return response()->json($user);
