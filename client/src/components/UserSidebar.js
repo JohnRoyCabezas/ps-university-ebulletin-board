@@ -21,7 +21,7 @@ const UserSidebar = () => {
   const [userData, setUserData] = useState({});
   const [showSidebar, setShowSidebar] = useState(true);
   const [showEditSetting, setShowEditSetting] = useState(false);
-  const { theme } = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const UserSidebar = () => {
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
-      console.log(res.data);
+      setTheme(res?.data?.theme ? res?.data?.theme : 'bg-regal-blue');
     });
   }, []);
 
