@@ -11,12 +11,13 @@ const ChatApi = {
     }
     return instance.request(config);
   },
-  createChat: (params) => {
+  createChat: (chat, classid) => {
     const config = {
       method: 'POST',
       url: 'chat',
       params: {
-        ...params
+        chat,
+        course_id: classid
       }
     }
     return instance.request(config)
@@ -28,7 +29,7 @@ const ChatApi = {
     }
     return instance.request(config);
   },
-  updateChat: ({updateChat, chatid}) => {
+  updateChat: (updateChat, chatid) => {
     const config =  {
       method: 'PUT',
       url: `chat/${chatid}`,

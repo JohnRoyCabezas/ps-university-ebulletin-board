@@ -22,7 +22,7 @@ module.exports = {
         "fourth-background": "#E80F88",
 
         "primary": {
-          100: "#85586F",
+          100: "#3C2317",
           200: "#AC7D88",
         },
         "secondary": {
@@ -30,7 +30,7 @@ module.exports = {
           200: "#790252",
         },
         "tertiary": {
-          100: "#371B58",
+          100: "#2C3333",
           200: "#4C3575",
         },
         "quinary": {
@@ -42,6 +42,9 @@ module.exports = {
           200: "#D4ECDD",
         },
       },
+      spacing: {
+        '184px': '184px',
+      }
     },
   },
   plugins: [],

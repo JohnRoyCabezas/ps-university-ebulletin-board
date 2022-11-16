@@ -23,8 +23,8 @@ const ClassPage = () => {
   const navigate = useNavigate();
   const role = JSON.parse(Cookies.get('user')).role_user.role_id;
 
-  const fetchCourseChats = () => {
-    ChatApi.fetchCourseChats(classid).then((res) => {
+  const fetchCourseChats = (id) => {
+    ChatApi.fetchCourseChats(id).then((res) => {
       setChats(res.data);
     });
   };
@@ -34,8 +34,8 @@ const ClassPage = () => {
       setCourse(res.data);
       setLoading(false);
     });
-    fetchCourseChats();
-  }, []);
+    fetchCourseChats(classid);
+  }, [classid]);
 
   useEffect(() => {
     const pusher = new Pusher("6d32a294e8e6b327e3c5", {
@@ -44,9 +44,13 @@ const ClassPage = () => {
 
     const channel = pusher.subscribe("chat");
     channel.bind("chat-update", function (data) {
-      fetchCourseChats();
+      // if(Number(classid) === data.chat.course_id) {
+        ChatApi.fetchCourseChats(data.chat.course_id).then(res => {
+          setChats(res.data)
+        })
+      // }
     });
-  }, []);
+  }, [classid, setChats]);
 
   const scrollToBottom = () => {
     const elem = document.getElementById("chatsWrapper");
@@ -60,7 +64,7 @@ const ClassPage = () => {
   }, [chats]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-50 w-full font-bold text-lg bg-white border-b-2">
           {course?.course}

@@ -73,7 +73,7 @@ const EditUserPage = () => {
   };
   
   return (
-    <div className="flex">
+    <div className="flex w-full">
       {showModal && (
         <SuccessModal
           title="Update User"

@@ -63,7 +63,7 @@ const CreateDepartmentPage = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen w-full">
       {showModal && (
         <SuccessModal
           title="Department Creation"

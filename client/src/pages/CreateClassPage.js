@@ -68,8 +68,8 @@ const CreateClassPage = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="flex flex-col h-screen w-full">
+    <div className="flex w-full h-screen">
+      <div className="flex flex-col h-full w-full">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
           <BackButton link={'/adminsettings'} />
           Create Class

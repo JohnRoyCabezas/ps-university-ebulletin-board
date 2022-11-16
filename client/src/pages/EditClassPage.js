@@ -110,11 +110,11 @@ const EditClassPage = () => {
   }
 
   return loading ?
-    <div className="relative h-full flex flex-col justify-center items-center">  
+    <div className="relative w-full h-full flex flex-col justify-center items-center">  
       Loading...
     </div>
     : (
-    <div className="flex">
+    <div className="flex w-full">
       {showModal.updateSucess && (
         <SuccessModal
         title="Class Update"

@@ -14,7 +14,7 @@ const AdminSettingsPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex">
+    <div className="flex h-screen w-full">
       <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
           Admin Settings

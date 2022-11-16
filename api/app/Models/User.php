@@ -86,11 +86,17 @@ class User extends Authenticatable
 
     public function university()
     {
-        return $this->hasOne(University::class);
+        return $this->belongsTo(University::class);
     }
+
     public function isAdmin()
     {
         return $this->roleUser()->where('role_id', 2)->exists();
+    }
+    
+    public function isStudent()
+    {
+        return $this->roleUser()->where('role_id', 1)->exists();
     }
 
     public function scopeStudent($query)

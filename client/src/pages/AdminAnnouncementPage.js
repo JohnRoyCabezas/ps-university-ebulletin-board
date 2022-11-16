@@ -60,7 +60,7 @@ const AdminAnnouncementPage = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         <div className="absolute top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
           {/* <span className="text-lg">{time.getHours() > 5 && time.getHours() < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}

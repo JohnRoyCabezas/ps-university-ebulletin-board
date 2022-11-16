@@ -1,23 +1,16 @@
-import { React, useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import ChatApi from '../api/ChatApi';
+import { React, useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import ChatApi from "../api/ChatApi";
 
-const ChatTextEditor = ({
-  classid,
-  chatid,
-  isEditing,
-  setIsEditing,
-}) => {
+const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const initialParams = {
-    chatid: chatid,
-    course_id: classid,
-    chat: '<p><br></p>',
-    updateChat: '<p><br></p>',
+    chat: "<p><br></p>",
+    updateChat: "<p><br></p>",
   };
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const [params, setParams] = useState(initialParams);
 
   useEffect(() => {
@@ -29,17 +22,17 @@ const ChatTextEditor = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus('pending');
+    setStatus("pending");
 
     isEditing
-      ? ChatApi.updateChat(params).then((res) => {
-          setStatus('done');
+      ? ChatApi.updateChat(params.updateChat, chatid).then((res) => {
           setIsEditing(false);
           setParams(initialParams);
+          setStatus("done");
         })
-      : ChatApi.createChat(params).then((res) => {
-          setStatus('done');
+      : ChatApi.createChat(params.chat, classid).then((res) => {
           setParams(initialParams);
+          setStatus("done");
         });
   };
 
@@ -54,7 +47,7 @@ const ChatTextEditor = ({
       <form onSubmit={handleSubmit} className="rounded bg-white">
         <ReactQuill
           value={isEditing ? params?.updateChat : params.chat}
-          placeholder={'Write a chat message...'}
+          placeholder={"Write a chat message..."}
           onChange={handleChange}
           className="block bottom-0"
         ></ReactQuill>
@@ -73,15 +66,15 @@ const ChatTextEditor = ({
                 </button>
                 <button
                   onClick={() => handleSubmit}
-                  disabled={params?.updateChat === '<p><br></p>' && true}
+                  disabled={params?.updateChat === "<p><br></p>" && true}
                   className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
-                    params?.updateChat === '<p><br></p>'
-                      ? 'disabled bg-gray-300 text-gray-400'
-                      : 'bg-blue-700 hover:bg-blue-800'
+                    params?.updateChat === "<p><br></p>"
+                      ? "disabled bg-gray-300 text-gray-400"
+                      : "bg-blue-700 hover:bg-blue-800"
                   }`}
                   type="submit"
                 >
-                  {status === 'pending' ? (
+                  {status === "pending" ? (
                     <span>
                       <FontAwesomeIcon
                         icon={faSpinner}
@@ -100,13 +93,13 @@ const ChatTextEditor = ({
                 onClick={() => handleSubmit}
                 disabled={params?.updateChat === params?.chat && true}
                 className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
-                  params?.chat === '<p><br></p>'
-                    ? 'disabled bg-gray-300 text-gray-400'
-                    : 'bg-blue-700 hover:bg-blue-800'
+                  params?.chat === "<p><br></p>"
+                    ? "disabled bg-gray-300 text-gray-400"
+                    : "bg-blue-700 hover:bg-blue-800"
                 }`}
                 type="submit"
               >
-                {status === 'pending' ? (
+                {status === "pending" ? (
                   <span>
                     <FontAwesomeIcon
                       icon={faSpinner}

@@ -101,7 +101,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($validatedData)) {
             $user_id = Auth::id();
-            $user = User::where('id', $user_id)->with('roleUser')->first();
+            $user = User::with('roleUser.role')->find($user_id);
 
             $token = $user->createToken('access_token')->plainTextToken;
 
