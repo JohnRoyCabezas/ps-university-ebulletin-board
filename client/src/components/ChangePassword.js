@@ -1,12 +1,14 @@
 import Cookies from "js-cookie";
 import SubmitButton from './submitButton';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import ChangePasswordApi from "../api/ChangePasswordApi";
+import SettingsApi from "../api/ChangePasswordApi";
+import { ThemeContext } from "./ThemeContext";
 
 const EditPassword = () => {
 
+    const { theme } = useContext(ThemeContext);
     const oldPassRef = useRef();
     const userCookie = Cookies.get('user');
 
@@ -72,7 +74,7 @@ const EditPassword = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setProcessing(true);
-        ChangePasswordApi.update(params).then((res) => {
+        SettingsApi.update(params).then((res) => {
             if (!res.data.Status) { //If password dont match
                 oldPassRef.current.focus();
                 setShowMessage(true);
@@ -98,25 +100,21 @@ const EditPassword = () => {
 
     return (
         <>
-            <div className="relative w-full items-center">
-                <div className="relative top-0 z-50 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
-                    {/* <span className="text-lg">{time.getHours() > 5 && time.getHours() < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
-                    <h1> Edit Settings</h1>
-                    {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
-                </div>
+            <div className={`z-50 flex h-full mx-2 w-full`}>
                 {
                     <>
-                        <div className="flex p-8 mt-10 w-auto justify-center">
-                            <div className="flex-col bg-gray-100 rounded-l-lg shadow-lg shadow-gray-500/50 pt-20 px-14">
-                                <img className="w-48 h-48 rounded-full p-1 ring-2 ring-gray-400" src={JSON.parse(userCookie).avatar} alt="Rounded avatar">
+                        <div className="flex w-full">
+                            {/* First half */}
+                            <div className={`flex flex-col justify-center ${theme} shadow-lg shadow-gray-500/50 px-14`}>
+                                <img className={`w-52 h-auto rounded-full p-1 ring-2 ${theme} bg-opacity-80 ring-gray-400`} src={JSON.parse(userCookie).avatar} alt="Rounded avatar">
                                 </img>
-                                <span className="flex mt-6 font-bold text-2xl justify-evenly">{JSON.parse(userCookie).fullname}</span>
+                                <span className="flex font-bold text-2xl mx-auto mt-5">{JSON.parse(userCookie).fullname}</span>
                             </div>
-
-                            <div className="w-2/5 bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50 pb-5">
-                                <div className="py-6 px-6 lg:px-8">
-                                    <span className="font-bold flex py-4 text-2xl">Change Password</span>
-                                    <form className="space-y-6 py-2" action="#">
+                            {/* Other half */}
+                            <div className="w-full flex flex-col justify-center bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50">
+                                <div className="p-6">
+                                    <span className="font-bold mb-6 flex text-black text-2xl">Change Password</span>
+                                    <form className="w-full" action="#">
                                         <div>
                                             <label
                                                 htmlFor="password"
@@ -185,7 +183,7 @@ const EditPassword = () => {
                                         <div>
                                             <label
                                                 htmlFor="password"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Repeat password
+                                                className="block mb-2 text-sm font-medium text-gray-900">Repeat password
                                                 {!reqRep && (<span className="text-red-400"> *</span>)}
                                             </label>
 
@@ -196,7 +194,7 @@ const EditPassword = () => {
                                                     value={changeRep}
                                                     onChange={(e) => setChangeRep(e.target.value)}
                                                     placeholder="••••••••"
-                                                    className="bg-gray-50 border border-gray-300 mb-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                    className="bg-gray-50 border border-gray-300 mb-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                                     required
                                                 />
                                                 {reqRep && (<button

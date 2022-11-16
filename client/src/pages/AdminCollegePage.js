@@ -11,8 +11,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const AdminCollegePage = () => {
-  const { collegeid } = useParams();
   const navigate = useNavigate();
+  const { collegeid } = useParams();
   const [isThread, setThread] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
@@ -96,7 +96,7 @@ const AdminCollegePage = () => {
                 />
               ))}
           </div>
-          <div className="p-2 rounded-3xl">
+          <div className="p-2">
             <RichTextEditor
               handleRefresh={() => handleRefresh()}
               params={params}

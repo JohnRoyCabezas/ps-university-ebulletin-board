@@ -6,7 +6,6 @@ import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import AnnouncementApi from "../api/AnnouncementApi";
 import ThreadApi from "../api/ThreadApi";
 import Cookies from "js-cookie";
-import parse from 'html-react-parser';
 
 export default function NavBar(props) {
 
@@ -118,7 +117,7 @@ export default function NavBar(props) {
               </>
               :
               <button
-                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${!(announcement) || (announcement === "<p><br></p>") || buttonState ? 'bg-gray-300 text-gray-400' : 'bg-blue-700 hover:bg-blue-800'}`}
+                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-2 mb-2 ${!(announcement) || (announcement === "<p><br></p>") || buttonState ? 'bg-gray-300' : 'bg-blue-700 dark:bg-background dark:hover:bg-secondary-background hover:bg-hover-back'}`}
                 disabled={!(announcement) || announcement === "<p><br></p>" || buttonState ? true : false}
                 type="submit"
               >

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('university_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('avatar')->nullable();
             $table->string('password');
+            $table->string('theme')->nullable();
             $table->softDeletes($column = 'deleted_at', $precision = 0);
             $table->boolean('is_verified')->nullable();
             $table->timestamps();

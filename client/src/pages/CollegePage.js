@@ -1,4 +1,4 @@
-import { React, useEffect, useLayoutEffect, useState } from 'react';
+import { React, useEffect, useLayoutEffect, useState, useContext } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
 import { useParams } from 'react-router-dom';
@@ -6,6 +6,7 @@ import Thread from '../components/Thread';
 import Cookies from 'js-cookie';
 import RichTextEditor from '../components/RichTextEditor';
 import Pusher from 'pusher-js';
+import { ThemeContext } from '../components/ThemeContext';
 
 const CollegePage = () => {
   const { collegeid } = useParams();
@@ -13,6 +14,7 @@ const CollegePage = () => {
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
+  const { theme } = useContext(ThemeContext)
   const user = JSON.parse(Cookies.get('user'));
   const params =
   {
@@ -70,7 +72,7 @@ const CollegePage = () => {
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full h-screen">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">College</h1>
+        <h1 className={`absolute top-0 z-40 w-full font-bold p-3 text-lg ${theme} border-b-2 bg-opacity-10`}>College</h1>
         <div className="flex flex-col justify-between h-full">
           <div id='announcementWrapper' className="mt-12 overflow-y-auto">
             {
@@ -82,7 +84,7 @@ const CollegePage = () => {
                   handleRefresh={() => handleRefresh()}
                   setAnnouncementThread={setAnnouncementThread}
                   isAlter={() => setIsAlter(true)}
-                  threadOpen = {isThread}
+                  threadOpen={isThread}
                 />
               ))}
           </div>
