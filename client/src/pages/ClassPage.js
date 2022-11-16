@@ -62,7 +62,7 @@ const ClassPage = () => {
   return (
     <div className="flex h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-50 w-full font-bold text-lg bg-white border-b-2">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
           {course?.course}
           {role === 2 && !loading &&
             <button

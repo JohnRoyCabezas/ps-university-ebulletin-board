@@ -45,7 +45,8 @@ const Sidebar = () => {
       {
         adminSettingsModal && <div className="z-1">
         <AdminSettingsModal
-        setShowModal = {setAdminSettingsModal}
+          university = {university?.university}
+          setShowModal = {setAdminSettingsModal}
         ></AdminSettingsModal></div>
       }
       <div className={`relative flex flex-col w-64 text-white`}>
