@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   faBuildingColumns,
-  faChevronDown,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DepartmentCard from "./DepartmentCard";
@@ -26,7 +26,7 @@ const CollegeCard = ({ college }) => {
               icon={faBuildingColumns}
               className="button rounded h-3 w-3 p-2 bg-slate-700 group-hover:bg-slate-600 group-hover:text-white  transition-all ease-in"
             />
-            <span className="ml-2 font-medium group-hover:text-white transition-all ease-in whitespace-nowrap">
+            <span className="ml-2 font-medium group-hover:text-white transition-all ease-in">
               {college?.college}
             </span>
           </Link>
@@ -37,9 +37,9 @@ const CollegeCard = ({ college }) => {
             className="flex items-center justify-center w-6 h-6 group-hover:text-white transition-all ease-in"
           >
             <FontAwesomeIcon
-              icon={faChevronDown}
+              icon={faChevronRight}
               size="xs"
-              className={`transition-all ease-in ${show && "rotate-180"}`}
+              className={`transition-all ease-in ${show && "rotate-90"}`}
             />
           </button>
         )}

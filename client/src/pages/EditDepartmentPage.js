@@ -77,16 +77,16 @@ const EditDepartmentPage = () => {
   };
 
   return loading ? (
-    <div className="relative h-full flex flex-col justify-center items-center">
+    <div className="relative h-full w-full flex flex-col justify-center items-center">
       Loading...
     </div>
   ) : (
-    <div className="flex">
+    <div className="flex w-full">
       {showModal && (
         <SuccessModal
           title="Department Update"
           message="The department has been updated!"
-          setShowModal={() => navigate("/adminsettings")}
+          setShowModal={() => navigate(-1)}
         />
       )}
       {showSuccessDeleteModal && (

@@ -23,7 +23,7 @@ class University extends Model
 
     public function colleges()
     {
-        return $this->hasMany(College::class);
+        return $this->hasMany(College::class)->orderBy('created_at');
     }
 
 }

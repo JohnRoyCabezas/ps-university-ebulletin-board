@@ -67,13 +67,16 @@ const UserSidebar = () => {
             className={`sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center ${theme} bg-opacity-100 font-semibold text-lg text-white leading-5 border-b border-gray-500`}
           >
             <Link
-              to="/announcement"
-              className={`truncate opacity-100 transition-all ease-in ${
-                !showSidebar && "opacity-0 transition-all ease-in"
-              }`}
-            >
+            to="/announcement"
+            className={`group truncate opacity-100 transition-all ease-in ${
+              !showSidebar && "opacity-0 transition-all ease-in"
+            }`}
+          >
+            {university?.university}
+            <div className="group-hover:visible invisible absolute w-3/4 whitespace-pre-wrap rounded shadow-inner border border-slate-500 p-2 right-1/2 top-1/3 translate-x-1/2 translate-y-1/2 bg-slate-800 text-sm font-light z-50">
               {university?.university}
-            </Link>
+            </div>
+          </Link>
 
             <button
               onClick={() => setShowSidebar(!showSidebar)}

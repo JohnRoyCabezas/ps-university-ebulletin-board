@@ -18,7 +18,7 @@ class College extends Model
     }
 
     public function departments() {
-        return $this->hasMany(Department::class);
+        return $this->hasMany(Department::class)->orderBy('created_at');
     }
 
     public function announcements() {
