@@ -24,6 +24,7 @@ const DropdownMulti = ({ label, selected, handleMultiChange, data, type }) => {
         className="basic-multi-select"
         classNamePrefix="select"
         onChange={onSelectChange}
+        openMenuOnClick={false}
       />
     </div>
   );

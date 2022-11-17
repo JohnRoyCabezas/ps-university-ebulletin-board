@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import Cookies from "js-cookie";
 import Dropdown from "../components/Dropdown";
-import DropdownMulti from '../components/DropdownMulti';
 import SubmitButton from "../components/submitButton";
 import SuccessModal from "../components/SuccessModal";
 import DeleteModal from "../components/DeleteModal";
 import CourseApi from "../api/CourseApi";
 import UserApi from '../api/UserApi';
 import DepartmentApi from '../api/DepartmentApi';
+import ClassListPicker from "../components/ClassListPicker";
 
 const EditClassPage = () => {
   const { classid } = useParams();
@@ -19,7 +19,6 @@ const EditClassPage = () => {
   const [processing, setProcessing] = useState(false);
   const [classData, setClassData] = useState();
   const [params, setParams] = useState();
-  const [selected, setSelected] = useState();
   const [showModal, setShowModal] = useState({
     updateSucess: false,
     deleteSucess: false,
@@ -47,32 +46,32 @@ const EditClassPage = () => {
   }, [])
 
   useEffect(()=> {
-    // if(course && departments && students && instructors) {
     if(classData) {
       setLoading(false);
 
       const classList = classData.course.students?.map((item) => {
-        return {
-          label: item.user.fullname,
-          value: item.user.id,
-        };
+        return item.user.id;
       });
 
       setOldData({
         old_instructor_id: classData.course.instructor.user_id,
-        old_user_ids: classList.map((value) => value.value)
+        old_user_ids: classList
       })
 
       setParams({...params,
         course: classData.course.course,
         department_id: classData.course.department_id,
         instructor_id: classData.course.instructor.user_id,
-        user_ids: classList.map((value) => value.value)
+        user_ids: classList
       })
-
-      setSelected(classList);
     }
   }, [classData])
+
+  const handleSave = (ids) => {
+    setParams({
+      ...params, user_ids: ids
+    })
+  }
 
   const handleInputChange = (e) => {
     setParams({ ...params, [e.target.name]: e.target.value });
@@ -86,11 +85,6 @@ const EditClassPage = () => {
     }
   };
 
-  const handleMultiSelectChange = (values) => {
-    setSelected(values);
-    setParams({ ...params, user_ids: values.map((value) => value.value) });
-  };
-
   const handleSubmit = () => {
     setProcessing(true);
     CourseApi.updateCourse(params, oldData, classData.course.id).then(() => {
@@ -99,11 +93,11 @@ const EditClassPage = () => {
     });
   };
 
-  function handleDelete() {
+  const handleDelete = () => {
     setShowModal({...showModal, delete:true});
   }
 
-  function handleYes() {
+  const handleYes = () => {
     CourseApi.deleteCourse(classid, oldData).then(() => {
       setShowModal({...showModal, delete:false, deleteSucess: true});
     })
@@ -130,15 +124,16 @@ const EditClassPage = () => {
       )}
 
       {showModal.delete &&
-          <DeleteModal
-            message={'Are you sure you want to remove this class?'}
-            buttonConfirmText={'Yes'}
-            buttonCancelText={'No'}
-            setShowModal={(value)=> setShowModal({...showModal, delete: value})}
-            delete={() => handleYes()}
-          />}
+        <DeleteModal
+          message={'Are you sure you want to remove this class?'}
+          buttonConfirmText={'Yes'}
+          buttonCancelText={'No'}
+          setShowModal={(value)=> setShowModal({...showModal, delete: value})}
+          delete={() => handleYes()}
+        />}
+
       <div className="flex flex-col w-full  h-screen">
-        <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2 fex">
+        <h1 className="font-bold p-3 sticky top-0 z-10 bg-white text-lg border-b-2 fex">
           Edit Class
           <button
             type="button"
@@ -217,18 +212,16 @@ const EditClassPage = () => {
                   data={classData.instructors}
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-800">
+
+              <label className="block text-sm font-semibold text-gray-800">
                   Class List
                 </label>
-                <DropdownMulti
-                  selected={selected}
-                  type="students"
-                  label="fullname"
-                  data={classData.students}
-                  handleMultiChange={handleMultiSelectChange}
-                />
-              </div>
+              <ClassListPicker 
+                classList={params.user_ids}
+                students={classData.students}
+                departments={classData.departments}
+                handleSave={handleSave}/>
+
               <div className="mt-8">
                 <SubmitButton
                 handleSubmit={handleSubmit}
