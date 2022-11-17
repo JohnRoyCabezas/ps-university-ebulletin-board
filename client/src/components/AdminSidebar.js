@@ -44,19 +44,23 @@ const AdminSidebar = () => {
       >
         {/* sidebar header */}
         <div className="sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center font-semibold text-lg text-white leading-5 border-b border-gray-500 bg-regal-blue">
-
           <Link
             to="/adminannouncement"
-            className={`truncate opacity-100 transition-all ease-in ${
+            className={`group truncate opacity-100 transition-all ease-in ${
               !showSidebar && "opacity-0 transition-all ease-in"
             }`}
           >
             {university?.university}
+            <div className="group-hover:visible invisible absolute w-3/4 whitespace-pre-wrap rounded shadow-inner border border-slate-500 p-2 right-1/2 top-1/3 translate-x-1/2 translate-y-1/2 bg-slate-800 text-sm font-light z-50">
+              {university?.university}
+            </div>
           </Link>
 
-          <div className="flex ml-2"> 
+          <div className="flex ml-2">
             <button
-              className={`button flex items-center justify-center w-6 h-6 rounded py-0.5 px-1 hover:bg-slate-600 hover:text-white transition-all ease-in ${!showSidebar && 'opacity-0 hidden transition-all ease-in'}`}
+              className={`button flex items-center justify-center w-6 h-6 rounded py-0.5 px-1 hover:bg-slate-600 hover:text-white transition-all ease-in ${
+                !showSidebar && "opacity-0 hidden transition-all ease-in"
+              }`}
             >
               <FontAwesomeIcon icon={faGear} size="sm" />
             </button>
@@ -106,9 +110,7 @@ const AdminSidebar = () => {
               </div>
               <div className="flex flex-col w-24 justify-center">
                 {/* user name */}
-                <div className="user-name truncate">
-                  {user?.fullname}
-                </div>
+                <div className="user-name truncate">{user?.fullname}</div>
                 {/* user role */}
                 <div className="user-role font-light text-xs">
                   {user?.role_user?.role?.role}

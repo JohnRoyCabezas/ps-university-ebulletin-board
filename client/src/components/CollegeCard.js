@@ -26,7 +26,7 @@ const CollegeCard = ({ college }) => {
               icon={faBuildingColumns}
               className="button rounded h-3 w-3 p-2 bg-slate-700 group-hover:bg-slate-600 group-hover:text-white  transition-all ease-in"
             />
-            <span className="ml-2 font-medium group-hover:text-white transition-all ease-in whitespace-nowrap">
+            <span className="ml-2 font-medium group-hover:text-white transition-all ease-in">
               {college?.college}
             </span>
           </Link>

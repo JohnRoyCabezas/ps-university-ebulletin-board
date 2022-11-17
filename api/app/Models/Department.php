@@ -12,7 +12,7 @@ class Department extends Model
     protected $guarded = [];
 
     public function courses() {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class)->orderBy('created_at');
     }
 
     public function college() {

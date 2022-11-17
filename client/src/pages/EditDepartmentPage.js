@@ -86,7 +86,7 @@ const EditDepartmentPage = () => {
         <SuccessModal
           title="Department Update"
           message="The department has been updated!"
-          setShowModal={() => navigate("/adminsettings")}
+          setShowModal={() => navigate(-1)}
         />
       )}
       {showSuccessDeleteModal && (
