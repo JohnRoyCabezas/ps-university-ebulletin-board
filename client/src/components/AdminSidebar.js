@@ -47,7 +47,7 @@ const AdminSidebar = () => {
 
           <Link
             to="/adminannouncement"
-            className={`whitespace-nowrap overflow-hidden opacity-100 transition-all ease-in ${
+            className={`truncate opacity-100 transition-all ease-in ${
               !showSidebar && "opacity-0 transition-all ease-in"
             }`}
           >

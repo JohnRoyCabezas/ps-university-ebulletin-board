@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { faBuilding, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ClassCard from "./ClassCard";
 
@@ -34,9 +34,9 @@ const DepartmentCard = ({ department, collegeid }) => {
                 className="flex items-center justify-center w-6 h-6 group-hover:text-white transition-all ease-in"
               >
                 <FontAwesomeIcon
-                  icon={faChevronDown}
+                  icon={faChevronRight}
                   size="xs"
-                  className={`transition-all ease-in ${show && "rotate-180"}`}
+                  className={`transition-all ease-in ${show && "rotate-90"}`}
                 />
               </button>
             )}

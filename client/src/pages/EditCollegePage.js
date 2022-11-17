@@ -76,7 +76,7 @@ const EditCollegePage = () => {
         <SuccessModal
           title="College Update"
           message="The college has been updated!"
-          setShowModal={() => navigate('/adminsettings')}
+          setShowModal={() => navigate(-1)}
         />)}
       {showSuccessDeleteModal && (
         <SuccessModal
