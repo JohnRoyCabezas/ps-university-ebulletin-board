@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Dropdown from '../components/Dropdown';
-import DropdownMulti from '../components/DropdownMulti';
 import UserApi from '../api/UserApi';
 import DepartmentApi from '../api/DepartmentApi';
 import CourseApi from '../api/CourseApi';
 import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
 import BackButton from '../components/BackButton';
+import ClassListPicker from '../components/ClassListPicker';
 
 const CreateClassPage = () => {
   const initialState = {
@@ -21,7 +21,6 @@ const CreateClassPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [params, setParams] = useState(initialState);
-  const [selected, setSelected] = useState([]);
   const [processing, setProcessing] = useState(false);
   const university_id = Cookies.get('universityid');
 
@@ -50,19 +49,17 @@ const CreateClassPage = () => {
     }
   };
 
-  const handleMultiSelectChange = (values) => {
-    setSelected(values);
-
-    const selectedStudents = values.map((value) => value.value);
-    setParams({ ...params, user_ids: selectedStudents });
-  };
+  const handleClassListSave = (ids) => {
+    setParams({
+      ...params, user_ids: ids
+    })
+  }
 
   const handleSubmit = () => {
     setProcessing(true);
     CourseApi.createCourse(params).then((res) => {
       setParams(initialState);
       setShowModal(true);
-      setSelected([]);
       setProcessing(false);
     });
   };
@@ -70,7 +67,7 @@ const CreateClassPage = () => {
   return (
     <div className="flex w-full h-screen">
       <div className="flex flex-col h-full w-full">
-        <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2">
+        <h1 className="font-bold p-3 sticky top-0 z-10 bg-white text-lg border-b-2">
           <BackButton link={'/adminsettings'} />
           Create Class
         </h1>
@@ -156,12 +153,11 @@ const CreateClassPage = () => {
                 <label className="block text-sm font-semibold text-gray-800">
                   Class List
                 </label>
-                <DropdownMulti
-                  selected={selected}
-                  type="students"
-                  label="fullname"
-                  data={students}
-                  handleMultiChange={handleMultiSelectChange}
+                <ClassListPicker 
+                  classList={params.user_ids}
+                  students={students}
+                  departments={departments}
+                  handleSave={handleClassListSave}
                 />
               </div>
 
