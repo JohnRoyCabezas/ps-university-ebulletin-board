@@ -13,23 +13,22 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 const LandingPage = () => {
-  const user = Cookies.get('user') && JSON.parse(Cookies.get('user') || '{}');
+  const user = Cookies.get("user") && JSON.parse(Cookies.get("user") || "{}");
   const navigate = useNavigate();
 
   useEffect(() => {
     !user
-      ? navigate('/')
+      ? navigate("/")
       : user?.role_user?.role_id === 2
-      ? navigate('/adminannouncement')
-      : navigate('/announcement');
+      ? navigate("/adminannouncement")
+      : navigate("/announcement");
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <NavBar />
-      <div className="container mx-auto grid grid-cols-5 gap-4 mt-[25vh]">
-        <div className="col-span-3">
-          <div className="space-y-2">
+      <div className="flex h-full gap-x-2 px-5 justify-center items-center">
+        <div className="w-2/3">
             <Swiper
               spaceBetween={30}
               centeredSlides={true}
@@ -66,9 +65,8 @@ const LandingPage = () => {
                 />
               </SwiperSlide>
             </Swiper>
-          </div>
         </div>
-        <div className="col-span-2 mt-5">
+        <div className="w-1/3">
           <div>
             <h5 className="font-bold text-6xl">UNIVERSITY</h5>
             <h4 className="font-bold text-4xl">E-BULLETIN BOARD</h4>
@@ -80,18 +78,18 @@ const LandingPage = () => {
             consectetur adipiscing
           </p>
           <div className="mt-12">
-            <p className="mb-5">Already enrolled?</p>
+            <p className="mb-2">Already enrolled?</p>
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate("/login")}
               className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded"
             >
               Login
             </button>
           </div>
           <div className="mt-12">
-            <p className="mb-5">Register your university here</p>
+            <p className="mb-2">Register your university here</p>
             <button
-              onClick={() => navigate('/createuniversity')}
+              onClick={() => navigate("/createuniversity")}
               className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded"
             >
               Create University

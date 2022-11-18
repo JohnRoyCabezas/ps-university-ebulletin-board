@@ -94,6 +94,8 @@ const CreateUniversityPage = () => {
     AuthApi.login(params).then((res) => {
       Cookies.set("token", res.data.token);
       Cookies.set("user", JSON.stringify(res.data.user));
+      Cookies.set("universityid", res.data.user.university_id);
+
       window.location.pathname = "/adminsettings";
     });
   };
