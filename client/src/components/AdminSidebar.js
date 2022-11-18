@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import AuthApi from "../api/AuthApi";
 import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
+import { ThemeContext } from './ThemeContext';
+import AdminSettingsModal from './AdminSettingsModal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faGear, faBars } from "@fortawesome/free-solid-svg-icons";
 import CollegeCard from "./CollegeCard";
@@ -11,12 +13,15 @@ const AdminSidebar = () => {
   const user = JSON.parse(Cookies.get("user" || "{}"));
   const [userData, setUserData] = useState({});
   const [showSidebar, setShowSidebar] = useState(true);
+  const [adminSettingsModal, setAdminSettingsModal] = useState(false);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
+      setTheme(res?.data?.theme ? res?.data?.theme : 'bg-regal-blue');
     });
   }, []);
 
@@ -35,15 +40,22 @@ const AdminSidebar = () => {
 
   return (
     <div className="flex w-full h-screen">
+      {
+        adminSettingsModal && <div className="z-1">
+        <AdminSettingsModal
+          university = {university?.university}
+          setShowModal = {setAdminSettingsModal}
+        ></AdminSettingsModal></div>
+      }
       {/* sidebar content */}
       <nav
         id="sidebar"
-        className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in bg-regal-blue duration-300 text-gray-300 w-60 ${
+        className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in ${theme} bg-opacity-90 duration-300 text-gray-300 w-60 ${
           !showSidebar && "-ml-184px transition-all ease-in"
         }`}
       >
         {/* sidebar header */}
-        <div className="sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center font-semibold text-lg text-white leading-5 border-b border-gray-500 bg-regal-blue">
+        <div className={`sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center ${theme} bg-opacity-100 font-semibold text-lg text-white leading-5 border-b border-gray-500`}>
           <Link
             to="/adminannouncement"
             className={`group truncate opacity-100 transition-all ease-in ${
@@ -58,6 +70,7 @@ const AdminSidebar = () => {
 
           <div className="flex ml-2">
             <button
+              onClick={()=> setAdminSettingsModal(true)}
               className={`button flex items-center justify-center w-6 h-6 rounded py-0.5 px-1 hover:bg-slate-600 hover:text-white transition-all ease-in ${
                 !showSidebar && "opacity-0 hidden transition-all ease-in"
               }`}
@@ -93,7 +106,7 @@ const AdminSidebar = () => {
 
         {/* footer */}
         <div
-          className={`sidebar-footer absolute bottom-0 w-full h-14 px-4 flex overflow-hidden bg-dark-blue z-50}`}
+          className={`sidebar-footer absolute bottom-0 w-full h-14 px-4 flex overflow-hidden ${theme} z-50}`}
         >
           <div className={`user-info flex items-center w-full justify-between`}>
             <div

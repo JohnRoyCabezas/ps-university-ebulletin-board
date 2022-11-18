@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from 'react';
 import UniversityApi from '../api/UniversityApi';
 import SuccessModal from './SuccessModal';
 import { ThemeContext } from './ThemeContext';
-import { ThemePick } from './ThemePick';
+import ThemePick from './ThemePick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
