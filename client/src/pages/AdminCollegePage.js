@@ -66,7 +66,7 @@ const AdminCollegePage = () => {
   return (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
-        <div className="absolute flex top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2 justify-between">
+        <div className="absolute flex top-0 z-10 w-full font-bold p-3 text-lg bg-white border-b-2 justify-between">
           <div>
             Announcements
           </div>

@@ -78,4 +78,27 @@ class UniversityController extends Controller
         }
     }
 
+    public function updateName(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+                'university' => ['required'],
+            ]
+        );
+
+        if(University::all()->contains('university', $validatedData['university'])) {
+            return response()->json([
+                'message' => 'University name already exists!',
+            ], 400);
+        };
+
+        $university = University::findOrFail($id);
+        $university->update(['university' => $validatedData['university']]);
+
+        return response()->json(
+            [
+                'status' => 'University Name Updated!',
+
+            ]
+        );
+    }
 }

@@ -29,8 +29,13 @@
   background-color: #0B1428;
 }
 
+.active.tab {
+  background-color: #F5F5F5;
+}
+
 .ql-editor {
-  min-height: 2.5cm;
+  min-height: 7em;
+  max-height: 15em;
 }
 
 .ql-toolbar {

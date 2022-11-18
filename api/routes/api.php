@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::apiResource('/announcement', AnnouncementController::class);
     Route::apiResource('/comment', CommentController::class);
     Route::get('/chat-comments', [CommentController::class, 'chatComments']);
+    Route::get('/university/{id}/edit', [UniversityController::class, 'updateName']);
 
     Route::prefix('thread')->group(function () {
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
