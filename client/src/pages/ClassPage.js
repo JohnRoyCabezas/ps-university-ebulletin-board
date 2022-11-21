@@ -9,6 +9,7 @@ import Comments from "../components/Comments";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 
 const ClassPage = () => {
   const { classid } = useParams();
@@ -65,19 +66,22 @@ const ClassPage = () => {
 
   return (
     <div className="flex w-full h-screen">
-      <div className="relative flex flex-col w-full">
-        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
-          {course?.course}
-          {role === 2 && !loading &&
+      <div className="relative flex flex-col w-full text-gray-800">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
+          <div className="truncate">
+            <FontAwesomeIcon icon={faBook} className="mr-2" />
+            {course?.course}
+          </div>
+          {role === 2 && !loading && (
             <button
-                type="button"
-                className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                onClick={()=> navigate(`/editclass/${classid}`)}
-              >
-                <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />
-                Edit
+              type="button"
+              className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+              onClick={() => navigate(`/editclass/${classid}`)}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />
+              Edit
             </button>
-          }
+          )}
         </h1>
         <div className="flex flex-col justify-between h-full">
           <div id="chatsWrapper" className="mt-14 pt-6 overflow-y-auto">

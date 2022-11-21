@@ -62,10 +62,10 @@ class ChatController extends Controller
     public function destroy($id)
     {
         $chat = Chat::find($id);
+        event(new ChatUpdate($id));
 
         $chat->delete();
 
-        event(new ChatUpdate($id));
 
         return response()->json(['message' => 'Soft deleted a chat message!']);
     }

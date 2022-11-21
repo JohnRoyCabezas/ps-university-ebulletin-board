@@ -1,16 +1,20 @@
 import { React, useEffect, useLayoutEffect, useState, useContext } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementApi from '../api/AnnouncementApi';
+import CollegeApi from '../api/CollegeApi';
 import { useParams } from 'react-router-dom';
 import Thread from '../components/Thread';
 import Cookies from 'js-cookie';
 import RichTextEditor from '../components/RichTextEditor';
 import Pusher from 'pusher-js';
 import { ThemeContext } from '../components/ThemeContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons';
 
 const CollegePage = () => {
   const { collegeid } = useParams();
   const [announcements, setAnnouncements] = useState([]);
+  const [college, setCollege] = useState({});
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
@@ -43,6 +47,9 @@ const CollegePage = () => {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
       setAnnouncements(res.data);
     });
+    CollegeApi.fetchSpecificCollege(collegeid).then(res => {
+      setCollege(res.data);
+    })
   }, [collegeid]);
 
   useLayoutEffect(() => {
@@ -72,33 +79,47 @@ const CollegePage = () => {
   return (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full h-screen">
-        <h1 className={`absolute top-0 z-40 w-full font-bold p-3 text-lg ${theme} border-b-2 bg-opacity-10`}>College</h1>
-        <div className="flex flex-col justify-between h-full">
-          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
-            {
-              announcements.map((announcement) => (
-                <AnnouncementCard
-                  key={announcement.id.toString()}
-                  announcement={announcement}
-                  setValue={setThreadValue}
-                  handleRefresh={() => handleRefresh()}
-                  setAnnouncementThread={setAnnouncementThread}
-                  isAlter={() => setIsAlter(true)}
-                  threadOpen={isThread}
-                />
-              ))}
+        <h1
+          className={`absolute top-0 z-40 w-full font-bold p-3 text-lg ${theme} border-b-2 bg-opacity-10`}
+        >
+          <div className="truncate">
+            <FontAwesomeIcon icon={faBuildingColumns} className="mr-2" />
+            {college?.college?.college}
           </div>
-          {
-            (user?.role_user?.role_id === 1 ? '' : <div className="p-2 rounded-3xl">
+        </h1>
+        <div className="flex flex-col justify-between h-full">
+          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
+            {announcements.map((announcement) => (
+              <AnnouncementCard
+                key={announcement.id.toString()}
+                announcement={announcement}
+                setValue={setThreadValue}
+                handleRefresh={() => handleRefresh()}
+                setAnnouncementThread={setAnnouncementThread}
+                isAlter={() => setIsAlter(true)}
+                threadOpen={isThread}
+              />
+            ))}
+          </div>
+          {user?.role_user?.role_id === 1 ? (
+            ""
+          ) : (
+            <div className="p-2 rounded-3xl">
               <RichTextEditor
                 handleRefresh={() => handleRefresh()}
                 params={params}
               />
-            </div>)
-          }
+            </div>
+          )}
         </div>
       </div>
-      {isThread && <Thread userRole={'student'} setValue={setThreadValue} announcementThread={announcementThread} />}
+      {isThread && (
+        <Thread
+          userRole={"student"}
+          setValue={setThreadValue}
+          announcementThread={announcementThread}
+        />
+      )}
     </div>
   );
 };

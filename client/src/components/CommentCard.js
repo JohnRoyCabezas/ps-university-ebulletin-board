@@ -28,49 +28,49 @@ const CommentCard = ({comment}) => {
   }, []);
   
   return (
-    <div>
-      <div
-        className="relative flex w-full px-6 py-4 hover:bg-gray-200 text-sm"
-        onMouseEnter={() => setIsShowOptions(true)}
-        onMouseLeave={() => setIsShowOptions(false)}
-      >
-        <img
-          src={comment?.user?.avatar}
-          className="rounded-full w-12 h-12"
-          alt="Avatar"
-        />
-        <div className="flex flex-col ml-2">
-          <div className="flex justify-start w-52 items-center whitespace-nowrap">
-            <h5 className="font-bold max-w-[50%] truncate">{comment?.user?.fullname}</h5>
-            <span className="ml-2 text-xs whitespace-nowrap">
-              <i>{moment(comment.created_at).fromNow()}</i>
-            </span>
-          </div>
-          <div>
-            {isEditing ? (
-              <div className="px-5 w-full">
-                <CommentTextEditor
-                  commentId={comment?.id}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                />
-              </div>
-            ) : (
-              <span className="text-gray-700 text-sm ql-editor card">
-                {parse(comment?.comment)}
-              </span>
-            )}
-          </div>
+    <div
+      className="relative flex w-full px-6 py-4 hover:bg-gray-200 text-sm text-gray-800"
+      onMouseEnter={() => setIsShowOptions(true)}
+      onMouseLeave={() => setIsShowOptions(false)}
+    >
+      <img
+        src={comment?.user?.avatar}
+        className="rounded-full w-12 h-12"
+        alt="Avatar"
+      />
+      <div className="flex flex-col w-80 ml-2">
+        <div className="flex justify-startitems-center whitespace-nowrap">
+          <h5 className="font-bold max-w-[50%] truncate">
+            {comment?.user?.fullname}
+          </h5>
+          <span className="ml-2 text-xs whitespace-nowrap">
+            <i>{moment(comment.created_at).fromNow()}</i>
+          </span>
         </div>
-        {isShowOptions && (
-          <CommentOptions
-            comment={comment}
-            handleEdit={setIsEditing}
-            canEdit={canEdit}
-            canDelete={canDelete}
-          />
-        )}
+        <div>
+          {isEditing ? (
+            <div className="px-5 w-full">
+              <CommentTextEditor
+                commentId={comment?.id}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+              />
+            </div>
+          ) : (
+            <span className="text-gray-700 text-sm ql-editor card">
+              {parse(comment?.comment)}
+            </span>
+          )}
+        </div>
       </div>
+      {isShowOptions && (
+        <CommentOptions
+          comment={comment}
+          handleEdit={setIsEditing}
+          canEdit={canEdit}
+          canDelete={canDelete}
+        />
+      )}
     </div>
   );
 }

@@ -4,13 +4,13 @@ import moment from 'moment';
 
 const CommentsHeader = ({chat}) => {
   return (
-    <div className="relative flex bg-white w-full py-4 px-6">
+    <div className="relative flex bg-white w-full px-6 py-4">
       <img
         src={chat?.user?.avatar}
         className="rounded-full w-12 h-12"
         alt="Avatar"
       />
-      <div className="flex flex-col ml-2 w-52 text-sm">
+      <div className="flex flex-col ml-2 w-80 text-sm">
         <div className="flex justify-start items-center">
           <h5 className="font-bold max-w-[50%] truncate">{chat.user?.fullname}</h5>
           <span className="ml-2 text-xs whitespace-nowrap">
