@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Dropdown from '../components/Dropdown';
 import UserApi from '../api/UserApi';
 import CollegeApi from '../api/CollegeApi';
@@ -6,9 +6,10 @@ import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
 import BackButton from '../components/BackButton';
 import Cookies from 'js-cookie';
+import { UserContext } from '../utils/UserContext';
 
 const CreateCollegePage = () => {
-  const user = JSON.parse(Cookies.get('user') || '{}');
+  const {user} = useContext(UserContext);
   const initialParams = {
     college_information: '',
     college: '',

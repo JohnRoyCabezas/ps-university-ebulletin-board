@@ -6,17 +6,16 @@ import StudentMessageOptions from "./StudentMessageOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
 import "../index.css"
-import Cookies from "js-cookie";
-import { ThemeContext } from "./ThemeContext";
+import { UserContext } from "../utils/UserContext";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isThreadOpen, setIsThreadOpen] = useState(false);
   const [params, setParams] = useState({});
-  const user = JSON.parse(Cookies.get('user'));
+  const {user} = useContext(UserContext);
+  const {theme}= user;
   const [id, setId] = useState("");
-  const { theme } = useContext(ThemeContext);
 
   function handleEdit(id) {
     setId(id);

@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
-import { ThemeContext } from "./ThemeContext";
+import { UserContext } from "../utils/UserContext";
 
 const SubmitButton = (props) => {
-    const { theme } = useContext(ThemeContext)
+    const theme = useContext(UserContext)?.user?.theme || "bg-regal-blue"
 
     return (
         <div className="mt-8">

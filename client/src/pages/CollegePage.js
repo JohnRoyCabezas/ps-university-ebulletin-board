@@ -4,12 +4,11 @@ import AnnouncementApi from '../api/AnnouncementApi';
 import CollegeApi from '../api/CollegeApi';
 import { useParams } from 'react-router-dom';
 import Thread from '../components/Thread';
-import Cookies from 'js-cookie';
 import RichTextEditor from '../components/RichTextEditor';
 import Pusher from 'pusher-js';
-import { ThemeContext } from '../components/ThemeContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons';
+import { UserContext } from '../utils/UserContext';
 
 const CollegePage = () => {
   const { collegeid } = useParams();
@@ -18,8 +17,8 @@ const CollegePage = () => {
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
-  const { theme } = useContext(ThemeContext)
-  const user = JSON.parse(Cookies.get('user'));
+  const { theme } = useContext(UserContext).user;
+  const {user} = useContext(UserContext);
   const params =
   {
     announcementable_id: collegeid,

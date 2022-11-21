@@ -7,15 +7,14 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
-import Cookies from "js-cookie";
-import { ThemeContext } from "./ThemeContext";
+import { UserContext } from "../utils/UserContext";
 
 const CollegeAccordion = ({ userData, data, departments, department }) => {
   const { collegeid } = useParams();
   const [isActive, setIsActive] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const user = JSON.parse(Cookies.get("user") || "{}");
-  const {theme} = useContext(ThemeContext);
+  const {user} = useContext(UserContext);
+  const theme = useContext(UserContext).user.theme
   const ROLES = {
     STUDENT: 1,
     ADMIN: 2,

@@ -1,16 +1,14 @@
-import Cookies from "js-cookie";
 import SubmitButton from './submitButton';
 import { useState, useEffect, useRef, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import SettingsApi from "../api/ChangePasswordApi";
-import { ThemeContext } from "./ThemeContext";
+import { UserContext } from "../utils/UserContext";
 
 const EditPassword = () => {
-
-    const { theme } = useContext(ThemeContext);
+    const {user} = useContext(UserContext);
+    const {theme} = user
     const oldPassRef = useRef();
-    const userCookie = Cookies.get('user');
 
     const [changeOld, setChangeOld] = useState('');
     const [reqOld, setReqOld] = useState(false);
@@ -35,7 +33,7 @@ const EditPassword = () => {
     const [showMessage, setShowMessage] = useState(false);
 
     const params = {
-        'email': JSON.parse(userCookie).email,
+        'email': user.email,
         'old_password': changeOld,
         'new_password': changeNew
     }
@@ -106,9 +104,9 @@ const EditPassword = () => {
                         <div className="flex w-full">
                             {/* First half */}
                             <div className={`flex flex-col justify-center ${theme} shadow-lg shadow-gray-500/50 px-14`}>
-                                <img className={`w-52 h-auto rounded-full p-1 ring-2 ${theme} bg-opacity-80 ring-gray-400`} src={JSON.parse(userCookie).avatar} alt="Rounded avatar">
+                                <img className={`w-52 h-auto rounded-full p-1 ring-2 ${theme} bg-opacity-80 ring-gray-400`} src={user.avatar} alt="Rounded avatar">
                                 </img>
-                                <span className="flex text-gray-200 font-bold text-2xl mx-auto mt-5">{JSON.parse(userCookie).fullname}</span>
+                                <span className="flex text-gray-200 font-bold text-2xl mx-auto mt-5">{user.fullname}</span>
                             </div>
                             {/* Other half */}
                             <div className="w-full flex flex-col justify-center bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50">

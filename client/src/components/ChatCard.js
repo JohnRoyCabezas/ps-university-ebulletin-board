@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import parse from "html-react-parser";
 import ChatOptions from "./ChatOptions";
 import ChatTextEditor from "./ChatTextEditor";
 import moment from "moment";
-import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { UserContext } from "../utils/UserContext";
 
 const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
   const [isShowOptions, setIsShowOptions] = useState(false);
@@ -15,7 +15,7 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
   const [hoverReply, setHoverReply] = useState(false);
-  const user = JSON.parse(Cookies.get("user") || "{}");
+  const {user} = useContext(UserContext);
 
   useEffect(() => {
     if (user?.role_user?.role_id === 2) {

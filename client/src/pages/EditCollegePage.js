@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import CollegeApi from "../api/CollegeApi";
@@ -6,10 +6,10 @@ import DeleteModal from "../components/DeleteModal";
 import { useNavigate, useLocation } from "react-router-dom";
 import SuccessModal from "../components/SuccessModal";
 import SubmitButton from "../components/submitButton";
-import Cookies from "js-cookie";
 import Dropdown from "../components/Dropdown";
 import UserApi from "../api/UserApi";
 import BackButton from "../components/BackButton";
+import { UserContext } from "../utils/UserContext";
 
 
 const EditCollegePage = () => {
@@ -25,7 +25,7 @@ const EditCollegePage = () => {
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
-  const user = JSON.parse(Cookies.get('user'));
+  const {user} = useContext(UserContext);
   const id = location.state.collegeid;
 
   useEffect(() => {
@@ -37,7 +37,6 @@ const EditCollegePage = () => {
       UserApi.fetchDeans(user?.university_id).then((deans) => {
         deans.data.forEach((data, index) => {
           if (data.id === res?.data?.college?.user_id) {
-            // setDefaultLabel(deans.data.splice(index, 1)[0].fullname);
             setDefaultLabel(deans?.data[index].fullname)
           }
         })

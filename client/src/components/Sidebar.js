@@ -8,17 +8,17 @@ import ROLES from './Roles';
 import Cookies from 'js-cookie';
 import CollegeAccordion from './CollegeAccordion';
 import SideBarPopupUser from './SidebarPopupUser';
-import { ThemeContext } from './ThemeContext';
 import AdminSettingsModal from './AdminSettingsModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { UserContext } from '../utils/UserContext';
 
 const Sidebar = () => {
   const id = useParams();
   const navigate = useNavigate();
   const [userData, setUserData] = useState();
-  const user = JSON.parse(Cookies.get('user') || '{}');
-  const { theme, setTheme } = useContext(ThemeContext);
+  const {user, setTheme} = useContext(UserContext);
+  const {theme} = user;
   const [Show, setShowModal] = useState(false);
   const [university, setUniversity] = useState();
   const [adminSettingsModal, setAdminSettingsModal] = useState(false);

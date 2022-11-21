@@ -1,18 +1,18 @@
-import { React, useEffect, useLayoutEffect, useState } from "react";
+import { React, useContext, useEffect, useLayoutEffect, useState } from "react";
 import Thread from "../components/Thread";
 import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
 import Pusher from "pusher-js";
-import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { UserContext } from "../utils/UserContext";
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState([]);
-  const user = JSON.parse(Cookies.get('user'));
+  const {user} = useContext(UserContext);
   const [isAlter, setIsAlter] = useState(false);
   const params = {
     announcementable_id: user.university_id,

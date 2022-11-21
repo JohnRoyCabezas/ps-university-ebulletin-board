@@ -8,7 +8,7 @@ import AuthApi from "../api/AuthApi";
 import { useNavigate } from "react-router-dom";
 import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
-import { ThemeContext } from "./ThemeContext";
+import { UserContext } from "../utils/UserContext";
 
 const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const [users, setUsers] = useState([]);
@@ -18,7 +18,7 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
   const [deleteId, setDeleteId] = useState(0);
   const [loading, setLoading] = useState(true);
   const universityid = Cookies.get('universityid');
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(UserContext).user;
 
   useEffect(() => {
     UserApi.fetchAllUsers({ ...params, university_id: universityid }).then((res) => {

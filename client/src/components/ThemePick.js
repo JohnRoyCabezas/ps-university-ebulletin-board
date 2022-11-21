@@ -1,12 +1,10 @@
-import { ThemeContext } from "./ThemeContext";
 import { useContext, useEffect } from "react";
 import SettingsApi from "../api/ChangePasswordApi";
-import Cookies from "js-cookie";
+import { UserContext } from "../utils/UserContext";
 
 const ThemePick = () => {
-
-    const { theme, setTheme } = useContext(ThemeContext);
-    const user = JSON.parse(Cookies.get('user'));
+    const {user,setTheme} = useContext(UserContext)
+    const { theme } = user;
 
     useEffect(() => {
         SettingsApi.theme({ theme: theme }, user.id);

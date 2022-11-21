@@ -2,15 +2,14 @@ import React, { useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import CourseCard from './Course';
-import Cookies from 'js-cookie';
 import { Link, useLocation } from 'react-router-dom';
-import { ThemeContext } from './ThemeContext';
+import { UserContext } from '../utils/UserContext';
 
 const DepartmentAccordion = ({ handleDropdown, data, courses }) => {
   const { pathname } = useLocation();
   const [isActive, setIsActive] = useState(false);
-  const user = JSON.parse(Cookies.get('user') || '{}');
-  const { theme } = useContext(ThemeContext)
+  const {user} = useContext(UserContext);
+  const theme = useContext(UserContext).user.theme
   const ROLES = {
     STUDENT: 1,
     ADMIN: 2,

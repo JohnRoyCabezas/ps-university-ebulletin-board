@@ -10,17 +10,17 @@ import {
 import AuthApi from '../api/AuthApi';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { ThemeContext } from './ThemeContext';
+import { UserContext } from '../utils/UserContext';
 import EditPassword from './ChangePassword';
 import { ThemePick } from './ThemePick';
 
 const SideBarPopupUser = (props) => {
   const navigate = useNavigate();
-  const user = JSON.parse(Cookies.get('user') || '{}');
+  const {user} = useContext(UserContext);
   const [showEditSetting, setShowEditSetting] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(true);
   const [showChangeTheme, setShowChangeTheme] = useState(false);
-  const { theme } = useContext(ThemeContext);
+  const { theme } = user;
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
@@ -85,7 +85,7 @@ const SideBarPopupUser = (props) => {
           <div className={`flex justify-center items-center p-2`}>
             <img
               onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
-              src={JSON.parse(Cookies.get('user')).avatar}
+              src={user.avatar}
               className="rounded-full w-11 bg-white"
             />
             <label className="mx-2">{user ? user.fullname : 'User'}</label>

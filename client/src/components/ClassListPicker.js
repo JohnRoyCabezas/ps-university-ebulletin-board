@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../utils/UserContext';
 import ClassListModal from './ClassListModal';
 
 const ClassListPicker = ({
@@ -10,6 +11,7 @@ const ClassListPicker = ({
     }) => {
 
     const [showModal, setShowModal] = useState(false);
+    const theme = useContext(UserContext).user.theme
 
     const getDepartmentName = (id) => {
         let departmentName;
@@ -40,7 +42,7 @@ const ClassListPicker = ({
                     : <p>{classList.length} student{classList.length>1 && "s"} enlisted</p>
                     }
                 </div>
-                <Link onClick={()=> setShowModal(true)} className="text-white rounded-r border-l-2 p-2 bg-blue-500 hover:bg-opacity-75">Open Class List</Link>
+                <Link onClick={()=> setShowModal(true)} className={`text-white rounded-r border-l-2 p-2 ${theme} hover:bg-opacity-75`}>Open Class List</Link>
             </div>
         </div>
     )

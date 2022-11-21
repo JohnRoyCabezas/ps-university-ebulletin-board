@@ -7,10 +7,10 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from '../components/ThemeContext';
+import { UserContext } from '../utils/UserContext';
 
 const AdminSettingsPage = () => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(UserContext).user;
   const navigate = useNavigate();
 
   return (

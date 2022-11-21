@@ -1,14 +1,14 @@
-import { React, useEffect, useState } from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import Thread from "../components/Thread";
 import AnnouncementApi from '../api/AnnouncementApi';
 import DepartmentApi from '../api/DepartmentApi';
 import { useParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import Pusher from 'pusher-js';
 import RichTextEditor from '../components/RichTextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding } from '@fortawesome/free-solid-svg-icons';
+import { UserContext } from '../utils/UserContext';
 
 
 const DepartmentPage = () => {
@@ -17,7 +17,7 @@ const DepartmentPage = () => {
   const [department, setDepartment] = useState({});
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
-  const user = JSON.parse(Cookies.get('user'));
+  const {user} = useContext(UserContext);
   const params =
   {
     announcementable_id: departmentid,

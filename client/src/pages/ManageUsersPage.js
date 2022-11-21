@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import BackButton from '../components/BackButton';
-import { ThemeContext } from '../components/ThemeContext';
 import useDebounce from '../hooks/useDebounce';
+import { UserContext } from '../utils/UserContext';
 
 const ManageUsersPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isAscending, setIsAscending] = useState(true);
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(UserContext).user;
   const [params, setParams] = useState({
     page: 1,
     items_per_page: 6,

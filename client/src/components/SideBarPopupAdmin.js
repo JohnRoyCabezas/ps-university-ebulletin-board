@@ -9,12 +9,12 @@ import {
 import AuthApi from '../api/AuthApi';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { ThemeContext } from './ThemeContext';
+import { UserContext } from '../utils/UserContext';
 
 const SideBarPopupAdmin = (props) => {
   const navigate = useNavigate();
-  const user = JSON.parse(Cookies.get('user') || '{}');
-  const { theme } = useContext(ThemeContext);
+  const {user} = useContext(UserContext);
+  const { theme } = user;
   const [showModal, setShowModal] = React.useState(false);
 
 
@@ -40,7 +40,7 @@ const SideBarPopupAdmin = (props) => {
           <div className='flex justify-center items-center p-2'>
             <img
               onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
-              src={JSON.parse(Cookies.get('user')).avatar}
+              src={user.avatar}
               className="rounded-full w-11 bg-white"
             />
 
