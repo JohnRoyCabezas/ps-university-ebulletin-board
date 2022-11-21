@@ -69,7 +69,7 @@ const AnnouncementPage = () => {
   return (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
-        <div className={`absolute top-0 z-30 w-full font-bold flex justify-between p-2 text-2xl bg-white bg-opacity-10 font-weight-bold border-b-2`}>
+        <div className={`absolute top-0 z-30 w-full font-bold flex justify-between p-2 bg-white bg-opacity-10 font-weight-bold border-b-2`}>
           {/* <span className="text-lg">{4 > 5 && 21 < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
           <h1> Announcements</h1>
           {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}

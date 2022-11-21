@@ -2,11 +2,13 @@ import { React, useEffect, useLayoutEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import RichTextEditor from '../components/RichTextEditor';
 import AnnouncementApi from '../api/AnnouncementApi';
+import CollegeApi from '../api/CollegeApi';
 import { useParams, useNavigate } from 'react-router-dom';
 import Thread from '../components/Thread';
 import Pusher from 'pusher-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faBuildingColumns,
   faPenSquare
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,6 +18,7 @@ const AdminCollegePage = () => {
   const [isThread, setThread] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
+  const [college, setCollege] = useState();
   const [isAlter, setIsAlter] = useState(false);
   const params =
   {
@@ -42,6 +45,9 @@ const AdminCollegePage = () => {
         setAnnouncements(res.data);
       }
     );
+    CollegeApi.fetchSpecificCollege(collegeid).then(res => {
+      setCollege(res.data);
+    })
   }, [collegeid]);
 
   useLayoutEffect(() => {
@@ -65,36 +71,37 @@ const AdminCollegePage = () => {
 
   return (
     <div className="flex w-full h-screen">
-      <div className="relative flex flex-col w-full">
-        <div className="absolute flex top-0 z-10 w-full font-bold p-3 text-lg bg-white border-b-2 justify-between">
-          <div>
-            Announcements
-          </div>
-          <button
+      <div className="relative flex flex-col w-full text-gray-800">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
+        <div className="truncate">
+          <FontAwesomeIcon icon={faBuildingColumns} className="mr-2"/>
+          {college?.college?.college}
+        </div>
+        <button
             type="button"
             className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-            onClick={() => { navigate('/editcollege', { state: { collegeid: collegeid } }) }}
+            onClick={() => {
+              navigate("/editcollege", { state: { collegeid: collegeid } });
+            }}
           >
-
-            <FontAwesomeIcon icon={faPenSquare} className="mr-1" size='xl' /> Edit College
+            <FontAwesomeIcon icon={faPenSquare} className="mr-1" size="xl" />{" "}
+            Edit College
           </button>
-
-        </div>
+        </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
-            {
-              announcements.map((announcement) => (
-                <AnnouncementCard
-                  key={announcement.id.toString()}
-                  userRole={'admin'}
-                  announcement={announcement}
-                  handleRefresh={() => handleRefresh()}
-                  setValue={(value) => setThread(value)}
-                  setAnnouncementThread={setAnnouncementThread}
-                  isAlter={() => setIsAlter(true)}
-                  threadOpen={isThread}
-                />
-              ))}
+          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
+            {announcements.map((announcement) => (
+              <AnnouncementCard
+                key={announcement.id.toString()}
+                userRole={"admin"}
+                announcement={announcement}
+                handleRefresh={() => handleRefresh()}
+                setValue={(value) => setThread(value)}
+                setAnnouncementThread={setAnnouncementThread}
+                isAlter={() => setIsAlter(true)}
+                threadOpen={isThread}
+              />
+            ))}
           </div>
           <div className="p-2">
             <RichTextEditor
@@ -104,12 +111,13 @@ const AdminCollegePage = () => {
           </div>
         </div>
       </div>
-      {isThread &&
+      {isThread && (
         <Thread
-          userRole={'admin'}
+          userRole={"admin"}
           setValue={(value) => setThread(value)}
           announcementThread={announcementThread}
-        />}
+        />
+      )}
     </div>
   );
 };

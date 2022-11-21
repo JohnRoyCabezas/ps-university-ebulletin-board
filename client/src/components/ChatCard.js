@@ -39,7 +39,7 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
       <div
         onMouseEnter={() => setIsShowOptions(true)}
         onMouseLeave={() => setIsShowOptions(false)}
-        className={`relative flex bg-white w-full px-4 py-2 hover:bg-gray-200 
+        className={`relative flex bg-white w-full px-4 py-2 text-gray-800 hover:bg-gray-200 
         ${chat?.id === chatObj?.id && "bg-gray-200"}`}
       >
         <img

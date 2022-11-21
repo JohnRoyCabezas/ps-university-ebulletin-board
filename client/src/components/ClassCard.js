@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const ClassCard = ({collegeid, course, type}) => {
+const ClassCard = ({active, collegeid, course, type}) => {
   const [collegeURL, setCollegeURL] = useState('');
 
   useEffect(() => {
@@ -22,7 +22,11 @@ const ClassCard = ({collegeid, course, type}) => {
             <Link to={`${collegeURL}/${collegeid}/${course?.department_id}/${course?.id}`} className="flex items-center w-full">
               <FontAwesomeIcon
                 icon={faCircle}
-                className="button w-2 h-2 p-2 group-hover:text-sky-500 transition-all ease-in"
+                className={`button w-2 h-2 p-2 transition-all ease-in ${
+                  (active?.type === "class" && Number(active?.id) === course?.id) 
+                ? "text-sky-500"
+                : "group-hover:text-white"
+            }`}
               />
               <span className="ml-2 text-sm font-light group-hover:text-white transition-all ease-in">
                 {course?.course}

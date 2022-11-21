@@ -40,7 +40,7 @@ const Comments = ({ chat, setChat, setShowComments }) => {
 
   return (
     <div className="flex">
-      <div className="relative flex flex-col border-l-2 w-80">
+      <div className="relative flex flex-col border-l-2 w-96 text-gray-800">
         <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-50 w-full font-bold text-lg bg-white border-b-2">
           Chat Comments
           <button
@@ -57,9 +57,12 @@ const Comments = ({ chat, setChat, setShowComments }) => {
 
             <div className="flex my-3 mx-6">
               <div className="mr-2 text-sm text-gray-400">
-                {chat?.comments?.length > 1
-                  ? chat?.comments?.length + " replies"
-                  : chat?.comments?.length + " reply"}
+                {chat?.comments?.length >= 1
+                  ? (chat?.comments?.length > 1
+                    ? chat?.comments?.length + " replies"
+                    : chat?.comments?.length + " reply"
+                    )
+                  : "No replies"}
               </div>
               <div className="flex-1 h-0.5 my-auto border-b-1 text-center bg-gray-200"></div>
             </div>

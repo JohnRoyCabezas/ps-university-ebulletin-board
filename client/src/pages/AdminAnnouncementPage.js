@@ -5,6 +5,8 @@ import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
 import Pusher from "pusher-js";
 import Cookies from "js-cookie";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
@@ -40,6 +42,12 @@ const AdminAnnouncementPage = () => {
     setThread(value);
   }
 
+  function handleRefresh() {
+    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+      setAnnouncements(res.data);
+    });
+  }
+
   useEffect(() => {
     handleRefresh();
   }, []);
@@ -53,18 +61,16 @@ const AdminAnnouncementPage = () => {
     setIsAlter(false);
   }, [announcements]);
 
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-    });
-  }
-
   return (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
-        <div className="absolute top-0 z-10 w-full font-bold flex justify-between p-3 text-2xl bg-white border-b-2">
-          <h1> Announcements</h1>
-        </div>
+        <h1 className="absolute flex items-center text-gray-800 justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
+          <div className="truncate">
+            <FontAwesomeIcon icon={faStar} className="mr-2" />
+
+            University Announcements
+          </div>
+        </h1>
         <div className="flex flex-col justify-between h-full">
           <div
             id="announcementWrapper"
@@ -79,7 +85,7 @@ const AdminAnnouncementPage = () => {
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
                 isAlter={() => setIsAlter(true)}
-                threadOpen = {isThread}
+                threadOpen={isThread}
               />
             ))}
           </div>

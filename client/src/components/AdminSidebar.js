@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import AuthApi from "../api/AuthApi";
 import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
@@ -14,9 +14,12 @@ const AdminSidebar = () => {
   const [userData, setUserData] = useState({});
   const [showSidebar, setShowSidebar] = useState(true);
   const [adminSettingsModal, setAdminSettingsModal] = useState(false);
+  const initial = {type: "", id: 0}
+  const [active, setActive] = useState(initial);
   const { theme, setTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
+  const {collegeid, departmentid, classid} = useParams();
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
@@ -27,6 +30,18 @@ const AdminSidebar = () => {
 
   const university = userData?.university;
   const colleges = userData?.university?.colleges;
+
+  useEffect(() => {
+    if (!!classid) {
+      setActive({type: "class", id: classid});
+    } else if (!!departmentid) {
+      setActive({type: "department", id: departmentid});
+    } else if (!!collegeid) {
+      setActive({type: "college", id: collegeid})
+    } else {
+      setActive(initial)
+    }
+  }, [collegeid, departmentid, classid])
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
@@ -97,7 +112,7 @@ const AdminSidebar = () => {
               {/* college */}
               {colleges?.map((college) => {
                 return (
-                  <CollegeCard user={user} college={college} key={college.id} />
+                  <CollegeCard active={active} user={user} college={college} key={college.id} />
                 );
               })}
             </div>
@@ -106,7 +121,7 @@ const AdminSidebar = () => {
 
         {/* footer */}
         <div
-          className={`sidebar-footer absolute bottom-0 w-full h-14 px-4 flex overflow-hidden ${theme} z-50}`}
+          className={`sidebar-footer absolute bottom-0 w-full h-14 px-4 flex overflow-hidden ${theme} bg-opacity-100 z-50}`}
         >
           <div className={`user-info flex items-center w-full justify-between`}>
             <div
