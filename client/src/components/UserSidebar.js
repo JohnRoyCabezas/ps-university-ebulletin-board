@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import AuthApi from "../api/AuthApi";
 import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
@@ -22,9 +22,23 @@ const UserSidebar = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [showEditSetting, setShowEditSetting] = useState(false);
   const { theme, setTheme } = useContext(ThemeContext);
+  const initial = {type: "", id: 0}
+  const [active, setActive] = useState(initial);
 
   const navigate = useNavigate();
+  const {collegeid, departmentid, classid} = useParams();
 
+  useEffect(() => {
+    if (!!classid) {
+      setActive({ type: "class", id: classid });
+    } else if (!!departmentid) {
+      setActive({ type: "department", id: departmentid });
+    } else if (!!collegeid) {
+      setActive({ type: "college", id: collegeid });
+    } else {
+      setActive(initial);
+    }
+  }, [collegeid, departmentid, classid]);
 
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
@@ -50,10 +64,9 @@ const UserSidebar = () => {
 
   return (
     <div className="flex w-full h-screen">
-      {
-          showEditSetting && 
-          <EditSettingModal setShowEditSetting={setShowEditSetting}/>
-      }
+      {showEditSetting && (
+        <EditSettingModal setShowEditSetting={setShowEditSetting} />
+      )}
       {/* sidebar content */}
       <nav
         id="sidebar"
@@ -67,16 +80,16 @@ const UserSidebar = () => {
             className={`sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center ${theme} bg-opacity-100 font-semibold text-lg text-white leading-5 border-b border-gray-500`}
           >
             <Link
-            to="/announcement"
-            className={`group truncate opacity-100 transition-all ease-in ${
-              !showSidebar && "opacity-0 transition-all ease-in"
-            }`}
-          >
-            {university?.university}
-            <div className="group-hover:visible invisible absolute w-3/4 whitespace-pre-wrap rounded shadow-inner border border-slate-500 p-2 right-1/2 top-1/3 translate-x-1/2 translate-y-1/2 bg-slate-800 text-sm font-light z-50">
+              to="/announcement"
+              className={`group truncate opacity-100 transition-all ease-in ${
+                !showSidebar && "opacity-0 transition-all ease-in"
+              }`}
+            >
               {university?.university}
-            </div>
-          </Link>
+              <div className="group-hover:visible invisible absolute w-3/4 whitespace-pre-wrap rounded shadow-inner border border-slate-500 p-2 right-1/2 top-1/3 translate-x-1/2 translate-y-1/2 bg-slate-800 text-sm font-light z-50">
+                {university?.university}
+              </div>
+            </Link>
 
             <button
               onClick={() => setShowSidebar(!showSidebar)}
@@ -101,7 +114,12 @@ const UserSidebar = () => {
                   <Link to="/announcement" className="flex items-center w-full">
                     <FontAwesomeIcon
                       icon={faStar}
-                      className="button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 group-hover:text-white  transition-all ease-in"
+                      className={`button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition-all ease-in
+                      ${
+                        active?.type === ""
+                          ? "text-sky-500 group-hover:text-sky-500"
+                          : "group-hover:text-white"
+                      }`}
                     />
                     <span className="ml-2 group-hover:text-white transition-all ease-in truncate">
                       University
@@ -118,7 +136,14 @@ const UserSidebar = () => {
                     >
                       <FontAwesomeIcon
                         icon={faBuildingColumns}
-                        className="button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 group-hover:text-white  transition-all ease-in"
+                        className={`button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition-all ease-in
+                        ${
+                          active?.type === "college" &&
+                          Number(active?.id) === college?.id
+                            ? "text-sky-500 group-hover:text-sky-500"
+                            : "group-hover:text-white"
+                        }
+                        `}
                       />
                       <span className="ml-2 group-hover:text-white transition-all ease-in whitespace-nowrap">
                         {college?.college}
@@ -137,7 +162,13 @@ const UserSidebar = () => {
                       >
                         <FontAwesomeIcon
                           icon={faBuilding}
-                          className="button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 group-hover:text-white  transition-all ease-in"
+                          className={`button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition-all ease-in
+                          ${
+                            active?.type === "department" &&
+                            Number(active?.id) === department?.id
+                              ? "text-sky-500 group-hover:text-sky-500"
+                              : "group-hover:text-white"
+                          }`}
                         />
                         <span className="ml-2 group-hover:text-white transition-all ease-in whitespace-nowrap">
                           {department?.department}
@@ -157,6 +188,7 @@ const UserSidebar = () => {
                     {courses?.map((course) => {
                       return (
                         <ClassCard
+                          active={active}
                           key={course.id}
                           collegeid={college?.id}
                           course={course?.course}
@@ -199,7 +231,9 @@ const UserSidebar = () => {
             </div>
             <div className="flex items-center">
               <button
-                onClick={() => {setShowEditSetting(true)}}
+                onClick={() => {
+                  setShowEditSetting(true);
+                }}
                 className={`button flex items-center justify-center w-6 h-6 rounded mr-1 py-0.5 px-1 hover:bg-black hover:bg-opacity-50 hover:text-white opacity-100 transition-all ease-in ${
                   !showSidebar && "opacity-0 transition-all ease-in"
                 }`}

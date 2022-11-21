@@ -14,7 +14,7 @@ const EditSettingModal = ({ setShowEditSetting }) => {
       className={`flex ${theme} flex-col bg-opacity-70 w-full h-full fixed z-50 items-center justify-center top-0`}
     >
       <aside
-        class="z-50 bg-gray-300 p-4 w-6/12 h-11/12 min-w-6/12 flex flex-col rounded-lg"
+        className="z-50 bg-gray-300 p-4 w-6/12 h-11/12 min-w-6/12 flex flex-col rounded-lg"
         aria-label="Sidebar"
       >
         <div className="relative py-2 flex flex-row-reverse">
