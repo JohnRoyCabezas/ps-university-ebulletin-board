@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Dropdown from '../components/Dropdown';
 import UserApi from '../api/UserApi';
@@ -8,6 +8,7 @@ import SuccessModal from '../components/SuccessModal';
 import SubmitButton from '../components/submitButton';
 import BackButton from '../components/BackButton';
 import ClassListPicker from '../components/ClassListPicker';
+import { UserContext } from '../utils/UserContext';
 
 const CreateClassPage = () => {
   const initialState = {
@@ -23,6 +24,7 @@ const CreateClassPage = () => {
   const [params, setParams] = useState(initialState);
   const [processing, setProcessing] = useState(false);
   const university_id = Cookies.get('universityid');
+  const {refetchUser} = useContext(UserContext);
 
   useEffect(() => {
     UserApi.fetchStudents(university_id).then((res) => {
@@ -61,6 +63,7 @@ const CreateClassPage = () => {
       setParams(initialState);
       setShowModal(true);
       setProcessing(false);
+      refetchUser();
     });
   };
 

@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 import { UserContext } from '../utils/UserContext';
 
 const CreateCollegePage = () => {
-  const {user} = useContext(UserContext);
+  const {user, refetchUser} = useContext(UserContext);
   const initialParams = {
     college_information: '',
     college: '',
@@ -48,6 +48,7 @@ const CreateCollegePage = () => {
         setShowModal(true);
         setParams(initialParams);
         setProcessing(false);
+        refetchUser();
       },
       (err) => {
         setErrors(err.response.data);

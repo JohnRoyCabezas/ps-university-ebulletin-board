@@ -19,7 +19,8 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const universityid = Cookies.get('universityid');
   const inputRef = useRef();
-  const { theme } = useContext(UserContext).user;
+  const {user, refetchUser} = useContext(UserContext)
+  const { theme } = user;
   const [processing, setProcessing] = useState(false);
 
   const handleEdit = (e) => {
@@ -30,6 +31,7 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
       setUniversityName({ ...universityName, current: universityName.pending })
       setError(null);
       setProcessing(false);
+      refetchUser();
     }).catch(({ response }) => {
       setError(response.data.message)
     }).finally(() => setProcessing(false))

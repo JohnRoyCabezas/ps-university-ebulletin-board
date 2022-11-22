@@ -25,7 +25,7 @@ const EditCollegePage = () => {
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
-  const {user} = useContext(UserContext);
+  const {user, refetchUser} = useContext(UserContext);
   const id = location.state.collegeid;
 
   useEffect(() => {
@@ -54,6 +54,7 @@ const EditCollegePage = () => {
     setShowDeleteModal(false);
     CollegeApi.deleteCollege(id).then(() => {
       setSuccessDeleteModal(true);
+      refetchUser();
     })
   }
 
@@ -66,6 +67,7 @@ const EditCollegePage = () => {
     CollegeApi.updateCollege({ collegeInfo, college, defaultValue }, id).then((res) => {
       setProcessing(false);
       setShowModal(true);
+      refetchUser();
     })
   }
 
