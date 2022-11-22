@@ -22,6 +22,7 @@ class CourseController extends Controller
                 'department_id' => ['required'],
                 'user_ids' => ['required'],
                 'instructor_id' => ['required'],
+                'class_information' => ['max:1000']
             ]);
 
         try {
@@ -30,6 +31,7 @@ class CourseController extends Controller
             $course = Course::create([
                     'department_id' => $validatedData['department_id'],
                     'course' => $validatedData['course'],
+                    'class_information' => $validatedData['class_information']
                 ]);
 
             $course->user()->attach($validatedData['user_ids']);
@@ -60,7 +62,7 @@ class CourseController extends Controller
             });
         })->get()->first();
 
-        $students = CourseUser::with('user')->where('course_id', $id)->whereHas('user', function($query){
+        $students = CourseUser::with('user.department')->where('course_id', $id)->whereHas('user', function($query){
             $query->whereHas('roleUser', function ($query) {
                 $query->where('role_id', '=', 1);
             });
@@ -87,7 +89,7 @@ class CourseController extends Controller
             DB::beginTransaction();
 
             $course = Course::find($id);
-            
+
             if($validatedData['instructor_id']!=$validatedData['old_instructor_id']) {
                 $course->user()->detach($validatedData['old_instructor_id']);
                 $course->user()->attach($validatedData['instructor_id']);
