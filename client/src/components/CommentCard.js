@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import moment from "moment";
 import CommentOptions from './CommentOptions';
 import parse from 'html-react-parser';
-import Cookies from "js-cookie";
 import CommentTextEditor from "./CommentTextEditor";
+import { UserContext } from "../utils/UserContext";
 
 const CommentCard = ({comment}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
-  const user = JSON.parse(Cookies.get('user') || '{}');
+  const {user} = useContext(UserContext);
 
   const [isShowOptions, setIsShowOptions] = useState(false);
 

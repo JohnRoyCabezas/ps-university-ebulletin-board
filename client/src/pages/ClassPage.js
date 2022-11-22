@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Pusher from "pusher-js";
 import CourseApi from "../api/CourseApi";
@@ -6,10 +6,10 @@ import ChatApi from "../api/ChatApi";
 import ChatCard from "../components/ChatCard";
 import ChatTextEditor from "../components/ChatTextEditor";
 import Comments from "../components/Comments";
-import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
+import {UserContext} from "../utils/UserContext"
 
 const ClassPage = () => {
   const { classid } = useParams();
@@ -22,7 +22,7 @@ const ClassPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const role = JSON.parse(Cookies.get('user')).role_user.role_id;
+  const role = useContext(UserContext).user.role_user.role_id;
 
   const fetchCourseChats = (id) => {
     ChatApi.fetchCourseChats(id).then((res) => {

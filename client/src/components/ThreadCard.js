@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import moment from "moment";
 import AdminThreadOptions from "../components/AdminThreadOptions";
 import RichTextEditor from "../components/RichTextEditor";
 import parse from "html-react-parser"
 import ThreadApi from "../api/ThreadApi";
 import Cookies from "js-cookie";
+import { UserContext } from "../utils/UserContext";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [params, setParams] = useState({});
   const [id, setId] = useState("");
+  const {user} = useContext(UserContext);
 
   function handleEdit(id) {
     setId(id);
@@ -32,7 +34,7 @@ export default function AnnouncementCard(props) {
   }
 
   function threadOption() {
-    return props.isShown && (isShown && (props.userRole === 2 || props?.user_detail?.fullname === JSON.parse(Cookies.get('user')).fullname))
+    return props.isShown && (isShown && (props.userRole === 2 || props?.user_detail?.fullname === user?.fullname))
   }
 
   return (

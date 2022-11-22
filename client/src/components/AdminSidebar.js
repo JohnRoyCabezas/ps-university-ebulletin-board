@@ -3,20 +3,20 @@ import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import AuthApi from "../api/AuthApi";
 import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
-import { ThemeContext } from './ThemeContext';
+import { UserContext } from "../utils/UserContext";
 import AdminSettingsModal from './AdminSettingsModal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faGear, faBars } from "@fortawesome/free-solid-svg-icons";
 import CollegeCard from "./CollegeCard";
 
 const AdminSidebar = () => {
-  const user = JSON.parse(Cookies.get("user" || "{}"));
+  const {user, logout} = useContext(UserContext);
+  const {theme} = user;
   const [userData, setUserData] = useState({});
   const [showSidebar, setShowSidebar] = useState(true);
   const [adminSettingsModal, setAdminSettingsModal] = useState(false);
   const initial = {type: "", id: 0}
   const [active, setActive] = useState(initial);
-  const { theme, setTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
   const {collegeid, departmentid, classid} = useParams();
@@ -24,7 +24,6 @@ const AdminSidebar = () => {
   useEffect(() => {
     UserApi.fetchUser().then((res) => {
       setUserData(res.data);
-      setTheme(res?.data?.theme ? res?.data?.theme : 'bg-regal-blue');
     });
   }, []);
 
@@ -49,6 +48,7 @@ const AdminSidebar = () => {
       Cookies.remove("user");
       Cookies.remove("params");
       Cookies.remove("universityid");
+      logout();
       navigate("/");
     });
   };

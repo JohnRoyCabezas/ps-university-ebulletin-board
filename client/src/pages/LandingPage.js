@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import shake from "../images/shake.svg";
 import presentation from "../images/presentation.svg";
@@ -10,10 +10,10 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { UserContext } from "../utils/UserContext";
 
 const LandingPage = () => {
-  const user = Cookies.get("user") && JSON.parse(Cookies.get("user") || "{}");
+  const {user} = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {

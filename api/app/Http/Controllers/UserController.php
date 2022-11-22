@@ -20,10 +20,10 @@ class UserController extends Controller
         if ($user->isAdmin()) {
             $user = User::with(['roleUser.role', 'university.colleges.departments.courses'])->find($user->id);
         } else if ($user->isStudent()) {
-            $user = User::with(['courseUser.course', 'university', 'department.college.university'])->find($user->id);
+            $user = User::with(['roleUser.role', 'courseUser.course', 'university', 'department.college.university'])->find($user->id);
         } else { 
             //if the user has no assigned department_id
-            $user = User::with(['university', 'department.college.university'])->find($user->id);
+            $user = User::with(['roleUser.role', 'university', 'department.college.university'])->find($user->id);
         }
 
         return response()->json($user);

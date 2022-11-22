@@ -1,14 +1,14 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import AnnouncementApi from "../api/AnnouncementApi";
 import ThreadApi from "../api/ThreadApi";
-import Cookies from "js-cookie";
+import { UserContext } from "../utils/UserContext";
 
 export default function NavBar(props) {
-
+  const {user} = useContext(UserContext)
   const [announcement, setAnnouncement] = useState('');
   const [isEdit, setIsEdit] = useState(props.isEdit);
   const [buttonState, setButtonState] = useState(false);
@@ -20,7 +20,7 @@ export default function NavBar(props) {
 
     if (props.params?.type === "comment") {
       ThreadApi.createThreadMessage({
-        user_id: JSON.parse(Cookies.get('user') || '{}').id,
+        user_id: user.id,
         announcement_id: props.params?.announcement_id,
         thread_message: announcement,
       }).then(

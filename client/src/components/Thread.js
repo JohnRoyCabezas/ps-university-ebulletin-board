@@ -1,20 +1,20 @@
 import { faLock, faLockOpen, faSpinner } from "@fortawesome/free-solid-svg-icons"
-import { React, useEffect, useState, useLayoutEffect } from "react";
+import { React, useEffect, useState, useLayoutEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RichTextEditor from "../components/RichTextEditor";
 import AnnouncementApi from "../api/AnnouncementApi";
 import ThreadsHeader from '../components/ThreadsHeader';
 import ThreadCard from "../components/ThreadCard";
 import ThreadApi from "../api/ThreadApi";
-import Cookies from "js-cookie";
 import Pusher from "pusher-js";
+import { UserContext } from "../utils/UserContext";
 
 export default function Thread(props) {
   const [lockLoading, setLockLoading] = useState(false);
   const [announcement, setAnnouncements] = useState();
   const [isAlter, setIsAlter] = useState(false);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(Cookies.get('user'));
+  const {user} = useContext(UserContext);
   const [isLock, setIsLock] = useState(false);
   const [threads, setThreads] = useState();
   const [params, setParams] = useState();

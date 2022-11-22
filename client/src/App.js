@@ -9,9 +9,9 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <ThemeContext.Provider value={{ theme, setTheme }}>
+        {/* <ThemeContext.Provider value={{ theme, setTheme }}> */}
           <RoutesList />
-        </ThemeContext.Provider>
+        {/* </ThemeContext.Provider> */}
       </Router>
     </div>
   );

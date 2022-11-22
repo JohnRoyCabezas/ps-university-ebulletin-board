@@ -1,16 +1,16 @@
-import { React, useEffect, useState, useLayoutEffect } from "react";
+import { React, useEffect, useState, useLayoutEffect, useContext } from "react";
 import AnnouncementCard from "../components/AnnouncementCard";
 import AnnouncementApi from "../api/AnnouncementApi";
 import Thread from "../components/Thread";
 import Pusher from "pusher-js";
-import Cookies from "js-cookie";
+import { UserContext } from "../utils/UserContext";
 
 const AnnouncementPage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
-  const user = JSON.parse(Cookies.get("user"));
+  const {user} = useContext(UserContext);
   const params = {
     announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
@@ -19,13 +19,6 @@ const AnnouncementPage = () => {
   function setThreadValue(value) {
     setThread(value);
   }
-
-  // const today = new Date();
-  // const [time, setTime] = useState(today);
-
-  // useEffect(() => {
-  //     setTime(today);
-  // }, [today])
 
   useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {

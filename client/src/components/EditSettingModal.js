@@ -1,12 +1,12 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
-import { ThemeContext } from "./ThemeContext";
 import EditPassword from "./ChangePassword";
 import ThemePick from "./ThemePick";
+import { UserContext } from "../utils/UserContext";
 
 const EditSettingModal = ({ setShowEditSetting }) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(UserContext).user;
   const [showUpdatePassword, setShowUpdatePassword] = useState(true);
 
   return (

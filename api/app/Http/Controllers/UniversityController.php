@@ -87,7 +87,7 @@ class UniversityController extends Controller
 
         if(University::all()->contains('university', $validatedData['university'])) {
             return response()->json([
-                'message' => 'University name already exists!',
+                'message' => 'University name already taken!',
             ], 400);
         };
 

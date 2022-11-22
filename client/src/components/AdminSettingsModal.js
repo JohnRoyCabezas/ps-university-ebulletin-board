@@ -5,7 +5,8 @@ import SuccessModal from './SuccessModal';
 import { ThemeContext } from './ThemeContext';
 import ThemePick from './ThemePick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { UserContext } from '../utils/UserContext';
 
 const AdminSettingsModal = ({setShowModal, university}) => {
   const [activeTab, setActiveTab] = useState({edit: true});
@@ -17,17 +18,19 @@ const AdminSettingsModal = ({setShowModal, university}) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const universityid = Cookies.get('universityid');
   const inputRef = useRef();
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(UserContext).user;
+  const [processing, setProcessing] = useState(false);
 
   const handleEdit = (e) => {
     e.preventDefault();
+    setProcessing(true);
     UniversityApi.editUniversityName(universityid, universityName.pending).then(() => {
       setShowSuccess(true);
       setUniversityName({...universityName, current:universityName.pending})
       setError(null);
     }).catch(({response}) => {
       setError(response.data.message)
-    })
+    }).finally(()=> setProcessing(false))
   }
 
   return (
@@ -106,7 +109,8 @@ const AdminSettingsModal = ({setShowModal, university}) => {
                               `}
                               disabled={!universityName.pending.length>0 || universityName.pending===universityName.current}
                             >
-                              Save
+                              {processing ? <div><FontAwesomeIcon icon={faSpinner} size="1x" color="white" spin /> Processing...</div> :
+                              "Save"}
                             </button>
                           </div>
                         </form>

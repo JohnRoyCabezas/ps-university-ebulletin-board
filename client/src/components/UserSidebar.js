@@ -14,14 +14,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ClassCard from "./ClassCard";
 import EditSettingModal from "./EditSettingModal";
-import { ThemeContext } from "./ThemeContext";
+import { UserContext } from "../utils/UserContext";
 
 const UserSidebar = () => {
-  const user = JSON.parse(Cookies.get("user" || "{}"));
-  const [userData, setUserData] = useState({});
+  const {user, logout} = useContext(UserContext)
+  const { theme } = user;
   const [showSidebar, setShowSidebar] = useState(true);
   const [showEditSetting, setShowEditSetting] = useState(false);
-  const { theme, setTheme } = useContext(ThemeContext);
   const initial = {type: "", id: 0}
   const [active, setActive] = useState(initial);
 
@@ -40,17 +39,10 @@ const UserSidebar = () => {
     }
   }, [collegeid, departmentid, classid]);
 
-  useEffect(() => {
-    UserApi.fetchUser().then((res) => {
-      setUserData(res.data);
-      setTheme(res?.data?.theme ? res?.data?.theme : 'bg-regal-blue');
-    });
-  }, []);
-
-  const university = userData?.university;
-  const college = userData?.department?.college;
-  const department = userData?.department;
-  const courses = userData?.course_user;
+  const university = user?.university;
+  const college = user?.department?.college;
+  const department = user?.department;
+  const courses = user?.course_user;
 
   const handleLogout = () => {
     AuthApi.logout().then((res) => {
@@ -58,6 +50,7 @@ const UserSidebar = () => {
       Cookies.remove("user");
       Cookies.remove("params");
       Cookies.remove("universityid");
+      logout();
       navigate("/");
     });
   };
