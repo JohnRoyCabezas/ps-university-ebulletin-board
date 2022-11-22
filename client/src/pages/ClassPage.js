@@ -4,7 +4,7 @@ import Pusher from "pusher-js";
 import CourseApi from "../api/CourseApi";
 import ChatApi from "../api/ChatApi";
 import ChatCard from "../components/ChatCard";
-import ChatTextEditor from "../components/ChatTextEditor";
+import TextEditor from "../components/TextEditor";
 import Comments from "../components/Comments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -19,7 +19,6 @@ const ClassPage = () => {
   const [course, setCourse] = useState({});
 
   const [showComments, setShowComments] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const role = useContext(UserContext).user.role_user.role_id;
@@ -103,12 +102,8 @@ const ClassPage = () => {
               ))
             )}
           </div>
-          <div className="p-2">
-            <ChatTextEditor
-              classid={classid}
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-            />
+          <div className="m-2">
+            <TextEditor type="chat" classid={classid} />
           </div>
         </div>
       </div>

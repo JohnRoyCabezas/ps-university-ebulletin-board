@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import parse from "html-react-parser";
 import ChatOptions from "./ChatOptions";
-import ChatTextEditor from "./ChatTextEditor";
+import TextEditor from "./TextEditor";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -52,22 +52,20 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
           alt="avatar"
         />
         <div className="flex w-full flex-col ml-2">
-          <div className="flex justify-start items-center">
-            <h5 className="font-bold max-w-[50%] truncate">{chat?.user?.fullname}</h5>
-            <span className="ml-2 text-xs whitespace-nowrap">
-              <i>{moment(chat?.created_at).fromNow()}</i>
-            </span>
-          </div>
           {isEditing ? (
-            <div className="rounded ">
-              <ChatTextEditor
-                chatid={chat?.id}
-                isEditing={isEditing}
-                setIsEditing={setIsEditing}
-              />
+            <div className="rounded">
+              <TextEditor type="chat" chat={chat} isEditing={isEditing} setIsEditing={setIsEditing} />
             </div>
           ) : (
             <>
+              <div className="flex justify-start items-center">
+                <h5 className="font-bold max-w-[50%] truncate">
+                  {chat?.user?.fullname}
+                </h5>
+                <span className="ml-2 text-xs whitespace-nowrap">
+                  <i>{moment(chat?.created_at).fromNow()}</i>
+                </span>
+              </div>
               <span className="text-gray-700 text-sm">{parse(chat?.chat)}</span>
               {chat?.comments?.length > 0 && (
                 <div
@@ -95,7 +93,8 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
                         hoverReply && "underline decoration-sky-500"
                       }`}
                     >
-                      {chat?.comments?.length} {chat?.comments?.length > 1 ? "replies" : "reply"}
+                      {chat?.comments?.length}{" "}
+                      {chat?.comments?.length > 1 ? "replies" : "reply"}
                     </span>
                     {hoverReply ? (
                       <span className="ml-1 text-xs">View replies</span>
@@ -129,7 +128,7 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
             chat={chat}
             setChat={setChatObj}
             setShowComments={setShowComments}
-            handleEdit={setIsEditing}
+            handleEdit={() => setIsEditing(true)}
             canEdit={canEdit}
             canDelete={canDelete}
           />

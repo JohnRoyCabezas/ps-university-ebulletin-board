@@ -18,17 +18,17 @@ const CommentApi = {
     }
     return instance.request(config);
   },
-  createComment: ({chat_id, comment}) => {
+  createComment: (comment, chat_id ) => {
     const config = {
       url: 'comment',
       method: 'POST',
       params: {
-        chat_id, comment
+        comment, chat_id
       }
     }
     return instance.request(config);
   },
-  updateComment: ({updateComment, comment_id}) => {
+  updateComment: (updateComment, comment_id) => {
     const config = {
       url: `comment/${comment_id}`,
       method: 'PUT',

@@ -28,6 +28,7 @@ import EditDepartmentPage from "../pages/EditDepartmentPage";
 import UserSidebar from '../components/UserSidebar';
 import AdminSidebar from '../components/AdminSidebar';
 import {UserContextProvider} from "../utils/UserContext"
+import TextEditor from '../components/TextEditor'
 
 const RoutesList = () => {
 
