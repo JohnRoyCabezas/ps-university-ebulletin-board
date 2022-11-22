@@ -24,17 +24,19 @@ export default function NavBar(props) {
       formData.append("announcement_id", props.params?.announcement_id);
       formData.append("user_id", user.id);
       formData.append("thread_message", announcement);
-      formData.append("data", file[0]);
-      formData.append("data1", file[1]);
-      formData.append("data2", file[2]);
-      formData.append("data3", file[3]);
-      formData.append("data4", file[4]);
-      formData.append("_method", "POST");
+      if (file) {
+        formData.append("data", file[0]);
+        formData.append("data1", file[1]);
+        formData.append("data2", file[2]);
+        formData.append("data3", file[3]);
+        formData.append("data4", file[4]);
+      }
       formData.append("_method", "POST");
       ThreadApi.createThreadMessage({ formData }).then((res) => {
         setAnnouncement("");
         props.handleRefresh(res.data);
         setButtonState(false);
+        setFile();
       });
     } else {
       let formData = new FormData();
@@ -44,16 +46,19 @@ export default function NavBar(props) {
         props.params.announcementable_type
       );
       formData.append("announcement", announcement);
-      formData.append("data", file[0]);
-      formData.append("data1", file[1]);
-      formData.append("data2", file[2]);
-      formData.append("data3", file[3]);
-      formData.append("data4", file[4]);
+      if (file) {
+        formData.append("data", file[0]);
+        formData.append("data1", file[1]);
+        formData.append("data2", file[2]);
+        formData.append("data3", file[3]);
+        formData.append("data4", file[4]);
+      }
       formData.append("_method", "POST");
       AnnouncementApi.createAnnouncement({ formData }).then((res) => {
         setAnnouncement("");
         props.handleRefresh(res.data.announcement);
         setButtonState(false);
+        setFile();
       });
     }
   };

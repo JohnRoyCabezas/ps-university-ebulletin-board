@@ -35,15 +35,18 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
       let formData = new FormData();
       formData.append("chat", params.chat);
       formData.append("course_id", classid);
-      formData.append("data", file[0]);
-      formData.append("data1", file[1]);
-      formData.append("data2", file[2]);
-      formData.append("data3", file[3]);
-      formData.append("data4", file[4]);
+      if (file) {
+        formData.append("data", file[0]);
+        formData.append("data1", file[1]);
+        formData.append("data2", file[2]);
+        formData.append("data3", file[3]);
+        formData.append("data4", file[4]);
+      }
       formData.append("_method", "POST");
       ChatApi.createChat({ formData }).then((res) => {
         setParams(initialParams);
         setStatus("done");
+        setFile();
       });
     }
   };

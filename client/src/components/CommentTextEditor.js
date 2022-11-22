@@ -36,15 +36,18 @@ const CommentTextEditor = ({ chatId, commentId, isEditing, setIsEditing }) => {
       let formData = new FormData();
       formData.append("comment", params.comment);
       formData.append("chat_id", chatId);
-      formData.append("data", file[0]);
-      formData.append("data1", file[1]);
-      formData.append("data2", file[2]);
-      formData.append("data3", file[3]);
-      formData.append("data4", file[4]);
+      if (file) {
+        formData.append("data", file[0]);
+        formData.append("data1", file[1]);
+        formData.append("data2", file[2]);
+        formData.append("data3", file[3]);
+        formData.append("data4", file[4]);
+      }
       formData.append("_method", "POST");
       CommentApi.createComment({ formData }).then((res) => {
         setStatus("done");
         setParams(initialParams);
+        setFile();
       });
     }
   };
