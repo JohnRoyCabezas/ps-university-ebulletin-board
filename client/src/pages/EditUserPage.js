@@ -6,6 +6,10 @@ import RoleApi from '../api/RoleApi';
 import DepartmentApi from '../api/DepartmentApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import SuccessModal from '../components/SuccessModal';
+import BackButton from '../components/BackButton';
+import { AvatarUploadApi } from '../api/AvatarUploadApi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const EditUserPage = () => {
   const navigate = useNavigate();
@@ -21,6 +25,7 @@ const EditUserPage = () => {
   const [roles, setRoles] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState(initialParams);
+  const [valid, setValid] = useState(false);
   const university_id = Cookies.get('universityid');
 
   useEffect(() => {
@@ -63,42 +68,75 @@ const EditUserPage = () => {
     }
   };
 
+  const removeAvatar = () => {
+    setParams({ ...params, avatar: '0' });
+  }
+
+  const uploadAvatar = (uploadedAvatar) => {
+    if (['jpg', 'png', 'jpeg'].includes(uploadedAvatar.name.substring(uploadedAvatar.name.lastIndexOf(".") + 1))) {
+
+      const formData = new FormData();
+      formData.append('avatar', uploadedAvatar);
+      AvatarUploadApi.upload({ formData }).then((res) => {
+        setParams({ ...params, avatar: `http://localhost:8000/Avatars/${res.data}` })
+      });
+    } else { setValid(true) }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    AuthApi.update(id, params).then((res) => {
+    AuthApi.update(id, params).then(() => {
       Cookies.remove('params');
       setShowModal(true);
     });
   };
-  
+
   return (
     <div className="flex w-full">
       {showModal && (
         <SuccessModal
           title="Update User"
           message="Successfuly updated user information!"
-          setShowModal={() => navigate('/manageusers')}
+          setShowModal={(e) => navigate('/manageusers')}
         />
       )}
       <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
+          <BackButton link={'/manageusers'} />
           Edit User
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
           <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
-            <form onSubmit={handleSubmit} className="mt-1">
+            <form onSubmit={handleSubmit} className="mt-1" encType="multipart/form-data" id='imageForm'>
               <div className="flex flex-col items-center justify-center mb-4">
                 <label className="text-sm font-semibold text-gray-800 flex items-center justify-center mb-2">
                   Avatar
                 </label>
-                <div className="flex justify-center">
+                <div
+                  className="flex justify-center w-24 h-24"
+                >
                   <img
+                    onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
                     src={params?.avatar}
-                    className="rounded-full w-24 "
-                    alt="Avatar"
+                    className="rounded-full w-24"
+                    alt=''
                   />
                 </div>
+                <div className='flex justify-center my-2 flex-col'>
+                  <label htmlFor='dropzone' className='bg-white border text-center rounded px-3 py-1 cursor-pointer hover:bg-gray-200'>Upload Photo</label>
+                  <input
+                    id='dropzone'
+                    onClick={() => setValid(false)}
+                    onChange={(e) => {
+                      uploadAvatar(e.target.files[0])
+                    }}
+                    type='file'
+                    className='hidden'
+                  />
+                  <label onClick={() => {removeAvatar(); setValid(false)}} className='rounded pt-2 text-center text-sm cursor-pointer hover:underline'>Remove Photo</label>
+                </div>
+                {valid && (<span className='text-red-600 text-xs relative italic p-1'><FontAwesomeIcon icon={faInfoCircle} /> Must be in '.jpeg', '.jpg', and '.png' format</span>)}
+
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">

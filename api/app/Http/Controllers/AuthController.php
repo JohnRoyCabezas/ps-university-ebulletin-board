@@ -62,6 +62,7 @@ class AuthController extends Controller
         $user = User::find($id);
 
         $validatedData = $request->validate([
+            'avatar' => 'max:255',
             'department_id' => 'required',
             'role_id' => 'required',
             'fullname' => 'required | max:255',
@@ -69,6 +70,7 @@ class AuthController extends Controller
         ]);
 
         $user->update([
+            'avatar' => $validatedData['avatar'],
             'department_id' => $validatedData['department_id'],
             'fullname' => $validatedData['fullname'],
             'email' => $validatedData['email'],
