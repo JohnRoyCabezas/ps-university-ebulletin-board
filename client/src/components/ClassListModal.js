@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StudentCard from './StudentCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const ClassListModal = ({
   students,

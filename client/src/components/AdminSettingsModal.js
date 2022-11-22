@@ -5,7 +5,7 @@ import SuccessModal from './SuccessModal';
 import { ThemeContext } from './ThemeContext';
 import ThemePick from './ThemePick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faSpinner, faClose } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../utils/UserContext';
 
 const AdminSettingsModal = ({setShowModal, university}) => {
@@ -45,26 +45,27 @@ const AdminSettingsModal = ({setShowModal, university}) => {
         }
         <div className={`justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none`}>
           <div className="relative w-1/2 my-6 mx-auto">
-            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-              <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                <h3 className="text-3xl font-semibold mx-auto">Admin Settings</h3>
-                <button
-                  className="absolute right-10 my-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                  onClick={() => setShowModal(false)}
-                >
-                    X
-                </button>
-              </div>
+            <div className="p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-300">
+            <div className="relative py-2 flex flex-row-reverse">
+              <button
+                className="mx-2 hover:bg-gray-500 rounded-md px-1"
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              >
+                <FontAwesomeIcon icon={faClose} size="2xl" />
+              </button>
+            </div>
               <div className="flex h-96">
                 <div className="mr-3 whitespace-nowrap text-sm font-medium text-center text-black border-b border-custom-gray">
                   <ul>
                       <li>
-                          <button className={`w-full inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-10 hover:text-black ${activeTab?.edit && theme + " bg-opacity-70 text-white"}`}
+                          <button className={`w-full rounded-md inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-20 hover:text-black ${activeTab?.edit && theme + " bg-opacity-50 text-white"}`}
                           onClick={() => setActiveTab({edit: true})}
                           >Edit University Name</button>
                       </li>
                       <li>
-                          <button className={`w-full inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-10 hover:text-black ${activeTab?.theme && theme + " bg-opacity-70 text-white"}`}
+                          <button className={`w-full rounded-md inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-10 hover:text-black ${activeTab?.theme && theme + " bg-opacity-50 text-white"}`}
                           aria-current="page"
                           onClick={() => setActiveTab({theme: true})}
                           >Change Theme</button>
@@ -127,7 +128,7 @@ const AdminSettingsModal = ({setShowModal, university}) => {
             </div>
           </div>
         </div>
-      <div className={`${theme} opacity-25 fixed inset-0 top-0 z-30 bg-black`}></div>
+      <div className={`${theme} opacity-70 fixed inset-0 top-0 z-30`}></div>
     </div>
   );
 }
