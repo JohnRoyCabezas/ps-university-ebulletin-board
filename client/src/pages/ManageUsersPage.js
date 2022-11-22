@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import UsersTable from '../components/UsersTable';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import BackButton from '../components/BackButton';
 import { ThemeContext } from '../components/ThemeContext';
+import useDebounce from '../hooks/useDebounce';
 
 const ManageUsersPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -18,13 +19,17 @@ const ManageUsersPage = () => {
     keyword: '',
   });
 
-  const handleSearch = (e) => {
-    if ((params.keyword !== '') && e.target.value === '') {
-      setParams({ ...params, page: 1, keyword: '' })
-    }
+  const debouncedKeyword = useDebounce(searchKeyword, 500)
 
-    if (e.key === 'Enter') {
-      setParams({ ...params, keyword: searchKeyword, page: 1 })
+  useEffect(() => {
+    if(debouncedKeyword)  {
+      setParams({...params, keyword: debouncedKeyword, page: 1} )
+    }
+  }, [debouncedKeyword]);
+
+  const handleSearch = (e) => {
+    if (params?.keyword !== "" && e.target.value === "") {
+      setParams({ ...params, page: 1, keyword: "" });
     }
     setSearchKeyword(e.target.value)
   };
