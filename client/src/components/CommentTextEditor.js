@@ -1,23 +1,20 @@
-import { React, useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import CommentApi from '../api/CommentApi';
+import { React, useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import CommentApi from "../api/CommentApi";
+import Dropzone from "react-dropzone";
 
-const CommentTextEditor = ({
-  chatId,
-  commentId,
-  isEditing,
-  setIsEditing,
-}) => {
+const CommentTextEditor = ({ chatId, commentId, isEditing, setIsEditing }) => {
   const initialParams = {
     chat_id: chatId,
     comment_id: commentId,
-    comment: '<p><br></p>',
+    comment: "<p><br></p>",
   };
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const [params, setParams] = useState(initialParams);
+  const [file, setFile] = useState();
 
   useEffect(() => {
     commentId &&
@@ -28,18 +25,28 @@ const CommentTextEditor = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus('pending');
-
-    isEditing
-      ? CommentApi.updateComment(params).then((res) => {
-          setStatus('done');
-          setIsEditing(false);
-          setParams(initialParams);
-        })
-      : CommentApi.createComment({...params, chat_id: chatId}).then((res) => {
-          setStatus('done');
-          setParams(initialParams);
-        });
+    setStatus("pending");
+    if (isEditing) {
+      CommentApi.updateComment(params).then((res) => {
+        setStatus("done");
+        setIsEditing(false);
+        setParams(initialParams);
+      });
+    } else {
+      let formData = new FormData();
+      formData.append("comment", params.comment);
+      formData.append("chat_id", chatId);
+      formData.append("data", file[0]);
+      formData.append("data1", file[1]);
+      formData.append("data2", file[2]);
+      formData.append("data3", file[3]);
+      formData.append("data4", file[4]);
+      formData.append("_method", "POST");
+      CommentApi.createComment({ formData }).then((res) => {
+        setStatus("done");
+        setParams(initialParams);
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -53,13 +60,27 @@ const CommentTextEditor = ({
       <form onSubmit={handleSubmit} className="rounded bg-white">
         <ReactQuill
           value={isEditing ? params?.updateComment : params?.comment}
-          placeholder={'Write a chat message...'}
+          placeholder={"Write a chat message..."}
           onChange={handleChange}
           className="block bottom-0"
         ></ReactQuill>
 
         <div className="flex justify-between rte p-2">
-          <FontAwesomeIcon icon={faPaperclip} size="2x" color="#162750" />
+          <Dropzone onDrop={(acceptedFiles) => setFile(acceptedFiles)}>
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <FontAwesomeIcon
+                    className="mt-1"
+                    icon={faPaperclip}
+                    size="2x"
+                    color="#162750"
+                  />
+                </div>
+              </section>
+            )}
+          </Dropzone>
           <div>
             {isEditing ? (
               <>
@@ -72,15 +93,15 @@ const CommentTextEditor = ({
                 </button>
                 <button
                   onClick={() => handleSubmit}
-                  disabled={params?.updateComment === '<p><br></p>' && true}
+                  disabled={params?.updateComment === "<p><br></p>" && true}
                   className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
-                    params?.updateComment === '<p><br></p>'
-                      ? 'disabled bg-gray-300 text-gray-400'
-                      : 'bg-blue-700 hover:bg-blue-800'
+                    params?.updateComment === "<p><br></p>"
+                      ? "disabled bg-gray-300 text-gray-400"
+                      : "bg-blue-700 hover:bg-blue-800"
                   }`}
                   type="submit"
                 >
-                  {status === 'pending' ? (
+                  {status === "pending" ? (
                     <span>
                       <FontAwesomeIcon
                         icon={faSpinner}
@@ -97,15 +118,15 @@ const CommentTextEditor = ({
             ) : (
               <button
                 onClick={() => handleSubmit}
-                disabled={params?.comment === '<p><br></p>' && true}
+                disabled={params?.comment === "<p><br></p>" && true}
                 className={`text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
-                  params?.comment === '<p><br></p>'
-                    ? 'disabled bg-gray-300 text-gray-400'
-                    : 'bg-blue-700 hover:bg-blue-800'
+                  params?.comment === "<p><br></p>"
+                    ? "disabled bg-gray-300 text-gray-400"
+                    : "bg-blue-700 hover:bg-blue-800"
                 }`}
                 type="submit"
               >
-                {status === 'pending' ? (
+                {status === "pending" ? (
                   <span>
                     <FontAwesomeIcon
                       icon={faSpinner}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\ChatUpdate;
+use App\Models\Announcement;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -17,5 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $id = 12;
+    return Announcement::find($id)->getMedia('file')->firstOrFail();
+    // return Announcement::with(['user', 'media'])->get();
+    // return Announcement::find(52)->getMedia('file')->where('uuid', 'cd42ff3a-8217-4d6d-946f-abe85b213e85')->firstOrFail();
+    // return view('welcome');
+
 });

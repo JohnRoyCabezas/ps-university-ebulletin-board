@@ -4,6 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ChatApi from "../api/ChatApi";
+import Dropzone from "react-dropzone";
 
 const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const initialParams = {
@@ -12,6 +13,7 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   };
   const [status, setStatus] = useState("");
   const [params, setParams] = useState(initialParams);
+  const [file, setFile] = useState();
 
   useEffect(() => {
     chatid &&
@@ -23,17 +25,27 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus("pending");
-
-    isEditing
-      ? ChatApi.updateChat(params.updateChat, chatid).then((res) => {
-          setIsEditing(false);
-          setParams(initialParams);
-          setStatus("done");
-        })
-      : ChatApi.createChat(params.chat, classid).then((res) => {
-          setParams(initialParams);
-          setStatus("done");
-        });
+    if (isEditing) {
+      ChatApi.updateChat(params.updateChat, chatid).then((res) => {
+        setIsEditing(false);
+        setParams(initialParams);
+        setStatus("done");
+      });
+    } else {
+      let formData = new FormData();
+      formData.append("chat", params.chat);
+      formData.append("course_id", classid);
+      formData.append("data", file[0]);
+      formData.append("data1", file[1]);
+      formData.append("data2", file[2]);
+      formData.append("data3", file[3]);
+      formData.append("data4", file[4]);
+      formData.append("_method", "POST");
+      ChatApi.createChat({ formData }).then((res) => {
+        setParams(initialParams);
+        setStatus("done");
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -53,7 +65,21 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
         ></ReactQuill>
 
         <div className="flex justify-between rte p-2">
-          <FontAwesomeIcon icon={faPaperclip} size="2x" color="#162750" />
+          <Dropzone onDrop={(acceptedFiles) => setFile(acceptedFiles)}>
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <FontAwesomeIcon
+                    className="mt-1"
+                    icon={faPaperclip}
+                    size="2x"
+                    color="#162750"
+                  />
+                </div>
+              </section>
+            )}
+          </Dropzone>
           <div>
             {isEditing ? (
               <>

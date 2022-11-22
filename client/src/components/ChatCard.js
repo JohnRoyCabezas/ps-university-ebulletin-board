@@ -4,9 +4,7 @@ import ChatOptions from "./ChatOptions";
 import ChatTextEditor from "./ChatTextEditor";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../utils/UserContext";
 
 const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
@@ -15,7 +13,7 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
   const [hoverReply, setHoverReply] = useState(false);
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (user?.role_user?.role_id === 2) {
@@ -53,7 +51,9 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
         />
         <div className="flex w-full flex-col ml-2">
           <div className="flex justify-start items-center">
-            <h5 className="font-bold max-w-[50%] truncate">{chat?.user?.fullname}</h5>
+            <h5 className="font-bold max-w-[50%] truncate">
+              {chat?.user?.fullname}
+            </h5>
             <span className="ml-2 text-xs whitespace-nowrap">
               <i>{moment(chat?.created_at).fromNow()}</i>
             </span>
@@ -69,6 +69,28 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
           ) : (
             <>
               <span className="text-gray-700 text-sm">{parse(chat?.chat)}</span>
+              <div className="flex">
+                {chat?.media.map((acceptedFile, i) => (
+                  <div key={i}>
+                    {acceptedFile.mime_type.includes("image") ? (
+                      <img
+                        className="h-20 w-20 d-flex"
+                        src={`${acceptedFile.original_url}`}
+                      />
+                    ) : (
+                      <div>
+                        <a
+                          href={`${acceptedFile.original_url}`}
+                          target="_blank"
+                          className="cursor-pointer text-xs font-semibold text-sky-600 underline decoration-sky-500"
+                        >
+                          {acceptedFile.file_name}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
               {chat?.comments?.length > 0 && (
                 <div
                   onMouseEnter={() => setHoverReply(true)}
@@ -95,7 +117,8 @@ const ChatCard = ({ chat, chatObj, setChatObj, setShowComments }) => {
                         hoverReply && "underline decoration-sky-500"
                       }`}
                     >
-                      {chat?.comments?.length} {chat?.comments?.length > 1 ? "replies" : "reply"}
+                      {chat?.comments?.length}{" "}
+                      {chat?.comments?.length > 1 ? "replies" : "reply"}
                     </span>
                     {hoverReply ? (
                       <span className="ml-1 text-xs">View replies</span>

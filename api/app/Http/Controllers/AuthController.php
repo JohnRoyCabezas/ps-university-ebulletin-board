@@ -57,7 +57,7 @@ class AuthController extends Controller
     }
 
     //update user detail with given id
-    public function update(Request $request, $id)
+    public function editUser(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -73,7 +73,9 @@ class AuthController extends Controller
             'fullname' => $validatedData['fullname'],
             'email' => $validatedData['email'],
         ]);
-
+        if ($request->hasFile('avatar')) {
+            $user->addMedia($request->file('avatar'))->toMediaCollection('file');
+        }
         $role_user = RoleUser::where('user_id', $id)->first();
 
         $role_user->update([
@@ -127,5 +129,4 @@ class AuthController extends Controller
 
         return response()->json($data);
     }
-
 }

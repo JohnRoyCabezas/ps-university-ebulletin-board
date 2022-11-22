@@ -5,16 +5,18 @@ import AdminMessageOptions from "./AdminMessageOptions";
 import StudentMessageOptions from "./StudentMessageOptions";
 import AnnouncementApi from "../api/AnnouncementApi";
 import RichTextEditor from "../components/RichTextEditor";
-import "../index.css"
+import "../index.css";
 import { UserContext } from "../utils/UserContext";
+import "../index.css";
+import { ThemeContext } from "./ThemeContext";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isThreadOpen, setIsThreadOpen] = useState(false);
   const [params, setParams] = useState({});
-  const {user} = useContext(UserContext);
-  const {theme}= user;
+  const { user } = useContext(UserContext);
+  const { theme } = user;
   const [id, setId] = useState("");
 
   function handleEdit(id) {
@@ -44,10 +46,14 @@ export default function AnnouncementCard(props) {
 
   useEffect(() => {
     if (!props.threadOpen) setIsThreadOpen(false);
-  }, [props.threadOpen])
+  }, [props.threadOpen]);
 
   function adminOption() {
-    return user?.role_user?.role_id === 2 ? true : (user?.role_user?.role_id === 4 ? (user?.id === props.announcement.user_id) : false)
+    return user?.role_user?.role_id === 2
+      ? true
+      : user?.role_user?.role_id === 4
+      ? user?.id === props.announcement.user_id
+      : false;
   }
 
   return (
@@ -62,38 +68,63 @@ export default function AnnouncementCard(props) {
           }}
         >
           <img
-            onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
+            onError={(e) =>
+              (e.target.src =
+                "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
+            }
             className={`mr-3 w-11 h-11 rounded-full ${theme} bg-opacity-70`}
             src={props?.announcement?.user?.avatar}
             alt="JC"
           />
           <div className="flex flex-col ml-2">
             <div className="flex justify-start items-center mb-2">
-              <h5 className="font-bold">{props?.announcement?.user?.fullname}</h5>
-              <span className="ml-2 text-xs"><i>{moment(props?.announcement?.created_at).fromNow()}</i></span>
+              <h5 className="font-bold">
+                {props?.announcement?.user?.fullname}
+              </h5>
+              <span className="ml-2 text-xs">
+                <i>{moment(props?.announcement?.created_at).fromNow()}</i>
+              </span>
             </div>
             <div>
-
-              {
-                isEdit ? (
-                  <div className="rounded w-[75vw] bg-white">
-                    <RichTextEditor
-                      style={{ backgroundColor: "white" }}
-                      cancel={cancel}
-                      isEdit={isEdit}
-                      isChange={(value) => isChange(value)}
-                      handleRefresh={() => props.handleRefresh()}
-                      id={id}
-                      params={params}
-                    />
+              {isEdit ? (
+                <div className="rounded w-[75vw] bg-white">
+                  <RichTextEditor
+                    style={{ backgroundColor: "white" }}
+                    cancel={cancel}
+                    isEdit={isEdit}
+                    isChange={(value) => isChange(value)}
+                    handleRefresh={() => props.handleRefresh()}
+                    id={id}
+                    params={params}
+                  />
+                </div>
+              ) : (
+                <span className="text-gray-700 text-base ql-editor card">
+                  {parse(props.announcement.announcement)}
+                  <div className="flex">
+                    {props?.announcement?.media.map((acceptedFile, i) => (
+                      <div key={i}>
+                        {acceptedFile.mime_type.includes("image") ? (
+                          <img
+                            className="h-20 w-20 d-flex"
+                            src={`${acceptedFile.original_url}`}
+                          />
+                        ) : (
+                          <div>
+                            <a
+                              href={`${acceptedFile.original_url}`}
+                              target="_blank"
+                              className="cursor-pointer text-xs font-semibold text-sky-600 underline decoration-sky-500"
+                            >
+                              {acceptedFile.file_name}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                ) : (
-                  <span className="text-gray-700 text-base ql-editor card">
-                    {parse(props.announcement.announcement)}
-                  </span>
-                )
-              }
-
+                </span>
+              )}
             </div>
           </div>
           {isShown &&

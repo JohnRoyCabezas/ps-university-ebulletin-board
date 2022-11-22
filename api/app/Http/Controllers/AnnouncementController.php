@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Twilio\Rest\Client;
 
+
 class AnnouncementController extends Controller
 {
     public function index(Request $request)
@@ -22,7 +23,7 @@ class AnnouncementController extends Controller
 
     public function channelAnnouncements(Request $request)
     {
-        $announcements = Announcement::with('user')->channel($request)->orderBy('created_at')->get();
+        $announcements = Announcement::with(['user', 'media'])->channel($request)->orderBy('created_at')->get();
 
         return response()->json($announcements);
     }
@@ -38,7 +39,6 @@ class AnnouncementController extends Controller
             'announcementable_type' => 'required',
             'announcement' => 'required',
         ]);
-
         $canCreateAnnouncement = PermissionRole::where('role_id', $user_role_id)
             ->whereHas('permission', function ($query) {
                 $query->where('permission', 'canCreateAnnouncement');
@@ -51,9 +51,22 @@ class AnnouncementController extends Controller
                 'user_id' => $user->id,
                 'announcement' => $validatedData['announcement'],
             ]);
-
+            if ($request->hasFile('data')) {
+                $announcement->addMedia($request->data)->toMediaCollection('file');
+            }
+            if ($request->hasFile('data1')) {
+                $announcement->addMedia($request->data1)->toMediaCollection('file1');
+            }
+            if ($request->hasFile('data2')) {
+                $announcement->addMedia($request->data2)->toMediaCollection('file2');
+            }
+            if ($request->hasFile('data3')) {
+                $announcement->addMedia($request->data3)->toMediaCollection('file3');
+            }
+            if ($request->hasFile('data4')) {
+                $announcement->addMedia($request->data4)->toMediaCollection('file4');
+            }
             event(new AnnouncementUpdate($announcement));
-
             $data = [
                 'message' => $user_fullname . ' successfully created an announcement!',
                 'user' => $user_fullname,
@@ -100,7 +113,7 @@ class AnnouncementController extends Controller
             })->exists();
 
         if ($canReadAnnouncement) {
-            $announcement = Announcement::find($id);
+            $announcement = Announcement::with('media')->find($id);
 
             return response()->json($announcement);
         } else {
