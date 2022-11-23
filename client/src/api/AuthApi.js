@@ -20,12 +20,13 @@ const AuthApi = {
     return instance.request(config);
   },
 
-  update: (id, payload) => {
+  update: (id, params) => {
     const config = {
-      method: "POST",
-      url: `/auth/edituser/${id}`,
-      data: payload.formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      method: "PUT",
+      url: `/auth/${id}`,
+      params: {
+        ...params,
+      },
     };
     return instance.request(config);
   },
