@@ -1,7 +1,7 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import CommentsHeader from "./CommentsHeader";
-import CommentTextEditor from "./CommentTextEditor";
+import TextEditor from "./TextEditor";
 import Pusher from "pusher-js";
 import ChatApi from "../api/ChatApi";
 
@@ -75,7 +75,7 @@ const Comments = ({ chat, setChat, setShowComments }) => {
               );
             })}
           <div className="p-2">
-            <CommentTextEditor chatId={chat?.id} />
+            <TextEditor type="comment" object={chat}/>
           </div>
           </div>
         </div>

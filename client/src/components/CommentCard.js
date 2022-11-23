@@ -4,6 +4,7 @@ import CommentOptions from './CommentOptions';
 import parse from 'html-react-parser';
 import CommentTextEditor from "./CommentTextEditor";
 import { UserContext } from "../utils/UserContext";
+import TextEditor from "./TextEditor";
 
 const CommentCard = ({comment}) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -39,34 +40,38 @@ const CommentCard = ({comment}) => {
         alt="Avatar"
       />
       <div className="flex flex-col w-80 ml-2">
-        <div className="flex justify-startitems-center whitespace-nowrap">
-          <h5 className="font-bold max-w-[50%] truncate">
-            {comment?.user?.fullname}
-          </h5>
-          <span className="ml-2 text-xs whitespace-nowrap">
-            <i>{moment(comment.created_at).fromNow()}</i>
-          </span>
-        </div>
         <div>
           {isEditing ? (
-            <div className="px-5 w-full">
-              <CommentTextEditor
-                commentId={comment?.id}
+            <div className="w-full">
+              <TextEditor
+                type="comment"
+                object={comment}
+                updateMessage={comment?.comment}
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
               />
             </div>
           ) : (
-            <span className="text-gray-700 text-sm ql-editor card">
-              {parse(comment?.comment)}
-            </span>
+            <>
+              <div className="flex justify-startitems-center whitespace-nowrap">
+                <h5 className="font-bold max-w-[50%] truncate">
+                  {comment?.user?.fullname}
+                </h5>
+                <span className="ml-2 text-xs whitespace-nowrap">
+                  <i>{moment(comment.created_at).fromNow()}</i>
+                </span>
+              </div>
+              <span className="text-gray-700 text-sm ql-editor card">
+                {parse(comment?.comment)}
+              </span>
+            </>
           )}
         </div>
       </div>
       {isShowOptions && (
         <CommentOptions
           comment={comment}
-          handleEdit={setIsEditing}
+          handleEdit={() => setIsEditing(true)}
           canEdit={canEdit}
           canDelete={canDelete}
         />
