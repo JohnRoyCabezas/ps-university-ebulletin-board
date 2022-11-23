@@ -6,6 +6,7 @@ import AuthApi from '../api/AuthApi';
 import RoleApi from '../api/RoleApi';
 import RegistrationModal from '../components/RegistrationModal';
 import SubmitButton from '../components/submitButton';
+import BackButton from '../components/BackButton';
 
 const RegisterPage = () => {
   const university_id = Cookies.get('universityid');
@@ -103,6 +104,7 @@ const RegisterPage = () => {
     <div className="flex w-full">
       <div className="flex flex-col h-screen w-full">
         <h1 className="font-bold p-3 sticky top-0 bg-white text-lg border-b-2">
+        <BackButton link={'/manageusers'} />
           Create User
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">

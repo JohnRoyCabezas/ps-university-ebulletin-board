@@ -97,6 +97,18 @@ const CreateClassPage = () => {
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
+                  Class Information
+                </label>
+                <input
+                  name="class_information"
+                  value={params?.class_information}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Class for Engineering 101"
+                  className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-800">
                   Department
                 </label>
                 <Dropdown

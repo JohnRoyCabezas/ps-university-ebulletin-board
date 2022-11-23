@@ -4,10 +4,6 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      translate: {
-        3: "-6rem",
-        2: "-2.3rem",
-      },
       margin: {
         100: "-1.2rem",
       },

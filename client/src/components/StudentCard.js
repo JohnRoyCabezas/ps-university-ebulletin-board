@@ -15,7 +15,7 @@ const StudentCard = ({student, getDepartmentName, enlisted, handlePendingEnlist}
                     <img
                         onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
                         src={student.avatar}
-                        className="rounded-full w-11 min-w-max bg-white"
+                        className="rounded-full w-11 h-11 min-w-max bg-white"
                     />
                 </div>
                 <div className="ml-6 max-w-xs capitalize">

@@ -158,10 +158,10 @@ const UsersTable = ({ isAscending, params, onSortChange, onPageChange }) => {
                       </td>
                       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                         <img
-
+                        className="rounded-full"
                           onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
                           src={user.avatar}
-                          alt="avatar"
+                          alt=""
                           style={{ width: 40, height: 40 }}
                         />
                       </td>

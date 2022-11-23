@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ChangepasswordController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CollegeController;
@@ -74,5 +75,6 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     });
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/avatar', [AvatarController::class, 'upload'])->name('avatar');
     Route::get('/course-chats', [ChatController::class, 'courseChats']);
 });

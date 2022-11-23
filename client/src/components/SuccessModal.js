@@ -6,7 +6,7 @@ const SuccessModal = ({title, message, setShowModal}) => {
 
   function onClose() {
     setShowModal(false)
-    navigate("/adminsettings/done")
+    navigate("/manageusers")
   }
 
   return (
