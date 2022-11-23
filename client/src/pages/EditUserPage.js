@@ -6,10 +6,11 @@ import RoleApi from '../api/RoleApi';
 import DepartmentApi from '../api/DepartmentApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import SuccessModal from '../components/SuccessModal';
-import BackButton from '../components/BackButton';
 import { AvatarUploadApi } from '../api/AvatarUploadApi';
+import BackButton from '../components/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import SubmitButton from '../components/submitButton';
 
 const EditUserPage = () => {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ const EditUserPage = () => {
   const [params, setParams] = useState(initialParams);
   const [valid, setValid] = useState(false);
   const university_id = Cookies.get('universityid');
+  const [processing, setProcessing] = useState(false);
+
 
   useEffect(() => {
     DepartmentApi.fetchDepartments(university_id).then((res) => {
@@ -77,7 +80,7 @@ const EditUserPage = () => {
 
       const formData = new FormData();
       formData.append('avatar', uploadedAvatar);
-      AvatarUploadApi.upload({ formData }).then((res) => {
+  AvatarUploadApi.upload({ formData }).then((res) => {
         setParams({ ...params, avatar: `http://localhost:8000/Avatars/${res.data}` })
       });
     } else { setValid(true) }
@@ -85,12 +88,14 @@ const EditUserPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    AuthApi.update(id, params).then(() => {
+    setProcessing(true)
+    AuthApi.update(id, params).then((res) => {
       Cookies.remove('params');
       setShowModal(true);
+      setProcessing(false);
     });
   };
-
+  
   return (
     <div className="flex w-full">
       {showModal && (
@@ -107,7 +112,7 @@ const EditUserPage = () => {
         </h1>
         <div className="relative h-full flex flex-col justify-center items-center overflow-hidden">
           <div className="w-full p-6 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
-            <form onSubmit={handleSubmit} className="mt-1" encType="multipart/form-data" id='imageForm'>
+            <form className="mt-1">
               <div className="flex flex-col items-center justify-center mb-4">
                 <label className="text-sm font-semibold text-gray-800 flex items-center justify-center mb-2">
                   Avatar
@@ -218,11 +223,18 @@ const EditUserPage = () => {
               </div>
 
               <div className="mt-16">
-                <button
+                {/* <button
                   className={`w-full px-4 py-2 tracking-wide rounded-md text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`}
                 >
                   Edit Account
-                </button>
+                </button> */}
+                <SubmitButton
+                  handleSubmit={handleSubmit}
+                  buttonDisabled={!departments || !params.fullname || !params.email
+                    ? false : true}
+                  processing={processing}
+                  buttonTitle={"Edit Account"}
+                />
               </div>
             </form>
           </div>
