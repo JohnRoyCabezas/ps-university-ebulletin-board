@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\ChatUpdate;
+use App\Models\Announcement;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;

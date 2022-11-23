@@ -15,10 +15,10 @@ import SubmitButton from '../components/submitButton';
 const EditUserPage = () => {
   const navigate = useNavigate();
   const initialParams = {
-    fullname: '',
-    email: '',
-    department_id: '',
-    role_id: '',
+    fullname: "",
+    email: "",
+    department_id: "",
+    role_id: "",
   };
 
   const { id } = useParams();
@@ -53,21 +53,21 @@ const EditUserPage = () => {
   const handleInputChange = (e) => {
     setParams({ ...params, [e.target.name]: e.target.value });
     Cookies.set(
-      'params',
+      "params",
       JSON.stringify({ ...params, [e.target.name]: e.target.value })
     );
   };
 
   const handleSelectChange = (type, item) => {
-    if (type === 'department') {
+    if (type === "department") {
       setParams({ ...params, department_id: item.value });
       Cookies.set(
-        'params',
+        "params",
         JSON.stringify({ ...params, department_id: item.value })
       );
-    } else if (type === 'role') {
+    } else if (type === "role") {
       setParams({ ...params, role_id: item.value });
-      Cookies.set('params', JSON.stringify({ ...params, role_id: item.value }));
+      Cookies.set("params", JSON.stringify({ ...params, role_id: item.value }));
     }
   };
 
@@ -95,7 +95,7 @@ const EditUserPage = () => {
       setProcessing(false);
     });
   };
-  
+
   return (
     <div className="flex w-full">
       {showModal && (

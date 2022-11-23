@@ -23,8 +23,8 @@ class ThreadController extends Controller
     {
         try {
             DB::beginTransaction();
-            $announcement = Announcement::with('user')->findOrFail($id);
-            $thread = Thread::with('user')->where('announcement_id', $id)->oldest()->get();
+            $announcement = Announcement::with(['user', 'media'])->findOrFail($id);
+            $thread = Thread::with(['user', 'media'])->where('announcement_id', $id)->oldest()->get();
 
             DB::commit();
 
@@ -35,7 +35,6 @@ class ThreadController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
         }
-
     }
     // Fetch specific message from the thread
     public function fetchSpecificThread($id)
@@ -54,9 +53,26 @@ class ThreadController extends Controller
             'announcement_id' => ['required'],
             'thread_message' => ['required'],
         ]);
-
-    $thread = Thread::create($request->all());
-
+        $thread = Thread::create([
+            'announcement_id' => $request->announcement_id,
+            'user_id' => $request->user_id,
+            'thread_message' => $request->thread_message,
+        ]);
+        if ($request->hasFile('data')) {
+            $thread->addMedia($request->data)->toMediaCollection('file');
+        }
+        if ($request->hasFile('data1')) {
+            $thread->addMedia($request->data1)->toMediaCollection('file1');
+        }
+        if ($request->hasFile('data2')) {
+            $thread->addMedia($request->data2)->toMediaCollection('file2');
+        }
+        if ($request->hasFile('data3')) {
+            $thread->addMedia($request->data3)->toMediaCollection('file3');
+        }
+        if ($request->hasFile('data4')) {
+            $thread->addMedia($request->data4)->toMediaCollection('file4');
+        }
         event(new ThreadUpdate($thread));
 
         return response()->json([
@@ -80,7 +96,6 @@ class ThreadController extends Controller
                 'Message' => 'Thread message updated!',
             ]
         );
-
     }
     // Delete message in the thread
     public function destroy($id)

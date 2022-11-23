@@ -9,9 +9,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +45,11 @@ class User extends Authenticatable
     public function colleges()
     {
         return $this->hasMany(College::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('file')->singleFile();
     }
 
     public function department()
@@ -93,7 +101,7 @@ class User extends Authenticatable
     {
         return $this->roleUser()->where('role_id', 2)->exists();
     }
-    
+
     public function isStudent()
     {
         return $this->roleUser()->where('role_id', 1)->exists();

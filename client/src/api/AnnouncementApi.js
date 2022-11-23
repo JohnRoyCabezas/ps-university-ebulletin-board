@@ -3,70 +3,69 @@ import instance from "./instance";
 const AnnouncementApi = {
   fetchAnnouncement: (announcementable_type) => {
     const config = {
-      method: 'GET',
-      url: '/announcement',
+      method: "GET",
+      url: "/announcement",
       params: {
-        announcementable_type
-      }
-    }
+        announcementable_type,
+      },
+    };
     return instance.request(config);
   },
 
-  createAnnouncement: (params) => {
+  createAnnouncement: (payload) => {
     const config = {
-      method: 'POST',
-      url: '/announcement',
-      params: {
-        ...params
-      }
-    }
+      method: "POST",
+      url: "/announcement",
+      data: payload.formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    };
     return instance.request(config);
   },
 
   fetchSpecificAnnouncement: (id) => {
     const config = {
-      method: 'GET',
+      method: "GET",
       url: `/announcement/${id}`,
-    }
+    };
     return instance.request(config);
   },
 
   updateSpecificAnnouncement: (id, params) => {
     const config = {
-      method: 'PUT',
+      method: "PUT",
       url: `/announcement/${id}`,
       params: {
-        ...params
-      }
-    }
+        ...params,
+      },
+    };
     return instance.request(config);
   },
 
   deleteAnnouncement: (id) => {
     const config = {
-      method: 'DELETE',
-      url: `/announcement/${id}`
-    }
+      method: "DELETE",
+      url: `/announcement/${id}`,
+    };
     return instance.request(config);
   },
 
   fetchChannelAnnouncements: (params) => {
     const config = {
-      method: 'GET',
+      method: "GET",
       url: `/announcements`,
       params: {
-        ...params
-      }
-    }
+        ...params,
+      },
+    };
     return instance.request(config);
   },
   lockSpecificAnnouncement: (id) => {
     const config = {
-      method: 'PUT',
+      method: "PUT",
       url: `announcements/announcement/${id}/lock`,
-    }
+    };
     return instance.request(config);
   },
-}
+};
 
 export default AnnouncementApi;

@@ -43,6 +43,10 @@ Route::middleware('auth:sanctum', 'throttle:100,1')->group(function () {
     Route::get('/chat-comments', [CommentController::class, 'chatComments']);
     Route::get('/university/{id}/edit', [UniversityController::class, 'updateName']);
 
+    Route::prefix('auth')->group(function () {
+        Route::post('/edituser/{id}', [AuthController::class, 'editUser']);
+    });
+
     Route::prefix('thread')->group(function () {
         Route::get('/{id}', [ThreadController::class, 'fetchThread']);
         Route::post('/add', [ThreadController::class, 'createThread']);

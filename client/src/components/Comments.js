@@ -6,23 +6,22 @@ import Pusher from "pusher-js";
 import ChatApi from "../api/ChatApi";
 
 const Comments = ({ chat, setChat, setShowComments }) => {
-
   useEffect(() => {
     const pusher = new Pusher("6d32a294e8e6b327e3c5", {
       cluster: "ap1",
     });
 
     const channel = pusher.subscribe("comment");
-    
+
     channel.bind("comment-update", function (data) {
-      if(Number(chat?.id) === data.comment.chat_id) {
-        ChatApi.showChat(data.comment.chat_id).then(res => {
-          setChat(res.data)
-        })
+      if (Number(chat?.id) === data.comment.chat_id) {
+        ChatApi.showChat(data.comment.chat_id).then((res) => {
+          setChat(res.data);
+        });
       }
     });
   }, [chat, setChat]);
-  
+
   // scroll to the bottom of comments thread
   const scrollToBottom = () => {
     const elem = document.getElementById("commentsWrapper");
@@ -52,7 +51,10 @@ const Comments = ({ chat, setChat, setShowComments }) => {
         </h1>
 
         <div className="flex flex-col justify-even h-full">
-          <div id="commentsWrapper" className="flex flex-col mt-14 overflow-y-auto">
+          <div
+            id="commentsWrapper"
+            className="flex flex-col mt-14 overflow-y-auto"
+          >
             <CommentsHeader chat={chat} />
 
             <div className="flex my-3 mx-6">
@@ -66,7 +68,6 @@ const Comments = ({ chat, setChat, setShowComments }) => {
               </div>
               <div className="flex-1 h-0.5 my-auto border-b-1 text-center bg-gray-200"></div>
             </div>
-
             {chat?.comments?.map((comment) => {
               return (
                 <div key={comment?.id}>
@@ -74,9 +75,9 @@ const Comments = ({ chat, setChat, setShowComments }) => {
                 </div>
               );
             })}
-          <div className="p-2">
-            <CommentTextEditor chatId={chat?.id} />
-          </div>
+            <div className="p-2">
+              <CommentTextEditor chatId={chat?.id} />
+            </div>
           </div>
         </div>
       </div>
