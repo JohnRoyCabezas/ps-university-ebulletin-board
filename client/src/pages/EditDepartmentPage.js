@@ -2,6 +2,7 @@ import { React, useContext, useEffect, useState } from "react";
 import SelectDropDownComponent from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import DepartmentApi from "../api/DepartmentApi";
 import UserApi from "../api/UserApi";
 import DeleteModal from "../components/DeleteModal";
@@ -104,6 +105,7 @@ const EditDepartmentPage = () => {
       )}
       <div className="flex flex-col w-full h-screen">
         <h1 className="font-bold p-3 sticky top-0 z-50 bg-white text-lg border-b-2 fex">
+        <button className='mr-2' onClick={() => navigate(-1)}><FontAwesomeIcon icon={faArrowLeft} /></button>
           Edit department
           <button
             type="button"
