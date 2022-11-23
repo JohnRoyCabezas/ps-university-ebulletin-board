@@ -72,7 +72,6 @@ export default function NavBar(props) {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-
         <ReactQuill
           theme="snow"
           placeholder={"Write a comment..."}
