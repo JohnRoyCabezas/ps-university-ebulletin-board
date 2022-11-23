@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SuccessModal = ({title, message, setShowModal}) => {
+const SuccessModal = ({title, message, setShowModal, stayInPAge}) => {
   const navigate = useNavigate();
 
   function onClose() {
     setShowModal(false)
-    navigate("/manageusers")
+    !stayInPAge && navigate("/adminsettings")
   }
 
   return (
