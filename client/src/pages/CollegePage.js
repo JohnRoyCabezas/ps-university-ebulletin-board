@@ -9,6 +9,7 @@ import Pusher from 'pusher-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuildingColumns } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../utils/UserContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const CollegePage = () => {
   const { collegeid } = useParams();
@@ -19,6 +20,7 @@ const CollegePage = () => {
   const [isAlter, setIsAlter] = useState(false);
   const { theme } = useContext(UserContext).user;
   const {user} = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const params =
   {
     announcementable_id: collegeid,
@@ -39,16 +41,24 @@ const CollegePage = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
+
     const params = {
       announcementable_type: 'App/Models/College',
       announcementable_id: collegeid,
     };
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-    });
-    CollegeApi.fetchSpecificCollege(collegeid).then(res => {
-      setCollege(res.data);
-    })
+
+    const fetchData = async(params) => {
+      const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
+      const college = await CollegeApi.fetchSpecificCollege(collegeid);
+
+      setAnnouncements(announcements.data);
+      setCollege(college.data);
+
+      setLoading(false);
+    }
+
+    fetchData(params);
   }, [collegeid]);
 
   useLayoutEffect(() => {
@@ -75,7 +85,9 @@ const CollegePage = () => {
     );
   }
 
-  return (
+  return loading? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full h-screen">
         <h1

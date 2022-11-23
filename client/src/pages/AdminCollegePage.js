@@ -11,15 +11,17 @@ import {
   faBuildingColumns,
   faPenSquare
 } from '@fortawesome/free-solid-svg-icons';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const AdminCollegePage = () => {
   const navigate = useNavigate();
   const { collegeid } = useParams();
   const [isThread, setThread] = useState(false);
-  const [announcements, setAnnouncements] = useState([]);
+  const [announcements, setAnnouncements] = useState(null);
   const [announcementThread, setAnnouncementThread] = useState()
   const [college, setCollege] = useState();
   const [isAlter, setIsAlter] = useState(false);
+  const [loading, setLoading] = useState(true);
   const params =
   {
     announcementable_id: collegeid,
@@ -40,14 +42,18 @@ const AdminCollegePage = () => {
   }, []);
 
   useEffect(() => {
-    AnnouncementApi.fetchChannelAnnouncements(params).then(
-      (res) => {
-        setAnnouncements(res.data);
-      }
-    );
-    CollegeApi.fetchSpecificCollege(collegeid).then(res => {
-      setCollege(res.data);
-    })
+    setLoading(true);
+    
+    const fetchData = async() => {
+      const announcement = await AnnouncementApi.fetchChannelAnnouncements(params);
+      const college = await CollegeApi.fetchSpecificCollege(collegeid);
+
+      setAnnouncements(announcement.data)
+      setCollege(college.data);
+      setLoading(false);
+    }
+
+    fetchData();
   }, [collegeid]);
 
   useLayoutEffect(() => {
@@ -69,7 +75,9 @@ const AdminCollegePage = () => {
     );
   }
 
-  return (
+  return loading ? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full text-gray-800">
         <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
