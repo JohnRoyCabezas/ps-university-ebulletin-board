@@ -44,4 +44,12 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: [
+    "fill-regal-blue",
+    "fill-primary-100",
+    "fill-secondary-100",
+    "fill-tertiary-100",
+    "fill-quinary-100",
+    "fill-senary-100",
+  ],
 };

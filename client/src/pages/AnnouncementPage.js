@@ -4,6 +4,7 @@ import AnnouncementApi from "../api/AnnouncementApi";
 import Thread from "../components/Thread";
 import Pusher from "pusher-js";
 import { UserContext } from "../utils/UserContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const AnnouncementPage = () => {
   const [announcements, setAnnouncements] = useState([]);
@@ -11,6 +12,7 @@ const AnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
   const {user} = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const params = {
     announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
@@ -23,14 +25,9 @@ const AnnouncementPage = () => {
   useEffect(() => {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
       setAnnouncements(res.data);
+      setLoading(false);
     });
   }, []);
-
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-    });
-  }
 
   useEffect(() => {
     const params = {
@@ -59,7 +56,9 @@ const AnnouncementPage = () => {
     setIsAlter(false);
   }, [announcements]);
 
-  return (
+  return loading ? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         <div className={`absolute top-0 z-30 w-full font-bold flex justify-between p-2 bg-white bg-opacity-10 font-weight-bold border-b-2`}>

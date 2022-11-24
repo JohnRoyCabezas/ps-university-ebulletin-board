@@ -10,6 +10,7 @@ import Dropdown from "../components/Dropdown";
 import UserApi from "../api/UserApi";
 import BackButton from "../components/BackButton";
 import { UserContext } from "../utils/UserContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const EditCollegePage = () => {
@@ -27,6 +28,7 @@ const EditCollegePage = () => {
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
   const {user, refetchUser} = useContext(UserContext);
   const id = location.state.collegeid;
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     CollegeApi.fetchSpecificCollege(id).then((res) => {
@@ -41,6 +43,8 @@ const EditCollegePage = () => {
           }
         })
         setDeansList(deans.data);
+      }).finally(()=>{
+        setLoading(false);
       })
     })
   }, [])
@@ -71,7 +75,9 @@ const EditCollegePage = () => {
     })
   }
 
-  return (
+  return loading ? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full">
       {showModal && (
         <SuccessModal

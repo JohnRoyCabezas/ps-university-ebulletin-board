@@ -12,6 +12,7 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import {UserContext} from "../utils/UserContext";
 import { ClassListModal2 } from "../components/ClassListModal2";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ClassPage = () => {
   const { classid } = useParams();
@@ -27,15 +28,16 @@ const ClassPage = () => {
   const role = useContext(UserContext).user.role_user.role_id;
 
   const fetchCourseChats = (id) => {
+    setLoading(true);
     ChatApi.fetchCourseChats(id).then((res) => {
       setChats(res.data);
+      setLoading(false);
     });
   };
 
   useEffect(() => {
     CourseApi.fetchSpecificCourse(classid).then((res) => {
       setCourse(res.data);
-      setLoading(false);
     });
     fetchCourseChats(classid);
   }, [classid]);
@@ -47,24 +49,24 @@ const ClassPage = () => {
 
     const channel = pusher.subscribe("chat");
     channel.bind("chat-update", function (data) {
-      // if(Number(classid) === data.chat.course_id) {
       ChatApi.fetchCourseChats(data.chat.course_id).then(res => {
         setChats(res.data)
       })
-      // }
     });
   }, [classid, setChats]);
 
   const scrollToBottom = () => {
     const elem = document.getElementById("chatsWrapper");
-    elem.scrollTo({ top: elem.scrollHeight, behavior: "smooth" });
+    elem?.scrollTo({ top: elem.scrollHeight, behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
 
-  return (
+  return loading? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         {showModal && (

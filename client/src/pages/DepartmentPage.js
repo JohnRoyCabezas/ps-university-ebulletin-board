@@ -9,6 +9,7 @@ import RichTextEditor from '../components/RichTextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../utils/UserContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 
 const DepartmentPage = () => {
@@ -18,6 +19,7 @@ const DepartmentPage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [announcementThread, setAnnouncementThread] = useState()
   const {user} = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const params =
   {
     announcementable_id: departmentid,
@@ -56,19 +58,23 @@ const DepartmentPage = () => {
   }, []);
 
   useEffect(() => {
-    AnnouncementApi.fetchChannelAnnouncements(params).then(
-      (res) => {
-        setAnnouncements(res.data);
-      }
-    );
-    DepartmentApi.fetchSpecificDepartment(departmentid).then(res => {
-      setDepartment(res.data);
-    })
+    setLoading(true);
+
+    const fetchData = async() => {
+      const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
+      const department = await DepartmentApi.fetchSpecificDepartment(departmentid);
+
+      setAnnouncements(announcements.data);
+      setDepartment(department.data);
+      setLoading(false);
+    }
+
+    fetchData();
   }, [departmentid]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight)
+    lastDiv?.scrollTo(0, lastDiv.scrollHeight)
   }, [announcements])
 
   function handleRefresh() {
@@ -79,7 +85,9 @@ const DepartmentPage = () => {
     );
   }
 
-  return (
+  return loading ? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">

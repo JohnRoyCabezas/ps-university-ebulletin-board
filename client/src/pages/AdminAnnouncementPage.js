@@ -7,17 +7,19 @@ import Pusher from "pusher-js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../utils/UserContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
-  const [announcements, setAnnouncements] = useState([]);
+  const [announcements, setAnnouncements] = useState(null);
   const {user} = useContext(UserContext);
   const [isAlter, setIsAlter] = useState(false);
   const params = {
     announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
   };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const pusher = new Pusher("6d32a294e8e6b327e3c5", {
@@ -31,6 +33,10 @@ const AdminAnnouncementPage = () => {
       });
     });
   }, []);
+
+  useEffect(()=> {
+    announcements && setLoading(false);
+  }, [announcements])
 
   function handleRefresh() {
     AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
@@ -61,7 +67,9 @@ const AdminAnnouncementPage = () => {
     setIsAlter(false);
   }, [announcements]);
 
-  return (
+  return loading? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         <h1 className="absolute flex items-center text-gray-800 justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 import Pusher from "pusher-js";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const AdminDepartment = () => {
   const { departmentid } = useParams();
@@ -17,6 +18,7 @@ const AdminDepartment = () => {
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState([]);
   const [department, setDepartment] = useState();
+  const [loading, setLoading] = useState(true);
   const params = {
     announcementable_id: departmentid,
     announcementable_type: "App/Models/Department",
@@ -40,17 +42,23 @@ const AdminDepartment = () => {
   }, []);
 
   useEffect(() => {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-    });
-    DepartmentApi.fetchSpecificDepartment(departmentid).then(({ data }) => {
-      setDepartment(data);
-    });
+    setLoading(true);
+
+    const fetchData = async() => {
+      const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
+      const department = await DepartmentApi.fetchSpecificDepartment(departmentid);
+
+      setAnnouncements(announcements.data);
+      setDepartment(department.data);
+      setLoading(false);
+    }
+
+    fetchData();
   }, [departmentid]);
 
   useEffect(() => {
     const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv.scrollTo(0, lastDiv.scrollHeight);
+    lastDiv?.scrollTo(0, lastDiv.scrollHeight);
   }, [announcements]);
 
   function handleRefresh() {
@@ -58,7 +66,9 @@ const AdminDepartment = () => {
       setAnnouncements(res.data);
     });
   }
-  return (
+  return loading? (
+      <LoadingSpinner />
+    ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full text-gray-800">
         <div className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">

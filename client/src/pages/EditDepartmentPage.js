@@ -10,6 +10,7 @@ import SuccessModal from "../components/SuccessModal";
 import SubmitButton from "../components/submitButton";
 import Cookies from "js-cookie";
 import { UserContext } from "../utils/UserContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const EditDepartmentPage = () => {
   const { departmentid } = useParams();
@@ -26,7 +27,7 @@ const EditDepartmentPage = () => {
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
   const navigate = useNavigate();
   const university_id = Cookies.get("universityid");
-  const {refetchUser} = useContext(UserContext);
+  const { refetchUser } = useContext(UserContext);
 
   const id = departmentid;
 
@@ -36,17 +37,20 @@ const EditDepartmentPage = () => {
       setdepartment(res?.data?.department);
       setCurrentDean(res?.data?.user_id);
 
-      UserApi.fetchDeans(university_id).then((deans) => {
-        deans.data.map((dean, index) => {
-          if (dean?.id == res?.data?.user_id) {
-            setDefaultValue(res?.data?.user_id);
-            setDefaultLabel(dean?.fullname);
-          }
-        });
+      UserApi.fetchDeans(university_id)
+        .then((deans) => {
+          deans.data.map((dean, index) => {
+            if (dean?.id == res?.data?.user_id) {
+              setDefaultValue(res?.data?.user_id);
+              setDefaultLabel(dean?.fullname);
+            }
+          });
 
-        setDeansList(deans.data);
-      });
-      setLoading(false);
+          setDeansList(deans.data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     });
   }, []);
 
@@ -81,9 +85,7 @@ const EditDepartmentPage = () => {
   };
 
   return loading ? (
-    <div className="relative h-full w-full flex flex-col justify-center items-center">
-      Loading...
-    </div>
+    <LoadingSpinner />
   ) : (
     <div className="flex w-full">
       {showModal && (
