@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import SelectDropDownComponent from "../components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import SuccessModal from "../components/SuccessModal";
 import SubmitButton from "../components/submitButton";
 import Cookies from "js-cookie";
+import { UserContext } from "../utils/UserContext";
 
 const EditDepartmentPage = () => {
   const { departmentid } = useParams();
@@ -25,6 +26,7 @@ const EditDepartmentPage = () => {
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
   const navigate = useNavigate();
   const university_id = Cookies.get("universityid");
+  const {refetchUser} = useContext(UserContext);
 
   const id = departmentid;
 
@@ -57,6 +59,7 @@ const EditDepartmentPage = () => {
     setShowDeleteModal(false);
     DepartmentApi.deleteDepartment(id).then(() => {
       setSuccessDeleteModal(true);
+      refetchUser();
     });
   }
 
@@ -73,6 +76,7 @@ const EditDepartmentPage = () => {
     ).then((res) => {
       setProcessing(false);
       setShowModal(true);
+      refetchUser();
     });
   };
 

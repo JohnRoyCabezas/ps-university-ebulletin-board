@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import UserApi from "../api/UserApi";
 import SuccessModal from "../components/SuccessModal";
@@ -7,6 +7,7 @@ import CollegeApi from "../api/CollegeApi";
 import SubmitButton from "../components/submitButton";
 import Cookies from "js-cookie";
 import BackButton from '../components/BackButton';
+import { UserContext } from "../utils/UserContext";
 
 const CreateDepartmentPage = () => {
   const initialParams = {
@@ -22,6 +23,7 @@ const CreateDepartmentPage = () => {
   const [params, setParams] = useState(initialParams);
   const [processing, setProcessing] = useState(false);
   const universityid = Cookies.get('universityid')
+  const {refetchUser} = useContext(UserContext);
 
   useEffect(() => {
     UserApi.fetchDeans(universityid).then((res) => {
@@ -54,6 +56,7 @@ const CreateDepartmentPage = () => {
         setShowModal(true);
         setParams(initialParams);
         setProcessing(false);
+        refetchUser();
       },
       (err) => {
         setErrors(err.response.data);

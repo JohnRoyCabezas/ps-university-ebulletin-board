@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import Cookies from "js-cookie";
@@ -27,7 +27,7 @@ const EditClassPage = () => {
   });
   const [oldData, setOldData] = useState();
   const university_id = Cookies.get('universityid');
-  const {user} = useContext(UserContext)
+  const {user, refetchUser} = useContext(UserContext)
   const theme = user.theme
 
   useEffect(()=> {
@@ -93,6 +93,7 @@ const EditClassPage = () => {
     CourseApi.updateCourse(params, oldData, classData.course.id).then(() => {
       setProcessing(false);
       setShowModal({...showModal, updateSucess: true});
+      refetchUser();
     });
   };
 
@@ -103,6 +104,7 @@ const EditClassPage = () => {
   const handleYes = () => {
     CourseApi.deleteCourse(classid, oldData).then(() => {
       setShowModal({...showModal, delete:false, deleteSucess: true});
+      refetchUser();
     })
   }
 

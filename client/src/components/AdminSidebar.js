@@ -12,7 +12,7 @@ import CollegeCard from "./CollegeCard";
 const AdminSidebar = () => {
   const {user, logout} = useContext(UserContext);
   const {theme} = user;
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(user);
   const [showSidebar, setShowSidebar] = useState(true);
   const [adminSettingsModal, setAdminSettingsModal] = useState(false);
   const initial = {type: "", id: 0}
@@ -21,11 +21,9 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const {collegeid, departmentid, classid} = useParams();
 
-  useEffect(() => {
-    UserApi.fetchUser().then((res) => {
-      setUserData(res.data);
-    });
-  }, []);
+  useEffect(()=> {
+    setUserData(user)
+  }, [user])
 
   const university = userData?.university;
   const colleges = userData?.university?.colleges;

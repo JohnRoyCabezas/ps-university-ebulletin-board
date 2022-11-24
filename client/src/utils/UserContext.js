@@ -21,12 +21,22 @@ const UserContextProvider = ({children}) => {
         setUser({...user, theme: theme})
     }
 
+    const refetchUser = () => {
+        UserApi.fetchUser().then(({data}) => {
+            if(data.theme===null) setUser({...user ,...data, theme: "bg-regal-blue"});
+            else setUser({...user ,...data});
+            setLoading(false);
+        }).catch((error)=>{
+            setLoading(false);
+        })
+    }
+
     const logout = () => {
         setUser(null);
     }
 
     return (
-        <UserContext.Provider value={{user, setTheme, logout}}>
+        <UserContext.Provider value={{user, setTheme, logout, refetchUser}}>
             {!loading && children}
         </UserContext.Provider>
     )
