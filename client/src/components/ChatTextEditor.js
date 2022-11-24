@@ -14,6 +14,7 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const [status, setStatus] = useState("");
   const [params, setParams] = useState(initialParams);
   const [file, setFile] = useState();
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     chatid &&
@@ -51,6 +52,26 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
     }
   };
 
+  function deleteFiles() {
+    setFile();
+  }
+
+  function handleFileSubmit(acceptedFiles) {
+    var checker = 0;
+    if (acceptedFiles.length <= 5) {
+      <div>
+        {acceptedFiles.map((file) => (
+          <div key={file.name}>
+            {file.size <= 5242880 ? checker : checker++}
+            {checker < 5 ? setFile(acceptedFiles) : setShowModal(true)}
+          </div>
+        ))}
+      </div>;
+    } else {
+      setShowModal(true);
+    }
+  }
+
   const handleChange = (e) => {
     isEditing
       ? setParams({ ...params, updateChat: e })
@@ -68,21 +89,45 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
         ></ReactQuill>
 
         <div className="flex justify-between rte p-2">
-          <Dropzone onDrop={(acceptedFiles) => setFile(acceptedFiles)}>
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <FontAwesomeIcon
-                    className="mt-1"
-                    icon={faPaperclip}
-                    size="2x"
-                    color="#162750"
-                  />
-                </div>
-              </section>
-            )}
-          </Dropzone>
+          <div className="flex">
+            <Dropzone
+              onDrop={(acceptedFiles) => handleFileSubmit(acceptedFiles)}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps()} className="flex">
+                    <input {...getInputProps()} />
+                    <FontAwesomeIcon
+                      className="mt-1"
+                      icon={faPaperclip}
+                      size="2x"
+                      color="#162750"
+                    />
+                    {!file ? (
+                      <div className="flex mt-2">
+                        <p className="mx-2">Drag and drop files here</p>
+                      </div>
+                    ) : (
+                      <div className="flex mt-2">
+                        <p className="mx-2">Number of files: {file.length}</p>
+                        {file.map((file) => (
+                          <div className="flex mr-4" key={file.name}>
+                            {file.name}
+                          </div>
+                        ))}
+                        <button
+                          className={`text-white w-12 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 mb-2 bg-red-700 dark:bg-background dark:hover:bg-secondary-background hover:bg-hover-back`}
+                          onClick={() => deleteFiles()}
+                        >
+                          x
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+          </div>
           <div>
             {isEditing ? (
               <>
@@ -144,6 +189,43 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
             )}
           </div>
         </div>
+        {showModal && (
+          <div>
+            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                    <h3 className="text-3xl font-semibold">File Upload</h3>
+                    <button
+                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                      onClick={() => setShowModal(false)}
+                    >
+                      <span className="bg-transparent text-black opacity-100 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                        X
+                      </span>
+                    </button>
+                  </div>
+                  <div className="relative p-6 flex-auto">
+                    <p className="my-4 text-slate-500 text-lg leading-relaxed">
+                      You can upload up to 5 files each up to 5mb per message.
+                      Please try again!
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                    <button
+                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </div>
+        )}
       </form>
     </div>
   );
