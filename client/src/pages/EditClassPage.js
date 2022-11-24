@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import Dropdown from "../components/Dropdown";
 import SubmitButton from "../components/submitButton";
@@ -139,6 +140,7 @@ const EditClassPage = () => {
 
       <div className="flex flex-col w-full  h-screen">
         <h1 className="font-bold p-3 sticky top-0 z-10 bg-white text-lg border-b-2 fex">
+          <button className='mr-2' onClick={() => navigate(-1)}><FontAwesomeIcon icon={faArrowLeft} /></button>
           Edit Class
           <button
             type="button"
