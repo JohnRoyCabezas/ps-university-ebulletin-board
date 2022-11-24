@@ -42,6 +42,7 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
           <SuccessModal
             title="Update Success!"
             message="University Name Updated!"
+            stayInPAge={true}
             setShowModal={setShowSuccess} />
         )
       }
