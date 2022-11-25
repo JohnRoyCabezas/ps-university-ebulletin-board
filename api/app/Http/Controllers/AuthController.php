@@ -119,6 +119,27 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid user credentials'], 403);
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        $validatedData = $request->validate([
+            'avatar' => 'max:255',
+            'role_id' => 'required',
+            'fullname' => 'required | max:255',
+            'email' => 'required'
+        ]);
+        $user->update([
+            'avatar' => $validatedData['avatar'],
+            'fullname' => $validatedData['fullname'],
+            'email' => $validatedData['email'],
+        ]);
+        $role_user = RoleUser::where('user_id', $id)->first();
+        $role_user->update([
+            'role_id' => $validatedData['role_id']
+        ]);
+        return response()->json(['message' => 'Updated user information!']);
+    }
     //logout user
     public function logout()
     {

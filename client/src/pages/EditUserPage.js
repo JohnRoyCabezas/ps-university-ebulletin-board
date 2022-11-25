@@ -11,26 +11,22 @@ import BackButton from '../components/BackButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import SubmitButton from '../components/submitButton';
-
 const EditUserPage = () => {
   const navigate = useNavigate();
   const initialParams = {
-    fullname: "",
-    email: "",
-    department_id: "",
-    role_id: "",
+    fullname: '',
+    email: '',
+    department_id: '',
+    role_id: '',
   };
-
   const { id } = useParams();
   const [departments, setDepartments] = useState([]);
   const [roles, setRoles] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState(initialParams);
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState({ format: false, size: false });
   const university_id = Cookies.get('universityid');
   const [processing, setProcessing] = useState(false);
-
-
   useEffect(() => {
     DepartmentApi.fetchDepartments(university_id).then((res) => {
       setDepartments(res.data);
@@ -49,41 +45,43 @@ const EditUserPage = () => {
       });
     });
   }, []);
-
   const handleInputChange = (e) => {
     setParams({ ...params, [e.target.name]: e.target.value });
     Cookies.set(
-      "params",
+      'params',
       JSON.stringify({ ...params, [e.target.name]: e.target.value })
     );
   };
-
   const handleSelectChange = (type, item) => {
-    if (type === "department") {
+    if (type === 'department') {
       setParams({ ...params, department_id: item.value });
       Cookies.set(
-        "params",
+        'params',
         JSON.stringify({ ...params, department_id: item.value })
       );
-    } else if (type === "role") {
+    } else if (type === 'role') {
       setParams({ ...params, role_id: item.value });
-      Cookies.set("params", JSON.stringify({ ...params, role_id: item.value }));
+      Cookies.set('params', JSON.stringify({ ...params, role_id: item.value }));
     }
   };
 
   const removeAvatar = () => {
     setParams({ ...params, avatar: '0' });
+    setValid({size:false, format:false})
   }
 
   const uploadAvatar = (uploadedAvatar) => {
     if (['jpg', 'png', 'jpeg'].includes(uploadedAvatar.name.substring(uploadedAvatar.name.lastIndexOf(".") + 1))) {
-
       const formData = new FormData();
       formData.append('avatar', uploadedAvatar);
-  AvatarUploadApi.upload({ formData }).then((res) => {
-        setParams({ ...params, avatar: `http://localhost:8000/Avatars/${res.data}` })
-      });
-    } else { setValid(true) }
+      AvatarUploadApi
+        .upload({ formData }).then((res) => {
+          setParams({ ...params, avatar: `http://localhost:8000/Avatars/${res.data}` })
+        })
+        .catch(function () {
+          setValid({ ...valid, size: true })
+        })
+    } else { setValid({ ...valid, format: true }) }
   }
 
   const handleSubmit = (e) => {
@@ -138,10 +136,9 @@ const EditUserPage = () => {
                     type='file'
                     className='hidden'
                   />
-                  <label onClick={() => {removeAvatar(); setValid(false)}} className='rounded pt-2 text-center text-sm cursor-pointer hover:underline'>Remove Photo</label>
+                  <label onClick={() => { removeAvatar(); setValid(false) }} className='rounded pt-2 text-center text-sm cursor-pointer hover:underline'>Remove Photo</label>
                 </div>
-                {valid && (<span className='text-red-600 text-xs relative italic p-1'><FontAwesomeIcon icon={faInfoCircle} /> Must be in '.jpeg', '.jpg', and '.png' format</span>)}
-
+                {(valid.format || valid.size) && (valid.format ? <span className='text-red-600 text-xs relative italic p-1'><FontAwesomeIcon icon={faInfoCircle} /> Must be in '.jpeg', '.jpg', and '.png' format</span> : <span className='text-red-600 text-xs relative italic p-1'><FontAwesomeIcon icon={faInfoCircle} /> Avatar size must be 2mb below</span>)}
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
@@ -221,13 +218,7 @@ const EditUserPage = () => {
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500 input"
                 />
               </div>
-
               <div className="mt-16">
-                {/* <button
-                  className={`w-full px-4 py-2 tracking-wide rounded-md text-white transition-colors duration-200 transform bg-regal-blue  hover:bg-blue-900 focus:outline-none focus:bg-blue-900`}
-                >
-                  Edit Account
-                </button> */}
                 <SubmitButton
                   handleSubmit={handleSubmit}
                   buttonDisabled={!departments || !params.fullname || !params.email
@@ -243,5 +234,4 @@ const EditUserPage = () => {
     </div>
   );
 };
-
 export default EditUserPage;
