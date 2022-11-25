@@ -8,11 +8,21 @@ import RichTextEditor from "../components/RichTextEditor";
 import "../index.css";
 import { UserContext } from "../utils/UserContext";
 import "../index.css";
+import ReplyBar from "./ReplyBar";
 
-export default function AnnouncementCard(props) {
+export default function AnnouncementCard({
+  isAlter,
+  handleRefresh,
+  setValue,
+  announcementThread,
+  setAnnouncementThread,
+  announcement,
+  threadOpen,
+}) {
   const [isShown, setIsShown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isThreadOpen, setIsThreadOpen] = useState(false);
+  const [localAnnouncement, setLocalAnnouncement] = useState(announcement);
   const [params, setParams] = useState({});
   const { user } = useContext(UserContext);
   const { theme } = user;
@@ -31,9 +41,9 @@ export default function AnnouncementCard(props) {
   }
 
   function setThreadValue(value) {
-    props.setValue(value);
-    props.setAnnouncementThread(props.announcement.id);
-    setIsThreadOpen(!isThreadOpen);
+    setValue(value);
+    setAnnouncementThread(localAnnouncement.id);
+    setIsThreadOpen(true);
   }
 
   function cancel() {
@@ -41,45 +51,56 @@ export default function AnnouncementCard(props) {
     setIsShown(false);
   }
 
+  const refreshAnnouncement = () => {
+    AnnouncementApi.fetchSpecificAnnouncement(localAnnouncement.id).then(
+      ({ data }) => {
+        setLocalAnnouncement(data);
+      }
+    );
+  };
+
   useEffect(() => {
-    if (!props.threadOpen) setIsThreadOpen(false);
-  }, [props.threadOpen]);
+    if (!threadOpen) setIsThreadOpen(false);
+  }, [threadOpen]);
+
+  useEffect(() => {
+    setLocalAnnouncement(announcement);
+  }, [announcement]);
 
   function adminOption() {
     return user?.role_user?.role_id === 2
       ? true
       : user?.role_user?.role_id === 4
-        ? user?.id === props.announcement.user_id
-        : false;
+      ? user?.id === localAnnouncement.user_id
+      : false;
   }
 
   return (
     <>
       <div>
         <div
-          className="relative flex shadow-lg bg-white w-full border-b-2 mx-auto p-6"
+          className={`relative flex shadow-lg bg-white w-full border-b-2 px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+            isThreadOpen && announcementThread === localAnnouncement.id
+              ? "bg-gray-200"
+              : ""
+          }`}
           onMouseEnter={() => setIsShown(true)}
           onMouseLeave={() => setIsShown(false)}
-          style={{
-            backgroundColor: isShown || isThreadOpen ? "#EAE8E8" : "",
-          }}
         >
           <img
             onError={(e) =>
-            (e.target.src =
-              "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
+              (e.target.src =
+                "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
             }
-            className={`mr-3 w-11 h-11 rounded-full ${theme} bg-opacity-70`}
-            src={props?.announcement?.user?.avatar}
+            className={`ml-4 w-11 h-11 rounded border border-gray-400 bg-white bg-opacity-70`}
+            src={localAnnouncement?.user?.avatar}
             alt="JC"
           />
-          <div className="flex flex-col ml-2">
+          <div className="flex flex-col ml-2 w-full">
             <div className="flex justify-start items-center mb-2">
-              <h5 className="font-bold">
-                {props?.announcement?.user?.fullname}
-              </h5>
+              <h5 className="font-bold">{localAnnouncement?.user?.fullname}</h5>
               <span className="ml-2 text-xs">
-                <i>{moment(props?.announcement?.created_at).fromNow()}</i>
+                <i>{moment(localAnnouncement?.created_at).fromNow()}</i>
               </span>
             </div>
             <div className="w-full min-w-min">
@@ -96,9 +117,9 @@ export default function AnnouncementCard(props) {
                 </div>
               ) : (
                 <span className="text-gray-700 text-base ql-editor card">
-                  {parse(props.announcement.announcement)}
+                  {parse(localAnnouncement.announcement)}
                   <div className="flex">
-                    {props?.announcement?.media.map((acceptedFile, i) => (
+                    {localAnnouncement?.media.map((acceptedFile, i) => (
                       <div key={i}>
                         {acceptedFile.mime_type.includes("image") ? (
                           <img
@@ -119,6 +140,10 @@ export default function AnnouncementCard(props) {
                       </div>
                     ))}
                   </div>
+                  <ReplyBar
+                    announcement={localAnnouncement}
+                    showThread={setThreadValue}
+                  />
                 </span>
               )}
             </div>
@@ -128,7 +153,7 @@ export default function AnnouncementCard(props) {
               <StudentMessageOptions setValue={setThreadValue} />
             ) : (
               <AdminMessageOptions
-                id={props.announcement.id}
+                id={localAnnouncement.id}
                 cancel={cancel}
                 handleEdit={(id) => handleEdit(id)}
                 setValue={setThreadValue}

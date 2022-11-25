@@ -1,18 +1,18 @@
-import { React, useEffect, useLayoutEffect, useState, useContext } from 'react';
-import AnnouncementCard from '../components/AnnouncementCard';
-import RichTextEditor from '../components/RichTextEditor';
-import AnnouncementApi from '../api/AnnouncementApi';
-import CollegeApi from '../api/CollegeApi';
-import { useParams, useNavigate } from 'react-router-dom';
-import Thread from '../components/Thread';
-import Pusher from 'pusher-js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { React, useEffect, useLayoutEffect, useState, useContext } from "react";
+import AnnouncementCard from "../components/AnnouncementCard";
+import RichTextEditor from "../components/RichTextEditor";
+import AnnouncementApi from "../api/AnnouncementApi";
+import CollegeApi from "../api/CollegeApi";
+import { useParams, useNavigate } from "react-router-dom";
+import Thread from "../components/Thread";
+import Pusher from "pusher-js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBuildingColumns,
-  faPenSquare
-} from '@fortawesome/free-solid-svg-icons';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { UserContext } from '../utils/UserContext';
+  faPenSquare,
+} from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { UserContext } from "../utils/UserContext";
 
 const AdminCollegePage = () => {
   const navigate = useNavigate();
@@ -20,55 +20,58 @@ const AdminCollegePage = () => {
   const { theme } = useContext(UserContext).user;
   const [isThread, setThread] = useState(false);
   const [announcements, setAnnouncements] = useState({});
-  const [announcementThread, setAnnouncementThread] = useState()
+  const [announcementThread, setAnnouncementThread] = useState();
   const [college, setCollege] = useState();
   const [loading, setLoading] = useState(true);
   const [initScroll, setInitScroll] = useState(false);
-  const params =
-  {
+  const params = {
     announcementable_id: collegeid,
     announcementable_type: "App/Models/College",
-  }
+  };
 
   // Initial load
   useEffect(() => {
     setLoading(true);
 
     const fetchData = async () => {
-      const announcement = await AnnouncementApi.fetchChannelAnnouncements(params);
+      const announcement = await AnnouncementApi.fetchChannelAnnouncements(
+        params
+      );
       const college = await CollegeApi.fetchSpecificCollege(collegeid);
 
-      setAnnouncements(announcement.data)
+      setAnnouncements(announcement.data);
       setCollege(college.data);
       setLoading(false);
-    }
+    };
     fetchData();
   }, [collegeid]);
 
   // Pusher update
   useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
     });
 
-    const channel = pusher.subscribe('announcement-channel');
-    channel.bind('announcement-update',
-      function (data) {
-        AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
-          (res) => {
-            setAnnouncements(res?.data);
-          }
-        );
-      });
+    const channel = pusher.subscribe("announcement-channel");
+    channel.bind("announcement-update", function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
+        (res) => {
+          setAnnouncements(res?.data);
+        }
+      );
+    });
   }, []);
 
   // Scroll effect
   useLayoutEffect(() => {
     const lastDiv = document?.getElementById("announcementWrapper");
-    lastDiv?.scrollHeight * .90 < lastDiv?.scrollTop + 1000 || lastDiv?.scrollTop == 0 ?
-      lastDiv?.scrollTo({ top: lastDiv?.scrollHeight + 1000, behavior: 'smooth' })
-      :
-      lastDiv?.scrollTo({ top: lastDiv?.scrollTop, behavior: 'smooth' })
+    lastDiv?.scrollHeight * 0.9 < lastDiv?.scrollTop + 1000 ||
+    lastDiv?.scrollTop == 0
+      ? lastDiv?.scrollTo({
+          top: lastDiv?.scrollHeight + 1000,
+          behavior: "smooth",
+        })
+      : lastDiv?.scrollTo({ top: lastDiv?.scrollTop, behavior: "smooth" });
   }, [announcements]);
 
   return loading ? (
@@ -93,24 +96,21 @@ const AdminCollegePage = () => {
           </button>
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div
-            id="announcementWrapper"
-            className="mt-12 overflow-y-auto">
+          <div id="announcementWrapper" className="pt-20 overflow-y-auto">
             {announcements?.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
                 userRole={"admin"}
                 announcement={announcement}
                 setValue={(value) => setThread(value)}
+                announcementThread={announcementThread}
                 setAnnouncementThread={setAnnouncementThread}
                 threadOpen={isThread}
               />
             ))}
           </div>
           <div className="p-2 rounded-3xl">
-            <RichTextEditor
-              params={params}
-            />
+            <RichTextEditor params={params} />
           </div>
         </div>
       </div>

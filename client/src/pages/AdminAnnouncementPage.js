@@ -26,37 +26,41 @@ const AdminAnnouncementPage = () => {
     setLoading(true);
 
     const fetchData = async () => {
-      const announcement = await AnnouncementApi.fetchChannelAnnouncements(params);
-      setAnnouncements(announcement.data)
+      const announcement = await AnnouncementApi.fetchChannelAnnouncements(
+        params
+      );
+      setAnnouncements(announcement.data);
       setLoading(false);
-    }
+    };
     fetchData();
   }, []);
 
   // Pusher update
   useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
     });
 
-    const channel = pusher.subscribe('announcement-channel');
-    channel.bind('announcement-update',
-      function (data) {
-        AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
-          (res) => {
-            setAnnouncements(res?.data);
-          }
-        );
-      });
+    const channel = pusher.subscribe("announcement-channel");
+    channel.bind("announcement-update", function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
+        (res) => {
+          setAnnouncements(res?.data);
+        }
+      );
+    });
   }, []);
 
   // Scroll effect
   useLayoutEffect(() => {
     const lastDiv = document?.getElementById("announcementWrapper");
-    lastDiv?.scrollHeight * .90 < lastDiv?.scrollTop + 1000 || lastDiv?.scrollTop == 0 ?
-      lastDiv?.scrollTo({ top: lastDiv?.scrollHeight + 1000, behavior: 'smooth' })
-      :
-      console.log('')
+    lastDiv?.scrollHeight * 0.9 < lastDiv?.scrollTop + 1000 ||
+    lastDiv?.scrollTop == 0
+      ? lastDiv?.scrollTo({
+          top: lastDiv?.scrollHeight + 1000,
+          behavior: "smooth",
+        })
+      : console.log("");
   }, [announcements]);
 
   function setThreadValue(value) {
@@ -75,16 +79,14 @@ const AdminAnnouncementPage = () => {
           </div>
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div
-            id="announcementWrapper"
-            className="mt-12 overflow-y-auto"
-          >
+          <div id="announcementWrapper" className="pt-20 overflow-y-auto">
             {announcements.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
                 userRole={"admin"}
                 announcement={announcement}
                 setValue={setThreadValue}
+                announcementThread={announcementThread}
                 setAnnouncementThread={setAnnouncementThread}
                 isAlter={() => setIsAlter(true)}
                 threadOpen={isThread}
@@ -92,9 +94,7 @@ const AdminAnnouncementPage = () => {
             ))}
           </div>
           <div className="p-2 rounded-3xl">
-            <RichTextEditor
-              params={params}
-            />
+            <RichTextEditor params={params} />
           </div>
         </div>
       </div>
