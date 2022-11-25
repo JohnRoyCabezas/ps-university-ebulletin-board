@@ -126,12 +126,14 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'avatar' => 'max:255',
             'role_id' => 'required',
+            'department_id' => '',
             'fullname' => 'required | max:255',
             'email' => 'required'
         ]);
         $user->update([
             'avatar' => $validatedData['avatar'],
             'fullname' => $validatedData['fullname'],
+            'department_id' => $validatedData['department_id'],
             'email' => $validatedData['email'],
         ]);
         $role_user = RoleUser::where('user_id', $id)->first();

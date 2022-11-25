@@ -40,7 +40,7 @@ const EditUserPage = () => {
         avatar: res.data?.avatar,
         fullname: res.data?.fullname,
         email: res.data?.email,
-        department_id: res.data?.department_id,
+        department_id: res.data?.department_id ? res.data?.department_id : '',
         role_id: res.data?.role_user?.role?.id,
       });
     });
