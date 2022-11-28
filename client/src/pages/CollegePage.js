@@ -91,7 +91,7 @@ const CollegePage = () => {
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full h-screen">
         <h1
-          className={`absolute top-0 z-40 w-full font-bold p-3 text-lg ${theme} border-b-2 bg-opacity-10`}
+          className={`absolute top-0 z-40 h-14 w-full font-bold p-3 mb-1 text-lg border-b-2 border-gray-300`}
         >
           <div className="truncate">
             <FontAwesomeIcon icon={faBuildingColumns} className="mr-2" />
@@ -99,7 +99,7 @@ const CollegePage = () => {
           </div>
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
+          <div id="announcementWrapper" className="mt-14 overflow-y-auto">
             {announcements.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
