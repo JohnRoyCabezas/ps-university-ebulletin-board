@@ -91,7 +91,7 @@ const CollegePage = () => {
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full h-screen">
         <h1
-          className={`absolute top-0 z-40 h-14 w-full font-bold p-3 mb-1 text-lg border-b-2 border-gray-300`}
+          className={`absolute top-0 z-40 h-14 w-full font-bold p-3 text-lg border-b-2 border-gray-300 bg-white`}
         >
           <div className="truncate">
             <FontAwesomeIcon icon={faBuildingColumns} className="mr-2" />
