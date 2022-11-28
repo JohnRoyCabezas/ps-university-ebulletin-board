@@ -64,13 +64,18 @@ const CommentTextEditor = ({ chatId, commentId, isEditing, setIsEditing }) => {
         {acceptedFiles.map((file) => (
           <div key={file.name}>
             {file.size <= 5242880 ? checker : checker++}
-            {checker < 1 ? setFile(acceptedFiles) : setShowModal(true)}
+            {checker < 1 ? setFile(acceptedFiles) : setShow()}
           </div>
         ))}
       </div>;
     } else {
-      setShowModal(true);
+      setShow();
     }
+  }
+
+  function setShow() {
+    setShowModal(true);
+    setFile();
   }
 
   const handleChange = (e) => {

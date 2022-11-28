@@ -98,13 +98,18 @@ export default function NavBar(props) {
         {acceptedFiles.map((file) => (
           <div key={file.name}>
             {file.size <= 5000000 ? checker : checker++}
-            {checker < 1 ? setFile(acceptedFiles) : setShowModal(true)}
+            {checker < 1 ? setFile(acceptedFiles) : setShow()}
           </div>
         ))}
       </div>;
     } else {
-      setShowModal(true);
+      setShow();
     }
+  }
+
+  function setShow() {
+    setShowModal(true);
+    setFile();
   }
 
   const truncate = (input) =>
