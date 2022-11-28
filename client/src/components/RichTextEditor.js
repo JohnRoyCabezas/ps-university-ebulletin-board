@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useState, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,9 +17,10 @@ export default function NavBar(props) {
   const [buttonState, setButtonState] = useState(false);
   const [editState, setEditState] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const editor = useRef();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e, announcement) => {
+    e?.preventDefault();
     setButtonState(true);
     if (props.params?.type === "comment") {
       let formData = new FormData();
@@ -67,7 +68,7 @@ export default function NavBar(props) {
     }
   };
 
-  function handleEdit() {
+  function handleEdit(announcement) {
     setButtonState(true);
     if (props.type === "university_thread") {
       ThreadApi.updateSpecificThread(
@@ -119,15 +120,40 @@ export default function NavBar(props) {
     setEditState(true);
   };
 
+  const modules = useMemo(
+    () => ({
+      keyboard: {
+        bindings: {
+          custom: {
+            key: "enter",
+            shiftKey: false,
+            handler: (range, context) => {
+              !(
+                editor.current.value === "" ||
+                editor.current.value === "<p><br></p>"
+              ) &&
+                (props?.isEdit
+                  ? handleEdit(editor.current.value)
+                  : handleSubmit(null, editor.current.value));
+            },
+          },
+        },
+      },
+    }),
+    []
+  );
+
   return (
-    <div className="w-full ">
-      <form onSubmit={handleSubmit}>
+    <div className="w-full">
+      <form onSubmit={(e) => handleSubmit(e, announcement)}>
         <ReactQuill
+          ref={editor}
           theme="snow"
           placeholder={"Write a comment..."}
           value={isEdit ? props.params.announcement : announcement}
           onChange={handleChange}
           className="block bottom-0"
+          modules={modules}
         ></ReactQuill>
 
         <div className="flex justify-between rte mb-1 p-2 h-fit">
