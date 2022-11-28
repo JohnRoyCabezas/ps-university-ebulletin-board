@@ -7,6 +7,7 @@ import AnnouncementApi from "../api/AnnouncementApi";
 import ThreadApi from "../api/ThreadApi";
 import { UserContext } from "../utils/UserContext";
 import Dropzone from "react-dropzone";
+import ReactTooltip from "react-tooltip";
 
 export default function NavBar(props) {
   const { user } = useContext(UserContext);
@@ -96,8 +97,8 @@ export default function NavBar(props) {
       <div>
         {acceptedFiles.map((file) => (
           <div key={file.name}>
-            {file.size <= 5242880 ? checker : checker++}
-            {checker < 5 ? setFile(acceptedFiles) : setShowModal(true)}
+            {file.size <= 5000000 ? checker : checker++}
+            {checker < 1 ? setFile(acceptedFiles) : setShowModal(true)}
           </div>
         ))}
       </div>;
@@ -105,6 +106,9 @@ export default function NavBar(props) {
       setShowModal(true);
     }
   }
+
+  const truncate = (input) =>
+    input?.length > 16 ? `${input.substring(0, 15)}...` : input;
 
   const handleChange = (e) => {
     setAnnouncement(e);
@@ -147,7 +151,8 @@ export default function NavBar(props) {
                         <p className="mx-2">Number of files: {file.length}</p>
                         {file.map((file) => (
                           <div className="flex mr-4" key={file.name}>
-                            {file.name}
+                            <p data-tip={file.name}>{truncate(file.name)}</p>
+                            <ReactTooltip />
                           </div>
                         ))}
                         <button
