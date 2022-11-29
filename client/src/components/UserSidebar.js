@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import AuthApi from "../api/AuthApi";
-import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,15 +16,15 @@ import EditSettingModal from "./EditSettingModal";
 import { UserContext } from "../utils/UserContext";
 
 const UserSidebar = () => {
-  const {user, logout} = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
   const { theme } = user;
   const [showSidebar, setShowSidebar] = useState(true);
   const [showEditSetting, setShowEditSetting] = useState(false);
-  const initial = {type: "", id: 0}
+  const initial = { type: "", id: 0 }
   const [active, setActive] = useState(initial);
 
   const navigate = useNavigate();
-  const {collegeid, departmentid, classid} = useParams();
+  const { collegeid, departmentid, classid } = useParams();
 
   useEffect(() => {
     if (!!classid) {
@@ -63,9 +62,8 @@ const UserSidebar = () => {
       {/* sidebar content */}
       <nav
         id="sidebar"
-        className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in ${theme} bg-opacity-90 duration-300 text-gray-300 w-60 ${
-          !showSidebar && "-ml-184px transition-all ease-in"
-        }`}
+        className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in ${theme} bg-opacity-90 duration-300 text-gray-300 w-60 ${!showSidebar && "-ml-184px transition-all ease-in"
+          }`}
       >
         <div className="sidebar-content flex flex-col justify-center w-full pb-14 z-50 overflow-y-auto">
           {/* sidebar header */}
@@ -74,13 +72,13 @@ const UserSidebar = () => {
           >
             <Link
               to="/announcement"
-              className={`group truncate opacity-100 transition-all ease-in ${
-                !showSidebar && "opacity-0 transition-all ease-in"
-              }`}
+              className={`group truncate opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+                }`}
             >
               {university?.university}
-              <div className="group-hover:visible invisible absolute w-3/4 whitespace-pre-wrap rounded shadow-inner border border-slate-500 p-2 right-1/2 top-1/3 translate-x-1/2 translate-y-1/2 bg-slate-800 text-sm font-light z-50">
-                {university?.university}
+              <div className={`group-hover:visible invisible w-full group-hover:delay-200 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 group-hover:translate-x-3 group-hover:transition group-hover:ease-in-out group-hover:duration-700 absolute`}>
+                <div className={`w-fit absolute py-3 left-0 text-center whitespace-pre-wrap rounded shadow-inner absolute transition ease-in-out delay-300 group-hover:delay-200 group-hover:scale-120 duration-200 border border-slate-500 group-hover:bg-opacity-60 ${theme} group-hover:bg-opacity-90 group-hover:text-white px-3 text-xs font-normal z-50`}>{university?.university}</div>
+
               </div>
             </Link>
 
@@ -94,9 +92,8 @@ const UserSidebar = () => {
 
           {/* sidebar items */}
           <div
-            className={`sidebar-menu font-light pt-2 mt-14 overflow-y-auto opacity-100 transition-all ease-in ${
-              !showSidebar && "opacity-0 transition-all ease-in"
-            }`}
+            className={`sidebar-menu font-light pt-2 mt-14 overflow-y-auto opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+              }`}
           >
             <ul>
               <li className="sidebar-dropdown-header font-bold px-5 py-2">
@@ -108,11 +105,10 @@ const UserSidebar = () => {
                     <FontAwesomeIcon
                       icon={faStar}
                       className={`button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition-all ease-in
-                      ${
-                        active?.type === ""
+                      ${active?.type === ""
                           ? "text-sky-500 group-hover:text-sky-500"
                           : "group-hover:text-white"
-                      }`}
+                        }`}
                     />
                     <span className="ml-2 group-hover:text-white transition-all ease-in truncate">
                       University
@@ -130,12 +126,11 @@ const UserSidebar = () => {
                       <FontAwesomeIcon
                         icon={faBuildingColumns}
                         className={`button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition-all ease-in
-                        ${
-                          active?.type === "college" &&
-                          Number(active?.id) === college?.id
+                        ${active?.type === "college" &&
+                            Number(active?.id) === college?.id
                             ? "text-sky-500 group-hover:text-sky-500"
                             : "group-hover:text-white"
-                        }
+                          }
                         `}
                       />
                       <span className="ml-2 group-hover:text-white transition-all ease-in whitespace-nowrap">
@@ -156,12 +151,11 @@ const UserSidebar = () => {
                         <FontAwesomeIcon
                           icon={faBuilding}
                           className={`button rounded h-3 w-3 p-2 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition-all ease-in
-                          ${
-                            active?.type === "department" &&
-                            Number(active?.id) === department?.id
+                          ${active?.type === "department" &&
+                              Number(active?.id) === department?.id
                               ? "text-sky-500 group-hover:text-sky-500"
                               : "group-hover:text-white"
-                          }`}
+                            }`}
                         />
                         <span className="ml-2 group-hover:text-white transition-all ease-in whitespace-nowrap">
                           {department?.department}
@@ -202,9 +196,8 @@ const UserSidebar = () => {
         >
           <div className={`user-info flex items-center w-full justify-between`}>
             <div
-              className={`flex items-center opacity-100 transition-all ease-in ${
-                !showSidebar && "opacity-0 transition-all ease-in"
-              }`}
+              className={`flex items-center opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+                }`}
             >
               <div className="user-pic">
                 <img
@@ -227,16 +220,14 @@ const UserSidebar = () => {
                 onClick={() => {
                   setShowEditSetting(true);
                 }}
-                className={`button flex items-center justify-center w-6 h-6 rounded mr-1 py-0.5 px-1 hover:bg-black hover:bg-opacity-50 hover:text-white opacity-100 transition-all ease-in ${
-                  !showSidebar && "opacity-0 transition-all ease-in"
-                }`}
+                className={`button flex items-center justify-center w-6 h-6 rounded mr-1 py-0.5 px-1 hover:bg-black hover:bg-opacity-50 hover:text-white opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+                  }`}
               >
                 <FontAwesomeIcon icon={faGear} />
               </button>
               <div
-                className={`flex h-8 border-r transition-all ease-in ${
-                  !showSidebar && "h-0 transition-all ease-in"
-                }`}
+                className={`flex h-8 border-r transition-all ease-in ${!showSidebar && "h-0 transition-all ease-in"
+                  }`}
               ></div>
               <button
                 onClick={handleLogout}
