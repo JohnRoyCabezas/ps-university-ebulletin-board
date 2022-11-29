@@ -28,7 +28,7 @@ const EditDepartmentPage = () => {
   const [showSuccessDeleteModal, setSuccessDeleteModal] = useState(false);
   const navigate = useNavigate();
   const university_id = Cookies.get("universityid");
-  const { refetchUser } = useContext(UserContext);
+  const { user, refetchUser } = useContext(UserContext);
 
   const id = departmentid;
 
@@ -109,7 +109,7 @@ const EditDepartmentPage = () => {
           Edit department
           <button
             type="button"
-            className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            className={`p-2 ml-4 ${user.theme} float-right text-white font-medium  text-xs leading-tight uppercase rounded shadow-md hover:bg-opacity-80 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out`}
             onClick={handleDelete}
           >
             <FontAwesomeIcon icon={faTrashAlt} className="mr-1" />
