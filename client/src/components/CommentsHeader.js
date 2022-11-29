@@ -27,7 +27,7 @@ const CommentsHeader = ({ chat }) => {
                 <div key={i}>
                   {acceptedFile.mime_type.includes("image") ? (
                     <img
-                      className="h-20 w-20 d-flex"
+                      className="h-20 w-20 d-flex mr-5"
                       src={`${acceptedFile.original_url}`}
                     />
                   ) : (
@@ -35,7 +35,7 @@ const CommentsHeader = ({ chat }) => {
                       <a
                         href={`${acceptedFile.original_url}`}
                         target="_blank"
-                        className="cursor-pointer text-xs font-semibold text-sky-600 underline decoration-sky-500"
+                        className="cursor-pointer text-xs font-semibold text-sky-600 underline decoration-sky-500 mr-5"
                       >
                         {acceptedFile.file_name}
                       </a>

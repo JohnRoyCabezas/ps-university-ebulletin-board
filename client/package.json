@@ -24,6 +24,7 @@
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.4.0",
+    "react-tooltip": "^4.5.1",
     "swiper": "^8.4.2",
     "web-vitals": "^2.1.4"
   },
