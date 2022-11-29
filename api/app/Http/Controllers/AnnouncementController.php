@@ -6,11 +6,8 @@ use App\Events\AnnouncementUpdate;
 use App\Events\ThreadUpdate;
 use App\Models\Announcement;
 use App\Models\PermissionRole;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Twilio\Rest\Client;
-
 
 class AnnouncementController extends Controller
 {
@@ -66,7 +63,9 @@ class AnnouncementController extends Controller
             if ($request->hasFile('data4')) {
                 $announcement->addMedia($request->data4)->toMediaCollection('file4');
             }
+
             event(new AnnouncementUpdate($announcement));
+
             $data = [
                 'message' => $user_fullname . ' successfully created an announcement!',
                 'user' => $user_fullname,
@@ -142,13 +141,17 @@ class AnnouncementController extends Controller
 
         //checks if user with role has canCreateAnnouncement permission
         if ($canUpdateAnnouncement) {
-            $announcement_update = Announcement::find($id)
-                ->update(['announcement' => $validatedData['announcement_update']]);
+            $announcement = Announcement::find($id);
+            $announcement->update(['announcement' => $validatedData['announcement_update']]);
+
+            $announcements = Announcement::with(['user', 'media'])->channel($announcement)->orderBy('created_at')->get();
+
+            event(new AnnouncementUpdate($announcement));
 
             $data = [
                 'message' => 'Successfully updated announcement!',
                 'user' => $user_fullname,
-                'announcement_update' => $announcement_update,
+                'data' => $announcements,
             ];
 
             return response()->json($data);
@@ -174,10 +177,14 @@ class AnnouncementController extends Controller
 
         //checks if user with role has canDeleteAnnouncement permission
         if ($canDeleteAnnouncement) {
+            $announcement = Announcement::findOrFail($id);
+            event(new AnnouncementUpdate($announcement));
             Announcement::destroy($id);
+            $announcements = Announcement::with(['user', 'media'])->channel($announcement)->orderBy('created_at')->get();
 
             $data = [
                 'message' => 'Successfully deleted announcement!',
+                'data' => $announcements,
             ];
 
             return response()->json($data);
