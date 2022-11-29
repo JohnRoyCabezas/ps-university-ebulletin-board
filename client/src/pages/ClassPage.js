@@ -10,7 +10,7 @@ import Comments from "../components/Comments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
-import {UserContext} from "../utils/UserContext";
+import { UserContext } from "../utils/UserContext";
 import { ClassListModal2 } from "../components/ClassListModal2";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -49,9 +49,9 @@ const ClassPage = () => {
 
     const channel = pusher.subscribe("chat");
     channel.bind("chat-update", function (data) {
-      ChatApi.fetchCourseChats(data.chat.course_id).then(res => {
-        setChats(res.data)
-      })
+      ChatApi.fetchCourseChats(data.chat.course_id).then((res) => {
+        setChats(res.data);
+      });
     });
   }, [classid, setChats]);
 
@@ -64,9 +64,9 @@ const ClassPage = () => {
     scrollToBottom();
   }, [chats]);
 
-  return loading? (
-      <LoadingSpinner />
-    ) : (
+  return loading ? (
+    <LoadingSpinner />
+  ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         {showModal && (
@@ -76,12 +76,15 @@ const ClassPage = () => {
             instructor={course?.instructor.user}
             students={course?.students}
             showModal={() => setShowModal(false)}
-          />)
-        }
+          />
+        )}
         <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
           <div className="flex">
-            <div><FontAwesomeIcon icon={faBook} className="mr-2" />{course?.course}</div>
-            {role === 2 && !loading &&
+            <div>
+              <FontAwesomeIcon icon={faBook} className="mr-2" />
+              {course?.course}
+            </div>
+            {role === 2 && !loading && (
               <button
                 type="button"
                 className={`p-2 ml-4 ${user.theme} float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-opacity-70 hover:shadow-lg focus:bg-opacity-90 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-opacity-90 active:shadow-lg transition duration-150 ease-in-out`}
@@ -90,22 +93,32 @@ const ClassPage = () => {
                 <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />
                 Edit
               </button>
-            }
+            )}
           </div>
           <button
             className={`border ${user.theme} border-gray-400 px-1 py-1 bg-opacity-10 hover:bg-opacity-20 rounded-md flex`}
             onClick={() => setShowModal(!showModal)}
           >
             <div className={`flex my-auto`}>
-              {course?.students?.map((student, index) => (
-                index < 3  ? <img
-                  onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360'}
-                  src={student?.user?.avatar}
-                  className={`rounded-md w-6 h-6 z-30 -translate-x-${index} border-gray-300`}
-                /> : ''
-              ))}
+              {course?.students?.map((student, index) =>
+                index < 3 ? (
+                  <img
+                    key={student?.user?.id}
+                    onError={(e) =>
+                      (e.target.src =
+                        "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
+                    }
+                    src={student?.user?.avatar}
+                    className={`rounded-md w-6 h-6 z-30 -translate-x-${index} border-gray-300`}
+                  />
+                ) : (
+                  ""
+                )
+              )}
             </div>
-            <span className="text-lg font-medium text-black px-2">{course?.students?.length}</span>
+            <span className="text-lg font-medium text-black px-2">
+              {course?.students?.length}
+            </span>
           </button>
         </h1>
         <div className="flex flex-col justify-between h-full">

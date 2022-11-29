@@ -1,4 +1,4 @@
-import { React, useEffect, useState, useContext } from "react";
+import { React, useEffect, useMemo, useRef, useState, useContext } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +18,7 @@ const CommentTextEditor = ({ chatId, commentId, isEditing, setIsEditing }) => {
   const [file, setFile] = useState();
   const [showModal, setShowModal] = useState(false);
   const { user } = useContext(UserContext);
+  const editor = useRef();
 
   useEffect(() => {
     commentId &&
@@ -26,8 +27,8 @@ const CommentTextEditor = ({ chatId, commentId, isEditing, setIsEditing }) => {
       });
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e, params) => {
+    e?.preventDefault();
     setStatus("pending");
     if (isEditing) {
       CommentApi.updateComment(params).then((res) => {
@@ -86,14 +87,46 @@ const CommentTextEditor = ({ chatId, commentId, isEditing, setIsEditing }) => {
       : setParams({ ...params, comment: e });
   };
 
+  const modules = useMemo(
+    () => ({
+      keyboard: {
+        bindings: {
+          custom: {
+            key: "enter",
+            shiftKey: false,
+            handler: (range, context) => {
+              !(
+                editor.current.value === "" ||
+                editor.current.value === "<p><br></p>"
+              ) &&
+                (isEditing
+                  ? handleSubmit(null, {
+                      updateComment: editor.current.value,
+                    })
+                  : handleSubmit(null, {
+                      comment: editor.current.value,
+                    }));
+            },
+          },
+        },
+      },
+    }),
+    []
+  );
+
   return (
     <div>
-      <form onSubmit={handleSubmit} className="rounded bg-white">
+      <form
+        onSubmit={(e) => handleSubmit(e, params)}
+        className="rounded bg-white"
+      >
         <ReactQuill
+          ref={editor}
           value={isEditing ? params?.updateComment : params?.comment}
           placeholder={"Write a chat message..."}
           onChange={handleChange}
           className="block bottom-0"
+          modules={modules}
         ></ReactQuill>
 
         <div className="flex justify-between rte p-2">
