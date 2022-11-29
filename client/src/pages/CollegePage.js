@@ -17,7 +17,6 @@ const CollegePage = () => {
   const [college, setCollege] = useState({});
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
-  const [isAlter, setIsAlter] = useState(false);
   const { theme } = useContext(UserContext).user;
   const {user} = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -27,20 +26,8 @@ const CollegePage = () => {
     announcementable_type: "App/Models/College",
   }
 
-  useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
-    });
-
-    const channel = pusher.subscribe('announcement-channel');
-    channel.bind('announcement-update', function (data) {
-      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-        setAnnouncements(res.data);
-      });
-    });
-  }, []);
-
-  useEffect(() => {
+   // Initial load
+   useEffect(() => {
     setLoading(true);
 
     const params = {
@@ -61,17 +48,28 @@ const CollegePage = () => {
     fetchData(params);
   }, [collegeid]);
 
-  useLayoutEffect(() => {
-    if (!isAlter) {
-      const lastDiv = document?.getElementById("announcementWrapper");
-      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
-      setIsAlter(false);
-    }
-    setIsAlter(false);
-  },
-    [announcements]
-  );
+  // Pusher update
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
 
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update', function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
+        setAnnouncements(res.data);
+      });
+    });
+  }, []); 
+
+  // Scroll effect 
+  useLayoutEffect(() => {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollHeight*.90 < lastDiv?.scrollTop+1000 || lastDiv?.scrollTop == 0 ?
+      lastDiv?.scrollTo({top: lastDiv?.scrollHeight+1000, behavior:'smooth'})
+      :
+      console.log('')
+  }, [announcements]);
 
   function setThreadValue(value) {
     setThread(value);
@@ -107,7 +105,6 @@ const CollegePage = () => {
                 setValue={setThreadValue}
                 handleRefresh={() => handleRefresh()}
                 setAnnouncementThread={setAnnouncementThread}
-                isAlter={() => setIsAlter(true)}
                 threadOpen={isThread}
               />
             ))}

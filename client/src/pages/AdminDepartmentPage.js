@@ -1,4 +1,4 @@
-import { React, useEffect, useState, useContext } from "react";
+import { React, useEffect, useLayoutEffect, useState, useContext } from "react";
 import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";
 import Thread from "../components/Thread";
@@ -21,6 +21,7 @@ const AdminDepartment = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [department, setDepartment] = useState();
   const [loading, setLoading] = useState(true);
+  const [initScroll, setInitScroll] = useState(false);
   const params = {
     announcementable_id: departmentid,
     announcementable_type: "App/Models/Department",
@@ -30,27 +31,17 @@ const AdminDepartment = () => {
     setThread(value);
   }
 
-  useEffect(() => {
-    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
-      cluster: "ap1",
-    });
+    // Initial Load
+    useEffect(() => {
+      setInitScroll(false)
+      setLoading(true);
 
-    const channel = pusher.subscribe("announcement-channel");
-    channel.bind("announcement-update", function (data) {
-      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-        setAnnouncements(res.data);
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async() => {
+    const fetchData = async () => {
       const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
       const department = await DepartmentApi.fetchSpecificDepartment(departmentid);
 
       setAnnouncements(announcements.data);
+      setInitScroll(true)
       setDepartment(department.data);
       setLoading(false);
     }
@@ -58,19 +49,36 @@ const AdminDepartment = () => {
     fetchData();
   }, [departmentid]);
 
+  // Pusher update
   useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv?.scrollTo(0, lastDiv.scrollHeight);
-  }, [announcements]);
-
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
     });
-  }
-  return loading? (
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update',
+      function (data) {
+        AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
+          (res) => {
+            setAnnouncements(res?.data);
+          }
+        );
+        setInitScroll(false);
+      });
+  }, []);
+
+  // Scroll effect
+  useLayoutEffect(() => {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollHeight * .90 < lastDiv?.scrollTop + 1000 || lastDiv?.scrollTop == 0 ?
+        lastDiv?.scrollTo({ top: lastDiv?.scrollHeight+1000, behavior: 'smooth' })
+        :
+        console.log('')
+  }, [params]);
+
+  return loading ? (
       <LoadingSpinner />
-    ) : (
+    ) :  (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full text-gray-800">
         <div className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
@@ -94,16 +102,15 @@ const AdminDepartment = () => {
                 key={announcement.id.toString()}
                 userRole={"admin"}
                 announcement={announcement}
-                handleRefresh={() => handleRefresh()}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
                 threadOpen={isThread}
               />
             ))}
           </div>
+
           <div className="p-2 rounded-3xl">
             <RichTextEditor
-              handleRefresh={() => handleRefresh()}
               params={params}
             />
           </div>

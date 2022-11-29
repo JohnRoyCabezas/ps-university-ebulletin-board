@@ -8,7 +8,6 @@ import RichTextEditor from "../components/RichTextEditor";
 import "../index.css";
 import { UserContext } from "../utils/UserContext";
 import "../index.css";
-import { ThemeContext } from "./ThemeContext";
 
 export default function AnnouncementCard(props) {
   const [isShown, setIsShown] = useState(false);
@@ -21,7 +20,6 @@ export default function AnnouncementCard(props) {
 
   function handleEdit(id) {
     setId(id);
-    props.isAlter();
     AnnouncementApi.fetchSpecificAnnouncement(id).then((res) => {
       setParams(res.data);
     });
@@ -30,7 +28,6 @@ export default function AnnouncementCard(props) {
 
   function isChange(value) {
     setIsEdit(value);
-    props.handleRefresh();
   }
 
   function setThreadValue(value) {
@@ -52,8 +49,8 @@ export default function AnnouncementCard(props) {
     return user?.role_user?.role_id === 2
       ? true
       : user?.role_user?.role_id === 4
-      ? user?.id === props.announcement.user_id
-      : false;
+        ? user?.id === props.announcement.user_id
+        : false;
   }
 
   return (
@@ -69,8 +66,8 @@ export default function AnnouncementCard(props) {
         >
           <img
             onError={(e) =>
-              (e.target.src =
-                "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
+            (e.target.src =
+              "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
             }
             className={`mr-3 w-11 h-11 rounded-full ${theme} bg-opacity-70`}
             src={props?.announcement?.user?.avatar}
@@ -93,7 +90,6 @@ export default function AnnouncementCard(props) {
                     cancel={cancel}
                     isEdit={isEdit}
                     isChange={(value) => isChange(value)}
-                    handleRefresh={() => props.handleRefresh()}
                     id={id}
                     params={params}
                   />
@@ -134,10 +130,8 @@ export default function AnnouncementCard(props) {
               <AdminMessageOptions
                 id={props.announcement.id}
                 cancel={cancel}
-                handleRefresh={props.handleRefresh}
                 handleEdit={(id) => handleEdit(id)}
                 setValue={setThreadValue}
-                handleDelete={props.isAlter}
               />
             ))}
         </div>

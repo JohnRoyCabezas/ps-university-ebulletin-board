@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState } from 'react';
+import { React, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import Thread from "../components/Thread";
 import AnnouncementApi from '../api/AnnouncementApi';
@@ -17,7 +17,7 @@ const DepartmentPage = () => {
   const [isThread, setThread] = useState(false);
   const [department, setDepartment] = useState({});
   const [announcements, setAnnouncements] = useState([]);
-  const [announcementThread, setAnnouncementThread] = useState()
+  const [announcementThread, setAnnouncementThread] = useState();
   const {user} = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const params =
@@ -26,6 +26,23 @@ const DepartmentPage = () => {
     announcementable_type: "App/Models/Department",
   }
 
+    // Initial Load
+    useEffect(() => {
+      setLoading(true);
+  
+      const fetchData = async() => {
+        const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
+        const department = await DepartmentApi.fetchSpecificDepartment(departmentid);
+  
+        setAnnouncements(announcements.data);
+        setDepartment(department.data);
+        setLoading(false);
+      }
+  
+      fetchData();
+    }, [departmentid]);
+
+  //Pusher Update
   useEffect(() => {
     const pusher = new Pusher('6d32a294e8e6b327e3c5', {
       cluster: 'ap1',
@@ -44,46 +61,14 @@ const DepartmentPage = () => {
     setThread(value);
   }
 
-  useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
-    });
-
-    const channel = pusher.subscribe('announcement-channel');
-    channel.bind('announcement-update', function (data) {
-      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async() => {
-      const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
-      const department = await DepartmentApi.fetchSpecificDepartment(departmentid);
-
-      setAnnouncements(announcements.data);
-      setDepartment(department.data);
-      setLoading(false);
-    }
-
-    fetchData();
-  }, [departmentid]);
-
-  useEffect(() => {
-    const lastDiv = document.getElementById("announcementWrapper");
-    lastDiv?.scrollTo(0, lastDiv.scrollHeight)
-  }, [announcements])
-
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then(
-      (res) => {
-        setAnnouncements(res.data);
-      }
-    );
-  }
+  // Scroll effect 
+  useLayoutEffect(() => {
+      const lastDiv = document?.getElementById("announcementWrapper");
+      lastDiv?.scrollHeight*.90 < lastDiv?.scrollTop+1000 || lastDiv?.scrollTop == 0 ?
+      lastDiv?.scrollTo({top: lastDiv?.scrollHeight+1000, behavior:'smooth'})
+      :
+      console.log('here')
+  }, [announcements]);
 
   return loading ? (
       <LoadingSpinner />
@@ -104,7 +89,6 @@ const DepartmentPage = () => {
                     key={announcement.id.toString()}
                     userRole={'student'}
                     announcement={announcement}
-                    handleRefresh={() => handleRefresh()}
                     setValue={setThreadValue}
                     setAnnouncementThread={setAnnouncementThread}
                     threadOpen = {isThread}
@@ -114,7 +98,6 @@ const DepartmentPage = () => {
           {
           (user?.role_user?.role_id === 1 ? '' : <div className="p-2 rounded-3xl">
           <RichTextEditor
-            handleRefresh={() => handleRefresh()}
             params={params}
           />
         </div>)

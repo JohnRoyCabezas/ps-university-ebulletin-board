@@ -20,9 +20,9 @@ export default function AdminMessageOptions(props) {
   }
 
   function confirmDelete() {
-    AnnouncementApi.deleteAnnouncement(props.id);
+    AnnouncementApi.deleteAnnouncement(props.id).then((res) => {
     props.handleRefresh();
-    props.handleDelete()
+    })
   }
 
   function buttonHandler() {

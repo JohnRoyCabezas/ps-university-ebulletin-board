@@ -36,7 +36,6 @@ export default function NavBar(props) {
       formData.append("_method", "POST");
       ThreadApi.createThreadMessage({ formData }).then((res) => {
         setAnnouncement("");
-        props.handleRefresh(res.data);
         setButtonState(false);
         setFile();
       });
@@ -62,8 +61,8 @@ export default function NavBar(props) {
       formData.append("_method", "POST");
       AnnouncementApi.createAnnouncement({ formData }).then((res) => {
         setAnnouncement("");
-        props.handleRefresh(res.data.announcement);
         setButtonState(false);
+        props.initScroll(true)
         setFile();
       });
     }
@@ -75,13 +74,13 @@ export default function NavBar(props) {
       ThreadApi.updateSpecificThread(
         { thread_message: announcement },
         props.id
-      ).then(() => {
+      ).then((res) => {
         props.isChange(false);
       });
     } else {
       AnnouncementApi.updateSpecificAnnouncement(props.id, {
         announcement_update: announcement,
-      }).then(() => {
+      }).then((res) => {
         props.isChange(false);
       });
     }
@@ -186,11 +185,10 @@ export default function NavBar(props) {
                 <button
                   type="button"
                   onClick={() => handleEdit()}
-                  className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${
-                    editState
+                  className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${editState
                       ? "bg-blue-700 hover:bg-blue-800"
                       : "bg-gray-300 text-gray-400"
-                  }`}
+                    }`}
                   disabled={!editState}
                 >
                   {!buttonState ? (
@@ -208,11 +206,10 @@ export default function NavBar(props) {
             </>
           ) : (
             <button
-              className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-2 mb-2 ${
-                !announcement || announcement === "<p><br></p>" || buttonState
+              className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mr-2 mb-2 ${!announcement || announcement === "<p><br></p>" || buttonState
                   ? "bg-gray-300"
                   : "bg-blue-700 dark:bg-background dark:hover:bg-secondary-background hover:bg-hover-back"
-              }`}
+                }`}
               disabled={
                 !announcement || announcement === "<p><br></p>" || buttonState
                   ? true
