@@ -44,12 +44,9 @@ export default function AnnouncementCard(props) {
   return (
     <div>
       <div
-        className="relative flex w-full px-6 py-4"
+        className="relative flex w-full px-6 py-4 hover:bg-gray-200"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
-        style={{
-          backgroundColor: isShown ? "#EAE8E8" : "",
-        }}
       >
         <img
           onError={(e) =>
