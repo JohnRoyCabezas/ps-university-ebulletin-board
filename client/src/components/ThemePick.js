@@ -3,7 +3,7 @@ import SettingsApi from "../api/ChangePasswordApi";
 import { UserContext } from "../utils/UserContext";
 
 const ThemePick = () => {
-    const {user,setTheme} = useContext(UserContext)
+    const { user, setTheme } = useContext(UserContext)
     const { theme } = user;
 
     useEffect(() => {
@@ -22,7 +22,15 @@ const ThemePick = () => {
                                 <div className="flex justify-center bg-regal-blue bg-opacity-60 py-2"> </div>
                                 <div className="flex justify-center bg-regal-blue bg-opacity-40 py-2"> </div>
                                 <div className="flex justify-center py-1">
-                                    <input id="default-radio-1" type="radio" onClick={() => setTheme('bg-regal-blue')} value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2" />
+                                    <input
+                                        id="default-radio-1"
+                                        type="radio"
+                                        onChange={() => setTheme('bg-regal-blue')}
+                                        value=""
+                                        name="default-radio"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2"
+                                        checked={theme === 'bg-regal-blue' ? true : false}
+                                    />
                                     <label htmlFor="default-radio-1" className="ml-2 text-sm font-medium text-gray-900"> #162750 </label>
                                 </div>
                             </div>
@@ -33,7 +41,15 @@ const ThemePick = () => {
                                 <div className="flex justify-center bg-primary-100 bg-opacity-60 py-2"> </div>
                                 <div className="flex justify-center bg-primary-100 bg-opacity-40 py-2"> </div>
                                 <div className="flex justify-center py-1">
-                                    <input id="default-radio-2" type="radio" onClick={() => setTheme('bg-primary-100')} value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2" />
+                                    <input
+                                        id="default-radio-2"
+                                        type="radio"
+                                        onChange={() => setTheme('bg-primary-100')}
+                                        value=""
+                                        name="default-radio"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2"
+                                        checked={theme === 'bg-primary-100' ? true : false}
+                                    />
                                     <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium text-gray-900"> #85586F </label>
                                 </div>
                             </div>
@@ -44,7 +60,15 @@ const ThemePick = () => {
                                 <div className="flex justify-center bg-secondary-100 bg-opacity-60 py-2"> </div>
                                 <div className="flex justify-center bg-secondary-100 bg-opacity-40 py-2"> </div>
                                 <div className="flex justify-center py-1">
-                                    <input id="default-radio-3" type="radio" onClick={() => setTheme('bg-secondary-100')} value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2" />
+                                    <input
+                                        id="default-radio-3"
+                                        type="radio"
+                                        onChange={() => setTheme('bg-secondary-100')}
+                                        value=""
+                                        name="default-radio"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2"
+                                        checked={theme === 'bg-secondary-100' ? true : false}
+                                    />
                                     <label htmlFor="default-radio-3" className="ml-2 text-sm font-medium text-gray-900"> #4C0033 </label>
                                 </div>
                             </div>
@@ -55,7 +79,15 @@ const ThemePick = () => {
                                 <div className="flex justify-center bg-tertiary-100 bg-opacity-60 py-2"> </div>
                                 <div className="flex justify-center bg-tertiary-100 bg-opacity-40 py-2"> </div>
                                 <div className="flex justify-center py-1">
-                                    <input id="default-radio-4" type="radio" onClick={() => setTheme('bg-tertiary-100')} value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2" />
+                                    <input
+                                        id="default-radio-4"
+                                        type="radio"
+                                        onChange={() => setTheme('bg-tertiary-100')}
+                                        value=""
+                                        name="default-radio"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2"
+                                        checked={theme === 'bg-tertiary-100' ? true : false}
+                                    />
                                     <label htmlFor="default-radio-4" className="ml-2 text-sm font-medium text-gray-900"> #371B58 </label>
                                 </div>
                             </div>
@@ -66,7 +98,15 @@ const ThemePick = () => {
                                 <div className="flex justify-center bg-quinary-100 bg-opacity-60 py-2"> </div>
                                 <div className="flex justify-center bg-quinary-100 bg-opacity-40 py-2 px-auto"> </div>
                                 <div className="flex justify-center py-1 mx-auto">
-                                    <input id="default-radio-5" type="radio" onClick={() => setTheme('bg-quinary-100')} value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2" />
+                                    <input
+                                        id="default-radio-5"
+                                        type="radio"
+                                        onChange={() => setTheme('bg-quinary-100')}
+                                        value=""
+                                        name="default-radio"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2"
+                                        checked={theme === 'bg-quinary-100' ? true : false}
+                                    />
                                     <label htmlFor="default-radio-5" className="ml-2 text-sm font-medium text-gray-900"> #371B58 </label>
                                 </div>
                             </div>
@@ -77,7 +117,15 @@ const ThemePick = () => {
                                 <div className="flex justify-center bg-senary-100 bg-opacity-60 py-2"> </div>
                                 <div className="flex justify-center bg-senary-100 bg-opacity-40 py-2"> </div>
                                 <div className="flex justify-center py-1">
-                                    <input id="default-radio-6" type="radio" onClick={() => setTheme('bg-senary-100')} value="" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2" />
+                                    <input
+                                        id="default-radio-6"
+                                        type="radio"
+                                        onChange={() => setTheme('bg-senary-100')}
+                                        value=""
+                                        name="default-radio"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2"
+                                        checked={theme === 'bg-senary-100' ? true : false}
+                                    />
                                     <label htmlFor="default-radio-6" className="ml-2 text-sm font-medium text-gray-900"> #371B58 </label>
                                 </div>
                             </div>

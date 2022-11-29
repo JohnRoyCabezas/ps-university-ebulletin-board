@@ -1,4 +1,4 @@
-import { React, useEffect, useLayoutEffect, useState } from 'react';
+import { React, useEffect, useLayoutEffect, useState, useContext } from 'react';
 import AnnouncementCard from '../components/AnnouncementCard';
 import RichTextEditor from '../components/RichTextEditor';
 import AnnouncementApi from '../api/AnnouncementApi';
@@ -12,10 +12,12 @@ import {
   faPenSquare
 } from '@fortawesome/free-solid-svg-icons';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { UserContext } from '../utils/UserContext';
 
 const AdminCollegePage = () => {
   const navigate = useNavigate();
   const { collegeid } = useParams();
+  const {theme} = useContext(UserContext).user;
   const [isThread, setThread] = useState(false);
   const [announcements, setAnnouncements] = useState({});
   const [announcementThread, setAnnouncementThread] = useState()
@@ -81,7 +83,7 @@ const AdminCollegePage = () => {
           </div>
           <button
             type="button"
-            className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            className={`p-2 ml-4 ${theme} bg-opacity-90 float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-opacity-100 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out`}
             onClick={() => {
               navigate("/editcollege", { state: { collegeid: collegeid } });
             }}

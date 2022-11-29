@@ -75,14 +75,14 @@ const DepartmentPage = () => {
     ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 text-lg bg-white border-b-2">
+        <h1 className="absolute top-0 z-50 w-full font-bold p-3 h-14 text-lg bg-white border-b-2">
         <div className="truncate">
             <FontAwesomeIcon icon={faBuilding} className="mr-2" />
             {department?.department}
           </div>
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id='announcementWrapper' className="mt-12 overflow-y-auto">
+          <div id='announcementWrapper' className="mt-14 overflow-y-auto">
             {
               announcements.map((announcement) => (
                 <AnnouncementCard

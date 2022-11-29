@@ -1,4 +1,4 @@
-import { React, useEffect, useLayoutEffect, useState } from "react";
+import { React, useEffect, useLayoutEffect, useState, useContext } from "react";
 import AnnouncementCard from "../components/AnnouncementCard";
 import RichTextEditor from "../components/RichTextEditor";
 import Thread from "../components/Thread";
@@ -10,10 +10,12 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 import Pusher from "pusher-js";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { UserContext } from "../utils/UserContext";
 
 const AdminDepartment = () => {
   const { departmentid } = useParams();
   const navigate = useNavigate();
+  const {user} = useContext(UserContext);
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState([]);
@@ -86,7 +88,7 @@ const AdminDepartment = () => {
           </div>
           <button
             type="button"
-            className="p-2 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            className={`p-2 ml-4 ${user.theme} bg-opacity-90 float-right text-white font-medium  text-xs leading-tight uppercase rounded shadow-md hover:bg-opacity-100 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out`}
             onClick={() => navigate(`/editdepartment/${departmentid}`)}
           >
             <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />

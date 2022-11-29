@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import AuthApi from "../api/AuthApi";
-import UserApi from "../api/UserApi";
 import Cookies from "js-cookie";
 import { UserContext } from "../utils/UserContext";
 import AdminSettingsModal from './AdminSettingsModal';
@@ -76,9 +75,10 @@ const AdminSidebar = () => {
             }`}
           >
             {university?.university}
-            <div className="group-hover:visible invisible absolute w-3/4 whitespace-pre-wrap rounded shadow-inner border border-slate-500 p-2 right-1/2 top-1/3 translate-x-1/2 translate-y-1/2 bg-slate-800 text-sm font-light z-50">
-              {university?.university}
-            </div>
+            <div className={`group-hover:visible invisible w-full group-hover:delay-200 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 group-hover:translate-x-3 group-hover:transition group-hover:ease-in-out group-hover:duration-700 absolute z-50`}>
+                <div className={`w-fit absolute py-3 left-0 text-center whitespace-pre-wrap rounded shadow-inner absolute transition ease-in-out delay-300 group-hover:delay-200 group-hover:scale-120 duration-200 border border-slate-500 group-hover:bg-opacity-80 ${theme} group-hover:bg-opacity-90 group-hover:text-white px-3 text-base font-normal z-50`}>{university?.university}</div>
+
+              </div>
           </Link>
 
           <div className="flex ml-2">
