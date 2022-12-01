@@ -64,9 +64,9 @@ export default function AnnouncementCard(props) {
               <i>{moment(props?.thread?.created_at).fromNow()}</i>
             </span>
           </div>
-          <div>
+          <div className="flex w-full">
             {isEdit ? (
-              <div className="rounded bg-white w-full">
+              <div className="rounded bg-white">
                 <RichTextEditor
                   isEdit={isEdit}
                   isChange={(value) => isChange(value)}
