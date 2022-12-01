@@ -147,6 +147,7 @@ export default function NavBar(props) {
     <div className="w-full">
       <form onSubmit={(e) => handleSubmit(e, announcement)}>
         <ReactQuill
+          readOnly={buttonState}
           ref={editor}
           theme="snow"
           placeholder={"Write a comment..."}
