@@ -62,7 +62,6 @@ export default function NavBar(props) {
       AnnouncementApi.createAnnouncement({ formData }).then((res) => {
         setAnnouncement("");
         setButtonState(false);
-        props.initScroll(true)
         setFile();
       });
     }
@@ -121,7 +120,7 @@ export default function NavBar(props) {
   };
 
   return (
-    <div>
+    <div className="w-full ">
       <form onSubmit={handleSubmit}>
         <ReactQuill
           theme="snow"
@@ -131,7 +130,7 @@ export default function NavBar(props) {
           className="block bottom-0"
         ></ReactQuill>
 
-        <div className="flex justify-between rte mb-1 p-2 h-14">
+        <div className="flex justify-between rte mb-1 p-2 h-fit">
           <div className="flex">
             <Dropzone
               onDrop={(acceptedFiles) => handleFileSubmit(acceptedFiles)}
@@ -145,19 +144,33 @@ export default function NavBar(props) {
                       icon={faPaperclip}
                       size="2x"
                       color="#162750"
+                      data-tip={
+                        props.type === "university_thread"
+                          ? "Drag and drop files here"
+                          : null
+                      }
                     />
+                    <ReactTooltip />
                     {!file ? (
-                      <div className="flex mt-2">
-                        <p className="mx-2">Drag and drop files here</p>
-                      </div>
+                      props.type !== "university_thread" && (
+                        <div className="flex m-auto">
+                          <p className="mx-2">Drag and drop files here</p>
+                        </div>
+                      )
                     ) : (
-                      <div className="flex mt-2">
+                      <div className="flex flex-wrap m-auto">
                         <p className="mx-2">Number of files: {file.length}</p>
                         {file.map((file) => (
-                          <div className="flex mr-4" key={file.name}>
-                            <p data-tip={file.name}>{truncate(file.name)}</p>
+                          <>
+                            <p
+                              className="flex mr-4"
+                              key={file.name}
+                              data-tip={file.name}
+                            >
+                              {truncate(file.name)}
+                            </p>
                             <ReactTooltip />
-                          </div>
+                          </>
                         ))}
                         <button
                           className={`text-white w-12 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 mb-2 bg-red-700 dark:bg-background dark:hover:bg-secondary-background hover:bg-hover-back`}
@@ -174,21 +187,22 @@ export default function NavBar(props) {
           </div>
           {props.isEdit ? (
             <>
-              <div>
+              <div className="flex ml-2">
                 <button
                   type="button"
                   onClick={() => props.cancel()}
-                  className="text-gray-900 bg-white hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  className="text-gray-900 bg-white hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={() => handleEdit()}
-                  className={`text-white w-20 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${editState
+                  className={`text-white w-20 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${
+                    editState
                       ? user.theme + " bg-opacity-80 hover:bg-opacity-90"
                       : "bg-gray-300 text-gray-400"
-                    }`}
+                  }`}
                   disabled={!editState}
                 >
                   {!buttonState ? (
@@ -206,10 +220,12 @@ export default function NavBar(props) {
             </>
           ) : (
             <button
-              className={`text-white w-20 font-medium rounded-lg text-sm px-5 mr-2 mb-2 ${!announcement || announcement === "<p><br></p>" || buttonState
+              className={`text-white w-20 font-medium rounded-lg text-sm px-5 mr-2 mb-2 ${
+                !announcement || announcement === "<p><br></p>" || buttonState
                   ? "bg-gray-300"
-                  : user.theme + " bg-opacity-80 hover:bg-opacity-90 hover:bg-hover-back"
-                }`}
+                  : user.theme +
+                    " bg-opacity-80 hover:bg-opacity-90 hover:bg-hover-back"
+              }`}
               disabled={
                 !announcement || announcement === "<p><br></p>" || buttonState
                   ? true

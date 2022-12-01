@@ -44,12 +44,9 @@ export default function AnnouncementCard(props) {
   return (
     <div>
       <div
-        className="relative flex w-full px-6 py-4"
+        className="relative flex w-full px-6 py-4 hover:bg-gray-200"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
-        style={{
-          backgroundColor: isShown ? "#EAE8E8" : "",
-        }}
       >
         <img
           onError={(e) =>
@@ -67,9 +64,9 @@ export default function AnnouncementCard(props) {
               <i>{moment(props?.thread?.created_at).fromNow()}</i>
             </span>
           </div>
-          <div>
+          <div className="flex w-full">
             {isEdit ? (
-              <div className="rounded bg-white w-full">
+              <div className="rounded bg-white">
                 <RichTextEditor
                   isEdit={isEdit}
                   isChange={(value) => isChange(value)}

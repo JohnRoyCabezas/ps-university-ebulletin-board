@@ -15,7 +15,7 @@ import { UserContext } from "../utils/UserContext";
 const AdminDepartment = () => {
   const { departmentid } = useParams();
   const navigate = useNavigate();
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState([]);
@@ -31,54 +31,60 @@ const AdminDepartment = () => {
     setThread(value);
   }
 
-    // Initial Load
-    useEffect(() => {
-      setInitScroll(false)
-      setLoading(true);
+  // Initial Load
+  useEffect(() => {
+    setInitScroll(false);
+    setLoading(true);
 
     const fetchData = async () => {
-      const announcements = await AnnouncementApi.fetchChannelAnnouncements(params);
-      const department = await DepartmentApi.fetchSpecificDepartment(departmentid);
+      const announcements = await AnnouncementApi.fetchChannelAnnouncements(
+        params
+      );
+      const department = await DepartmentApi.fetchSpecificDepartment(
+        departmentid
+      );
 
       setAnnouncements(announcements.data);
-      setInitScroll(true)
+      setInitScroll(true);
       setDepartment(department.data);
       setLoading(false);
-    }
+    };
 
     fetchData();
   }, [departmentid]);
 
   // Pusher update
   useEffect(() => {
-    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
-      cluster: 'ap1',
+    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
+      cluster: "ap1",
     });
 
-    const channel = pusher.subscribe('announcement-channel');
-    channel.bind('announcement-update',
-      function (data) {
-        AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
-          (res) => {
-            setAnnouncements(res?.data);
-          }
-        );
-        setInitScroll(false);
-      });
+    const channel = pusher.subscribe("announcement-channel");
+    channel.bind("announcement-update", function (data) {
+      AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
+        (res) => {
+          setAnnouncements(res?.data);
+        }
+      );
+      setInitScroll(false);
+    });
   }, []);
 
   // Scroll effect
   useLayoutEffect(() => {
-      const lastDiv = document?.getElementById("announcementWrapper");
-      lastDiv?.scrollHeight * .90 < lastDiv?.scrollTop + 1000 || lastDiv?.scrollTop == 0 ?
-        lastDiv?.scrollTo({ top: lastDiv?.scrollHeight+1000, behavior: 'smooth' })
-        :
-        lastDiv?.scrollTo({top: lastDiv?.scrollTop, behavior:'smooth'})
+    const lastDiv = document?.getElementById("announcementWrapper");
+    lastDiv?.scrollHeight * 0.9 < lastDiv?.scrollTop + 1000 ||
+    lastDiv?.scrollTop == 0
+      ? lastDiv?.scrollTo({
+          top: lastDiv?.scrollHeight + 1000,
+          behavior: "smooth",
+        })
+      : lastDiv?.scrollTo({ top: lastDiv?.scrollTop, behavior: "smooth" });
   }, [params]);
 
   return loading ? (
-      <LoadingSpinner />
-    ) :  (
+    <LoadingSpinner />
+  ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full text-gray-800">
         <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
@@ -96,7 +102,7 @@ const AdminDepartment = () => {
           </button>
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
+          <div id="announcementWrapper" className="pt-20 overflow-y-auto">
             {announcements.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
@@ -104,15 +110,14 @@ const AdminDepartment = () => {
                 announcement={announcement}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
+                announcementThread={announcementThread}
                 threadOpen={isThread}
               />
             ))}
           </div>
 
           <div className="p-2 rounded-3xl">
-            <RichTextEditor
-              params={params}
-            />
+            <RichTextEditor params={params} />
           </div>
         </div>
       </div>

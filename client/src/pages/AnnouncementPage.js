@@ -11,7 +11,7 @@ const AnnouncementPage = () => {
   const [announcementThread, setAnnouncementThread] = useState();
   const [isThread, setThread] = useState(false);
   const [isAlter, setIsAlter] = useState(false);
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const params = {
     announcementable_id: user.university_id,
@@ -61,23 +61,26 @@ const AnnouncementPage = () => {
 }, [announcements]);
 
   return loading ? (
-      <LoadingSpinner />
-    ) : (
+    <LoadingSpinner />
+  ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
-        <div className={`absolute top-0 z-30 w-full h-14 font-bold flex justify-between p-2 bg-white bg-opacity-10 font-weight-bold border-b-2`}>
+        <div
+          className={`absolute top-0 z-30 w-full h-14 font-bold flex justify-between p-2 bg-white font-weight-bold border-b-2`}
+        >
           {/* <span className="text-lg">{4 > 5 && 21 < 20 ? "🌞" : "🌙"} {time.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}</span> */}
           <h1> Announcements</h1>
           {/* <span className="botton-0 mr-6 text-sm font-normal">📆 <span className="italic">{time.toLocaleString([], {month: 'long', day: '2-digit'})}, {time.getFullYear()}</span></span> */}
         </div>
         <div className="flex flex-col justify-between h-full">
-          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
+          <div id="announcementWrapper" className="pt-20 overflow-y-auto">
             {announcements.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
                 userRole={"student"}
                 announcement={announcement}
                 setValue={setThreadValue}
+                announcementThread={announcementThread}
                 setAnnouncementThread={setAnnouncementThread}
                 threadOpen={isThread}
                 isAlter={() => setIsAlter(true)}
