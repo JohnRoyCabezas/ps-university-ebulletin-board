@@ -57,7 +57,7 @@ export default function AnnouncementCard(props) {
     <>
       <div>
         <div
-          className="relative flex shadow-lg bg-white w-full border-b-2 p-6"
+          className="relative flex shadow-lg bg-white w-full border-b-2 mx-auto p-6"
           onMouseEnter={() => setIsShown(true)}
           onMouseLeave={() => setIsShown(false)}
           style={{
@@ -82,7 +82,7 @@ export default function AnnouncementCard(props) {
                 <i>{moment(props?.announcement?.created_at).fromNow()}</i>
               </span>
             </div>
-            <div>
+            <div className="w-full min-w-min">
               {isEdit ? (
                 <div className="rounded w-[75vw] bg-white">
                   <RichTextEditor

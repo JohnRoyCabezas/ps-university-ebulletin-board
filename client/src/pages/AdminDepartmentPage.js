@@ -81,7 +81,7 @@ const AdminDepartment = () => {
     ) :  (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full text-gray-800">
-        <div className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
           <div className="truncate">
             <FontAwesomeIcon icon={faBuilding} className="mr-2" />
             {department?.department}
@@ -94,7 +94,7 @@ const AdminDepartment = () => {
             <FontAwesomeIcon icon={faPenToSquare} className="mr-1" />
             Edit
           </button>
-        </div>
+        </h1>
         <div className="flex flex-col justify-between h-full">
           <div id="announcementWrapper" className="mt-12 overflow-y-auto">
             {announcements.map((announcement) => (
