@@ -1,4 +1,4 @@
-import { React, useEffect, useState, useContext } from "react";
+import { React, useEffect, useMemo, useRef, useState, useContext } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +17,7 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const [file, setFile] = useState();
   const [showModal, setShowModal] = useState(false);
   const { user } = useContext(UserContext);
+  const editor = useRef();
 
   useEffect(() => {
     chatid &&
@@ -25,8 +26,8 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
       });
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e, params) => {
+    e?.preventDefault();
     setStatus("pending");
     if (isEditing) {
       ChatApi.updateChat(params.updateChat, chatid).then((res) => {
@@ -85,14 +86,47 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
       : setParams({ ...params, chat: e });
   };
 
+  const modules = useMemo(
+    () => ({
+      keyboard: {
+        bindings: {
+          custom: {
+            key: "enter",
+            shiftKey: false,
+            handler: (range, context) => {
+              !(
+                editor.current.value === "" ||
+                editor.current.value === "<p><br></p>"
+              ) &&
+                (isEditing
+                  ? handleSubmit(null, {
+                      updateChat: editor.current.value,
+                    })
+                  : handleSubmit(null, {
+                      chat: editor.current.value,
+                    }));
+            },
+          },
+        },
+      },
+    }),
+    []
+  );
+
   return (
     <div>
-      <form onSubmit={handleSubmit} className="rounded bg-white">
+      <form
+        onSubmit={(e) => handleSubmit(e, params)}
+        className="rounded bg-white"
+      >
         <ReactQuill
+          ref={editor}
+          readOnly={status === "pending"}
           value={isEditing ? params?.updateChat : params.chat}
           placeholder={"Write a chat message..."}
           onChange={handleChange}
           className="block bottom-0"
+          modules={modules}
         ></ReactQuill>
 
         <div className="flex justify-between rte p-2">
