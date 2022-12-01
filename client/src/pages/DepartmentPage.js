@@ -75,7 +75,7 @@ const DepartmentPage = () => {
     ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
-        <h1 className="absolute top-0 z-50 w-full font-bold p-3 h-14 text-lg bg-white border-b-2">
+        <h1 className="absolute top-0 z-40 w-full font-bold p-3 h-14 text-lg bg-white border-b-2">
         <div className="truncate">
             <FontAwesomeIcon icon={faBuilding} className="mr-2" />
             {department?.department}

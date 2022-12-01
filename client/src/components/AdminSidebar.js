@@ -7,20 +7,22 @@ import AdminSettingsModal from './AdminSettingsModal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faGear, faBars } from "@fortawesome/free-solid-svg-icons";
 import CollegeCard from "./CollegeCard";
+import useWindowDimensions from "./screenResize";
 
 const AdminSidebar = () => {
-  const {user, logout} = useContext(UserContext);
-  const {theme} = user;
+  const { height, width } = useWindowDimensions();
+  const { user, logout } = useContext(UserContext);
+  const { theme } = user;
   const [userData, setUserData] = useState(user);
   const [showSidebar, setShowSidebar] = useState(true);
   const [adminSettingsModal, setAdminSettingsModal] = useState(false);
-  const initial = {type: "", id: 0}
+  const initial = { type: "", id: 0 }
   const [active, setActive] = useState(initial);
 
   const navigate = useNavigate();
-  const {collegeid, departmentid, classid} = useParams();
+  const { collegeid, departmentid, classid } = useParams();
 
-  useEffect(()=> {
+  useEffect(() => {
     setUserData(user)
   }, [user])
 
@@ -29,11 +31,11 @@ const AdminSidebar = () => {
 
   useEffect(() => {
     if (!!classid) {
-      setActive({type: "class", id: classid});
+      setActive({ type: "class", id: classid });
     } else if (!!departmentid) {
-      setActive({type: "department", id: departmentid});
+      setActive({ type: "department", id: departmentid });
     } else if (!!collegeid) {
-      setActive({type: "college", id: collegeid})
+      setActive({ type: "college", id: collegeid })
     } else {
       setActive(initial)
     }
@@ -50,43 +52,44 @@ const AdminSidebar = () => {
     });
   };
 
+  useEffect(() => {
+    width < 1000 ? setShowSidebar(false) : setShowSidebar(true);
+  }, [width, height]);
+
   return (
     <div className="flex w-full h-screen">
       {
         adminSettingsModal && <div className="z-1">
-        <AdminSettingsModal
-          university = {university?.university}
-          setShowModal = {setAdminSettingsModal}
-        ></AdminSettingsModal></div>
+          <AdminSettingsModal
+            university={university?.university}
+            setShowModal={setAdminSettingsModal}
+          ></AdminSettingsModal></div>
       }
       {/* sidebar content */}
       <nav
         id="sidebar"
-        className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in ${theme} bg-opacity-90 duration-300 text-gray-300 w-60 ${
-          !showSidebar && "-ml-184px transition-all ease-in"
-        }`}
+        className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in ${theme} bg-opacity-90 duration-300 text-gray-300 w-60 ${!showSidebar && "-ml-184px transition-all ease-in"
+          }`}
       >
         {/* sidebar header */}
         <div className={`sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center ${theme} bg-opacity-100 font-semibold text-lg text-white leading-5 border-b border-gray-500`}>
           <Link
             to="/adminannouncement"
-            className={`group truncate opacity-100 transition-all ease-in ${
-              !showSidebar && "opacity-0 transition-all ease-in"
-            }`}
+            className={`group truncate opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+              }`}
           >
             {university?.university}
             <div className={`group-hover:visible invisible w-full group-hover:delay-200 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 group-hover:translate-x-3 group-hover:transition group-hover:ease-in-out group-hover:duration-700 absolute z-50`}>
-                <div className={`w-fit absolute py-3 left-0 text-center whitespace-pre-wrap rounded shadow-inner absolute transition ease-in-out delay-300 group-hover:delay-200 group-hover:scale-120 duration-200 border border-slate-500 group-hover:bg-opacity-80 ${theme} group-hover:bg-opacity-90 group-hover:text-white px-3 text-base font-normal z-50`}>{university?.university}</div>
+              <div className={`w-fit absolute py-3 left-0 text-center whitespace-pre-wrap rounded shadow-inner absolute transition ease-in-out delay-300 group-hover:delay-200 group-hover:scale-120 duration-200 border border-slate-500 group-hover:bg-opacity-80 ${theme} group-hover:bg-opacity-90 group-hover:text-white px-3 text-base font-normal z-50`}>{university?.university}</div>
 
-              </div>
+            </div>
           </Link>
 
           <div className="flex ml-2">
             <button
-              onClick={()=> setAdminSettingsModal(true)}
-              className={`button flex items-center justify-center w-6 h-6 rounded py-0.5 px-1 hover:bg-slate-600 hover:text-white transition-all ease-in ${
-                !showSidebar && "opacity-0 hidden transition-all ease-in"
-              }`}
+              onClick={() => setAdminSettingsModal(true)}
+              className={`button flex items-center justify-center w-6 h-6 rounded py-0.5 px-1 hover:bg-slate-600 hover:text-white transition-all ease-in ${!showSidebar && "opacity-0 hidden transition-all ease-in"
+                }`}
             >
               <FontAwesomeIcon icon={faGear} size="sm" />
             </button>
@@ -102,9 +105,8 @@ const AdminSidebar = () => {
         <div className="sidebar-content flex flex-col justify-center w-full overflow-y-auto">
           {/* sidebar items */}
           <div
-            className={`sidebar-menu font-light overflow-y-auto my-14 py-2 opacity-100 transition-all ease-in ${
-              !showSidebar && "opacity-0 transition-all ease-in"
-            }`}
+            className={`sidebar-menu font-light overflow-y-auto my-14 py-2 opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+              }`}
           >
             <div className="sidebar-dropdown">
               {/* college */}
@@ -123,9 +125,8 @@ const AdminSidebar = () => {
         >
           <div className={`user-info flex items-center w-full justify-between`}>
             <div
-              className={`flex items-center opacity-100 transition-all ease-in ${
-                !showSidebar && "opacity-0 transition-all ease-in"
-              }`}
+              className={`flex items-center opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+                }`}
             >
               <div className="user-pic">
                 <img
@@ -148,16 +149,14 @@ const AdminSidebar = () => {
                 onClick={() => {
                   navigate("/adminsettings");
                 }}
-                className={`button flex items-center justify-center w-6 h-6 rounded mr-1 py-0.5 px-1 hover:bg-slate-600 hover:text-white opacity-100 transition-all ease-in ${
-                  !showSidebar && "opacity-0 transition-all ease-in"
-                }`}
+                className={`button flex items-center justify-center w-6 h-6 rounded mr-1 py-0.5 px-1 hover:bg-slate-600 hover:text-white opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
+                  }`}
               >
                 <FontAwesomeIcon icon={faGear} />
               </button>
               <div
-                className={`flex h-8 border-r transition-all ease-in ${
-                  !showSidebar && "h-0 transition-all ease-in"
-                }`}
+                className={`flex h-8 border-r transition-all ease-in ${!showSidebar && "h-0 transition-all ease-in"
+                  }`}
               ></div>
               <button
                 onClick={handleLogout}

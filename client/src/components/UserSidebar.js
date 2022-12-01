@@ -14,9 +14,11 @@ import {
 import ClassCard from "./ClassCard";
 import EditSettingModal from "./EditSettingModal";
 import { UserContext } from "../utils/UserContext";
+import useWindowDimensions from "./screenResize";
 
 const UserSidebar = () => {
   const { user, logout } = useContext(UserContext)
+  const { height, width } = useWindowDimensions();
   const { theme } = user;
   const [showSidebar, setShowSidebar] = useState(true);
   const [showEditSetting, setShowEditSetting] = useState(false);
@@ -53,6 +55,10 @@ const UserSidebar = () => {
       navigate("/");
     });
   };
+
+  useEffect(() => {
+    width < 1000 ? setShowSidebar(!showSidebar) : setShowSidebar(true);
+  }, [width, height]);
 
   return (
     <div className="flex w-full h-screen">

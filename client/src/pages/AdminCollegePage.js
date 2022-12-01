@@ -17,7 +17,7 @@ import { UserContext } from '../utils/UserContext';
 const AdminCollegePage = () => {
   const navigate = useNavigate();
   const { collegeid } = useParams();
-  const {theme} = useContext(UserContext).user;
+  const { theme } = useContext(UserContext).user;
   const [isThread, setThread] = useState(false);
   const [announcements, setAnnouncements] = useState({});
   const [announcementThread, setAnnouncementThread] = useState()
@@ -33,8 +33,8 @@ const AdminCollegePage = () => {
   // Initial load
   useEffect(() => {
     setLoading(true);
-    
-    const fetchData = async() => {
+
+    const fetchData = async () => {
       const announcement = await AnnouncementApi.fetchChannelAnnouncements(params);
       const college = await CollegeApi.fetchSpecificCollege(collegeid);
 
@@ -44,7 +44,7 @@ const AdminCollegePage = () => {
     }
     fetchData();
   }, [collegeid]);
-  
+
   // Pusher update
   useEffect(() => {
     const pusher = new Pusher('6d32a294e8e6b327e3c5', {
@@ -64,19 +64,19 @@ const AdminCollegePage = () => {
 
   // Scroll effect
   useLayoutEffect(() => {
-      const lastDiv = document?.getElementById("announcementWrapper");
-      lastDiv?.scrollHeight*.90 < lastDiv?.scrollTop+1000 || lastDiv?.scrollTop == 0 ?
-      lastDiv?.scrollTo({top: lastDiv?.scrollHeight+1000, behavior:'smooth'})
+    const lastDiv = document?.getElementById("announcementWrapper");
+    lastDiv?.scrollHeight * .90 < lastDiv?.scrollTop + 1000 || lastDiv?.scrollTop == 0 ?
+      lastDiv?.scrollTo({ top: lastDiv?.scrollHeight + 1000, behavior: 'smooth' })
       :
-      lastDiv?.scrollTo({top: lastDiv?.scrollTop, behavior:'smooth'})
+      lastDiv?.scrollTo({ top: lastDiv?.scrollTop, behavior: 'smooth' })
   }, [announcements]);
 
   return loading ? (
-      <LoadingSpinner />
-    ) : (
+    <LoadingSpinner />
+  ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full text-gray-800">
-        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
+        <h1 className="absolute flex items-center justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b-2">
           <div className="truncate">
             <FontAwesomeIcon icon={faBuildingColumns} className="mr-2" />
             {college?.college?.college}
@@ -88,12 +88,14 @@ const AdminCollegePage = () => {
               navigate("/editcollege", { state: { collegeid: collegeid } });
             }}
           >
-            <FontAwesomeIcon icon={faPenSquare} className="mr-1" size="xl" />{" "}
-            Edit College
+            <FontAwesomeIcon icon={faPenSquare} className="mr-1" />
+            Edit
           </button>
         </h1>
         <div className="flex flex-col justify-between h-full">
-          <div id="announcementWrapper" className="mt-12 overflow-y-auto">
+          <div
+            id="announcementWrapper"
+            className="mt-12 overflow-y-auto">
             {announcements?.map((announcement) => (
               <AnnouncementCard
                 key={announcement.id.toString()}
@@ -105,7 +107,7 @@ const AdminCollegePage = () => {
               />
             ))}
           </div>
-          <div className="p-2">
+          <div className="p-2 rounded-3xl">
             <RichTextEditor
               params={params}
             />

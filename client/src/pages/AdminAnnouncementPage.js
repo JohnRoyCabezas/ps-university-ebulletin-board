@@ -71,14 +71,13 @@ const AdminAnnouncementPage = () => {
         <h1 className="absolute flex items-center text-gray-800 justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
           <div className="truncate">
             <FontAwesomeIcon icon={faStar} className="mr-2" />
-
             University Announcements
           </div>
         </h1>
         <div className="flex flex-col justify-between h-full">
           <div
             id="announcementWrapper"
-            className="mt-12 overflow-y-auto bg-danger"
+            className="mt-12 overflow-y-auto"
           >
             {announcements.map((announcement) => (
               <AnnouncementCard
