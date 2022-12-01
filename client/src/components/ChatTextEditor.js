@@ -121,6 +121,7 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
       >
         <ReactQuill
           ref={editor}
+          readOnly={status === "pending"}
           value={isEditing ? params?.updateChat : params.chat}
           placeholder={"Write a chat message..."}
           onChange={handleChange}
