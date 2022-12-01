@@ -144,7 +144,11 @@ export default function NavBar(props) {
                       icon={faPaperclip}
                       size="2x"
                       color="#162750"
-                      data-tip={"Drag and drop files here"}
+                      data-tip={
+                        props.type === "university_thread"
+                          ? "Drag and drop files here"
+                          : null
+                      }
                     />
                     <ReactTooltip />
                     {!file ? (
