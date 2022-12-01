@@ -98,21 +98,21 @@ const EditPassword = () => {
 
     return (
         <>
-            <div className={`z-50 flex h-full mx-2 w-full`}>
+            <div className={`z-50 mx-2 pl-2 w-fit`}>
                 {
                     <>
-                        <div className="flex w-full">
+                        <div className="flex">
                             {/* First half */}
-                            <div className={`flex flex-col justify-center ${theme} shadow-lg shadow-gray-500/50 px-14`}>
-                                <img className={`w-52 h-auto rounded-full p-1 ring-2 ${theme} bg-opacity-80 ring-gray-400`} src={user.avatar} alt="Rounded avatar">
+                            <div className={`flex flex-col px-9 rounded-l-lg justify-center ${theme} shadow-lg shadow-gray-500/50`}>
+                                <img className={`w-44 h-auto rounded-full p-1 ring-2 ${theme} bg-opacity-80 ring-gray-400`} src={user.avatar} alt="Rounded avatar">
                                 </img>
                                 <span className="flex text-gray-200 font-bold text-2xl mx-auto mt-5">{user.fullname}</span>
                             </div>
                             {/* Other half */}
-                            <div className="w-full flex flex-col justify-center bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50">
+                            <div className="flex-col w-80 justify-center bg-gray-100 rounded-r-lg shadow-lg shadow-gray-500/50">
                                 <div className="p-6">
                                     <span className="font-bold mb-6 flex text-black text-2xl">Change Password</span>
-                                    <form className="w-full" action="#">
+                                    <form action="#">
                                         <div>
                                             <label
                                                 htmlFor="password"
@@ -149,7 +149,6 @@ const EditPassword = () => {
                                                 htmlFor="password"
                                                 className="block mb-2 text-sm font-medium text-gray-900 ">New password
                                                 {!reqNew && (<span className="text-red-400"> *</span>)}
-                                                {/* <span className={`text-red-400 text-sm italic ${passMatch ? 'hide' : 'hidden'}`}> Password doesnt match </span> */}
                                             </label>
 
                                             <div className="relative w-full">

@@ -13,7 +13,7 @@ const AdminAnnouncementPage = () => {
   const [isThread, setThread] = useState(false);
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState(null);
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [isAlter, setIsAlter] = useState(false);
   const params = {
     announcementable_id: user.university_id,
@@ -21,55 +21,51 @@ const AdminAnnouncementPage = () => {
   };
   const [loading, setLoading] = useState(true);
 
+  // Initial load
   useEffect(() => {
-    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
-      cluster: "ap1",
-    });
+    setLoading(true);
 
-    const channel = pusher.subscribe("announcement-channel");
-    channel.bind("announcement-update", function (data) {
-      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-        setAnnouncements(res.data);
-      });
-    });
+    const fetchData = async () => {
+      const announcement = await AnnouncementApi.fetchChannelAnnouncements(params);
+      setAnnouncements(announcement.data)
+      setLoading(false);
+    }
+    fetchData();
   }, []);
 
-  useEffect(()=> {
-    announcements && setLoading(false);
-  }, [announcements])
-
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
+  // Pusher update
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
     });
-  }
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update',
+      function (data) {
+        AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
+          (res) => {
+            setAnnouncements(res?.data);
+          }
+        );
+      });
+  }, []);
+
+  // Scroll effect
+  useLayoutEffect(() => {
+    const lastDiv = document?.getElementById("announcementWrapper");
+    lastDiv?.scrollHeight * .90 < lastDiv?.scrollTop + 1000 || lastDiv?.scrollTop == 0 ?
+      lastDiv?.scrollTo({ top: lastDiv?.scrollHeight + 1000, behavior: 'smooth' })
+      :
+      console.log('')
+  }, [announcements]);
 
   function setThreadValue(value) {
     setThread(value);
   }
 
-  function handleRefresh() {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
-    });
-  }
-
-  useEffect(() => {
-    handleRefresh();
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!isAlter) {
-      const lastDiv = document?.getElementById("announcementWrapper");
-      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
-      setIsAlter(false);
-    }
-    setIsAlter(false);
-  }, [announcements]);
-
-  return loading? (
-      <LoadingSpinner />
-    ) : (
+  return loading ? (
+    <LoadingSpinner />
+  ) : (
     <div className="flex w-full h-screen">
       <div className="relative flex flex-col w-full">
         <h1 className="absolute flex items-center text-gray-800 justify-between h-14 px-4 top-0 z-10 w-full font-bold text-lg bg-white border-b">
@@ -89,7 +85,6 @@ const AdminAnnouncementPage = () => {
                 key={announcement.id.toString()}
                 userRole={"admin"}
                 announcement={announcement}
-                handleRefresh={() => handleRefresh()}
                 setValue={setThreadValue}
                 setAnnouncementThread={setAnnouncementThread}
                 isAlter={() => setIsAlter(true)}
@@ -99,7 +94,6 @@ const AdminAnnouncementPage = () => {
           </div>
           <div className="p-2 rounded-3xl">
             <RichTextEditor
-              handleRefresh={() => handleRefresh()}
               params={params}
             />
           </div>

@@ -94,7 +94,7 @@ export default function Thread(props) {
           Thread
           <button
             onClick={() => props.setValue(false)}
-            className="cursor-pointer p-1.5 ml-4 bg-regal-blue float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-7"
+            className={`cursor-pointer p-1.5 ml-4 ${user.theme} bg-opacity-80 float-right text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-opacity-90 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-7`}
           >
             x
           </button>
