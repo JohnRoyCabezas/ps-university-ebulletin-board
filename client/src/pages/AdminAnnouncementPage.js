@@ -14,7 +14,6 @@ const AdminAnnouncementPage = () => {
   const [announcementThread, setAnnouncementThread] = useState();
   const [announcements, setAnnouncements] = useState(null);
   const { user } = useContext(UserContext);
-  const [isAlter, setIsAlter] = useState(false);
   const params = {
     announcementable_id: user.university_id,
     announcementable_type: "App/Models/University",
@@ -88,7 +87,6 @@ const AdminAnnouncementPage = () => {
                 setValue={setThreadValue}
                 announcementThread={announcementThread}
                 setAnnouncementThread={setAnnouncementThread}
-                isAlter={() => setIsAlter(true)}
                 threadOpen={isThread}
               />
             ))}
