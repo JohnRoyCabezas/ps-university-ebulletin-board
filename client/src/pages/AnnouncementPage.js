@@ -22,39 +22,43 @@ const AnnouncementPage = () => {
     setThread(value);
   }
 
+  // Initial load
   useEffect(() => {
-    AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-      setAnnouncements(res.data);
+    setLoading(true);
+    
+    const fetchData = async() => {
+      const announcement = await AnnouncementApi.fetchChannelAnnouncements(params);
+      setAnnouncements(announcement.data)
       setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
-    const params = {
-      announcementable_id: user.university_id,
-      announcementable_type: "App/Models/University",
-    };
-
-    const pusher = new Pusher("6d32a294e8e6b327e3c5", {
-      cluster: "ap1",
-    });
-
-    const channel = pusher.subscribe("announcement-channel");
-    channel.bind("announcement-update", function (data) {
-      AnnouncementApi.fetchChannelAnnouncements(params).then((res) => {
-        setAnnouncements(res.data);
-      });
-    });
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!isAlter) {
-      const lastDiv = document?.getElementById("announcementWrapper");
-      lastDiv?.scrollTo(0, lastDiv?.scrollHeight);
-      setIsAlter(false);
     }
-    setIsAlter(false);
-  }, [announcements]);
+    fetchData();
+  }, []);
+
+  // Pusher update
+  useEffect(() => {
+    const pusher = new Pusher('6d32a294e8e6b327e3c5', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('announcement-channel');
+    channel.bind('announcement-update',
+      function (data) {
+        AnnouncementApi.fetchChannelAnnouncements(data?.announcement).then(
+          (res) => {
+            setAnnouncements(res?.data);
+          }
+        );
+      });
+  }, []);
+
+  // Scroll effect
+  useLayoutEffect(() => {
+    const lastDiv = document?.getElementById("announcementWrapper");
+    lastDiv?.scrollHeight*.90 < lastDiv?.scrollTop+1000 || lastDiv?.scrollTop == 0 ?
+    lastDiv?.scrollTo({top: lastDiv?.scrollHeight+1000, behavior:'smooth'})
+    :
+    console.log('')
+}, [announcements]);
 
   return loading ? (
       <LoadingSpinner />

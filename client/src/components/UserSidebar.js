@@ -65,7 +65,7 @@ const UserSidebar = () => {
         className={`sidebar-wrapper relative flex flex-col shrink-0 justify-between transition-all ease-in ${theme} bg-opacity-90 duration-300 text-gray-300 w-60 ${!showSidebar && "-ml-184px transition-all ease-in"
           }`}
       >
-        <div className="sidebar-content flex flex-col justify-center w-full pb-14 z-50 overflow-y-auto">
+        <div className="sidebar-content flex flex-col justify-center w-full pb-14 z-40 overflow-y-auto">
           {/* sidebar header */}
           <div
             className={`sidebar-brand absolute top-0 w-full px-4 h-14 flex justify-between items-center ${theme} bg-opacity-100 font-semibold text-lg text-white leading-5 border-b border-gray-500`}
@@ -218,7 +218,7 @@ const UserSidebar = () => {
             <div className="flex items-center">
               <button
                 onClick={() => {
-                  setShowEditSetting(true);
+                  setShowEditSetting(!showEditSetting);
                 }}
                 className={`button flex items-center justify-center w-6 h-6 rounded mr-1 py-0.5 px-1 hover:bg-black hover:bg-opacity-50 hover:text-white opacity-100 transition-all ease-in ${!showSidebar && "opacity-0 transition-all ease-in"
                   }`}

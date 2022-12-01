@@ -1,10 +1,11 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useContext } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ChatApi from "../api/ChatApi";
 import Dropzone from "react-dropzone";
+import { UserContext } from "../utils/UserContext";
 
 const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const initialParams = {
@@ -15,6 +16,7 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
   const [params, setParams] = useState(initialParams);
   const [file, setFile] = useState();
   const [showModal, setShowModal] = useState(false);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     chatid &&
@@ -146,10 +148,10 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
                 <button
                   onClick={() => handleSubmit}
                   disabled={params?.updateChat === "<p><br></p>" && true}
-                  className={`text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ${
+                  className={`text-white font-medium rounded-lg text-sm py-2.5 mr-2 mb-2 ${
                     params?.updateChat === "<p><br></p>"
                       ? "disabled bg-gray-300 text-gray-400"
-                      : "bg-blue-700 hover:bg-blue-800"
+                      : user.theme + " bg-opacity-80 w-20 hover:bg-opacity-90"
                   }`}
                   type="submit"
                 >
@@ -171,10 +173,10 @@ const ChatTextEditor = ({ classid, chatid, isEditing, setIsEditing }) => {
               <button
                 onClick={() => handleSubmit}
                 disabled={params?.updateChat === params?.chat && true}
-                className={`text-white w-20 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
+                className={`text-white w-20 font-medium rounded-lg text-sm px-5 py-2.5 ${
                   params?.chat === "<p><br></p>"
                     ? "disabled bg-gray-300 text-gray-400"
-                    : "bg-blue-700 hover:bg-blue-800"
+                    : user.theme + " bg-opacity-80 w-20 hover:bg-opacity-90"
                 }`}
                 type="submit"
               >

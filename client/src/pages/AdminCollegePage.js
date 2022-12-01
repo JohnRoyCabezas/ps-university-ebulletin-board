@@ -68,7 +68,7 @@ const AdminCollegePage = () => {
       lastDiv?.scrollHeight*.90 < lastDiv?.scrollTop+1000 || lastDiv?.scrollTop == 0 ?
       lastDiv?.scrollTo({top: lastDiv?.scrollHeight+1000, behavior:'smooth'})
       :
-      console.log('')
+      lastDiv?.scrollTo({top: lastDiv?.scrollTop, behavior:'smooth'})
   }, [announcements]);
 
   return loading ? (
