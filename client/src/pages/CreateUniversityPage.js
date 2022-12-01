@@ -165,14 +165,8 @@ const CreateUniversityPage = () => {
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
                 />
               </div>
-              <div className="flex justify-center">
-                <button
-                  onClick={() => navigate("/")}
-                  className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded mr-5"
-                >
-                  Cancel
-                </button>
-                <button
+              <div className="flex justify-center flex-row-reverse">
+              <button
                   onClick={() => CreateUser()}
                   className={`px-11 py-2 tracking-wide text-white transition-colors duration-200 transform bg-regal-blue rounded-md ${
                     params.university
@@ -183,6 +177,13 @@ const CreateUniversityPage = () => {
                 >
                   Next
                 </button>
+                <button
+                  onClick={() => navigate("/")}
+                  className="bg-gray-300 hover:ring-1 ring-regal-blue text-regal-blue text-center py-1 px-9 rounded mr-5"
+                >
+                  Cancel
+                </button>
+                
               </div>
             </form>
           </div>

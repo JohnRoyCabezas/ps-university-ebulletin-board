@@ -3,6 +3,7 @@ import NavBar from "../components/Navbar";
 import Cookies from "js-cookie";
 import AuthApi from "../api/AuthApi";
 import ErrMsg from "../components/ErrorMessage";
+import BackButton from "../components/BackButton";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 const LoginPage = () => {
@@ -54,7 +55,10 @@ const LoginPage = () => {
       <NavBar />
       <div className="relative flex flex-col justify-center h-full items-center">
         <div className="w-full p-8 m-auto bg-custom-gray rounded-md shadow-md lg:max-w-xl">
-          <h1 className="text-3xl font-bold text-center">LOGIN</h1>
+          <div className="flex justify-between">
+            <BackButton link={'/'} />
+            <h1 className="w-full text-3xl font-bold text-center">LOGIN</h1>
+          </div>
           <form className="mt-6" onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
@@ -68,11 +72,10 @@ const LoginPage = () => {
                 placeholder="johndoe@gmail.com"
                 type="email"
                 ref={emailRef}
-                className={`block w-full px-4 py-2 mt-2 bg-white border rounded-md ${
-                  validEmail
+                className={`block w-full px-4 py-2 mt-2 bg-white border rounded-md ${validEmail
                     ? "focus:border-blue-400 focus:ring-blue-300"
                     : "focus:border-red-400 focus:ring-red-300"
-                } focus:outline-none focus:ring focus:ring-opacity-40`}
+                  } focus:outline-none focus:ring focus:ring-opacity-40`}
                 onChange={(e) => [setEmail(e.target.value)]}
               />
             </div>
@@ -97,11 +100,10 @@ const LoginPage = () => {
             </div>
             <div className="mt-10">
               <button
-                className={`w-full px-4 py-2 tracking-wide transition-colors duration-200 transform ${
-                  !email || !password
+                className={`w-full px-4 py-2 tracking-wide transition-colors duration-200 transform ${!email || !password
                     ? "bg-gray-300 text-gray-400"
                     : "bg-regal-blue text-white shadow-lg shadow-regal-blue-500/50"
-                } rounded-md focus:outline-none focus:bg-blue-900`}
+                  } rounded-md focus:outline-none focus:bg-blue-900`}
                 disabled={!email || !password ? true : false}
               >
                 Login
