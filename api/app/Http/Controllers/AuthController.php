@@ -25,7 +25,7 @@ class AuthController extends Controller
             'email' => ['required', 'unique:users'],
             'role_id' => ['required'],
             'university_id' => ['required'],
-            // 'mobile_number' => ['required']
+            'mobile_number' => ['required']
         ]);
 
         $user = User::create([
@@ -36,7 +36,7 @@ class AuthController extends Controller
             'password' => Hash::make($validatedData['email']),
             'is_verified' => false,
             'university_id' => $validatedData['university_id'],
-            // 'mobile_number' => $validatedData['mobile_number']
+            'mobile_number' => $validatedData['mobile_number']
         ]);
 
         RoleUser::create([
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'department_id' => 'required',
             'role_id' => 'required',
             'fullname' => 'required | max:255',
-            'email' => 'required'
+            'email' => 'required',
         ]);
 
         $user->update([
@@ -84,7 +84,7 @@ class AuthController extends Controller
             'role_id' => $validatedData['role_id']
         ]);
 
-        return response()->json(['message' => 'Updated user information!']);
+        return response()->json(['message' => 'Updated user information!', 'user' => $user]);
     }
 
     //destroy user info with given id
@@ -128,13 +128,15 @@ class AuthController extends Controller
             'role_id' => 'required',
             'department_id' => '',
             'fullname' => 'required | max:255',
-            'email' => 'required'
+            'email' => 'required',
+            'mobile_number' => 'max:255'
         ]);
         $user->update([
             'avatar' => $validatedData['avatar'],
             'fullname' => $validatedData['fullname'],
             'department_id' => $validatedData['department_id'],
             'email' => $validatedData['email'],
+            'mobile_number' => $validatedData['mobile_number']
         ]);
         $role_user = RoleUser::where('user_id', $id)->first();
         $role_user->update([
