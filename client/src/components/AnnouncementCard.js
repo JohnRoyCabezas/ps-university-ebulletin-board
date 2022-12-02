@@ -43,7 +43,7 @@ export default function AnnouncementCard({
   function setThreadValue(value) {
     setValue(value);
     setAnnouncementThread(localAnnouncement.id);
-    setIsThreadOpen(true);
+    setIsThreadOpen(value);
   }
 
   function cancel() {
