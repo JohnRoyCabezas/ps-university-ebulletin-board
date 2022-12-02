@@ -29,6 +29,7 @@ const ChatOptions = ({
 
   function yesDelete() {
     ChatApi.deleteChat(chat?.id);
+    setShowComments(false);
   }
 
   return (
@@ -39,7 +40,7 @@ const ChatOptions = ({
           className="cursor-pointer rounded text-gray-600 py-1 px-2 hover:bg-gray-200"
           onClick={handleChatThread}
         >
-          <FontAwesomeIcon icon={faComment}/>
+          <FontAwesomeIcon icon={faComment} />
         </button>
 
         {canEdit && (
