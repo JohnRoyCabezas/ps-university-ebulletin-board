@@ -1,13 +1,12 @@
-import Cookies from 'js-cookie';
-import React, { useContext, useRef, useState } from 'react';
-import UniversityApi from '../api/UniversityApi';
-import SuccessModal from './SuccessModal';
-import ThemePick from './ThemePick';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faClose } from '@fortawesome/free-solid-svg-icons';
-import { UserContext } from '../utils/UserContext';
-import SubmitButton from '../components/submitButton';
-
+import Cookies from "js-cookie";
+import React, { useContext, useRef, useState } from "react";
+import UniversityApi from "../api/UniversityApi";
+import SuccessModal from "./SuccessModal";
+import ThemePick from "./ThemePick";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle, faClose } from "@fortawesome/free-solid-svg-icons";
+import { UserContext } from "../utils/UserContext";
+import SubmitButton from "../components/submitButton";
 
 const AdminSettingsModal = ({ setShowModal, university }) => {
   const [activeTab, setActiveTab] = useState({ edit: true });
@@ -17,43 +16,51 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
   });
   const [error, setError] = useState();
   const [showSuccess, setShowSuccess] = useState(false);
-  const universityid = Cookies.get('universityid');
+  const universityid = Cookies.get("universityid");
   const inputRef = useRef();
-  const {user, refetchUser} = useContext(UserContext)
+  const { user, refetchUser } = useContext(UserContext);
   const { theme } = user;
   const [processing, setProcessing] = useState(false);
 
   const handleEdit = (e) => {
     e.preventDefault();
     setProcessing(true);
-    UniversityApi.editUniversityName(universityid, universityName.pending).then(() => {
-      setShowSuccess(true);
-      setUniversityName({ ...universityName, current: universityName.pending })
-      setError(null);
-      setProcessing(false);
-      refetchUser();
-    }).catch(({ response }) => {
-      setError(response.data.message)
-    }).finally(() => setProcessing(false))
-  }
+    UniversityApi.editUniversityName(universityid, universityName.pending)
+      .then(() => {
+        setShowSuccess(true);
+        setUniversityName({
+          ...universityName,
+          current: universityName.pending,
+        });
+        setError(null);
+        setProcessing(false);
+        refetchUser();
+      })
+      .catch(({ response }) => {
+        setError(response.data.message);
+      })
+      .finally(() => setProcessing(false));
+  };
 
   return (
     <div>
-      {
-        showSuccess && (
-          <SuccessModal
-            title="Update Success!"
-            message="University Name Updated!"
-            stayInPAge={true}
-            setShowModal={setShowSuccess} />
-        )
-      }
-      <div className={`justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none`}>
+      {showSuccess && (
+        <SuccessModal
+          title="Update Success!"
+          message="University Name Updated!"
+          stayInPAge={true}
+          setShowModal={setShowSuccess}
+        />
+      )}
+      <div
+        className={`justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none`}
+      >
         <div className="relative w-1/2 my-6 mx-auto">
-          <div className="p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-300">
-            <div className="relative py-2 flex flex-row-reverse">
+          <div className="flex p-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-300">
+            <div className="relative py-2 flex justify-center">
+              <h1>Admin Settings</h1>
               <button
-                className="mx-2 hover:bg-gray-500 rounded-md px-1"
+                className="mx-2 hover:bg-gray-500 rounded-md px-1 absolute inset-y-0 right-0"
                 onClick={() => {
                   setShowModal(false);
                 }}
@@ -65,15 +72,25 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
               <div className="mr-3 whitespace-nowrap text-sm font-medium text-center text-black border-b border-custom-gray">
                 <ul>
                   <li>
-                    <button className={`w-full rounded-md inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-20 hover:text-black ${activeTab?.edit && theme + " bg-opacity-50 text-white"}`}
+                    <button
+                      className={`w-full rounded-md inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-20 hover:text-black ${
+                        activeTab?.edit && theme + " bg-opacity-50 text-white"
+                      }`}
                       onClick={() => setActiveTab({ edit: true })}
-                    >Edit University Name</button>
+                    >
+                      Edit University Name
+                    </button>
                   </li>
                   <li>
-                    <button className={`w-full rounded-md inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-10 hover:text-black ${activeTab?.theme && theme + " bg-opacity-50 text-white"}`}
+                    <button
+                      className={`w-full rounded-md inline-block p-4 border-b-2 hover:bg-black hover:bg-opacity-10 hover:text-black ${
+                        activeTab?.theme && theme + " bg-opacity-50 text-white"
+                      }`}
                       aria-current="page"
                       onClick={() => setActiveTab({ theme: true })}
-                    >Change Theme</button>
+                    >
+                      Change Theme
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -81,7 +98,9 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
                 {/* edit tab */}
                 {activeTab?.edit && (
                   <div className="flex m-auto justify-center items-center w-3/4 h-3/4">
-                    <div className={`p-6 ${theme} bg-opacity-20 rounded-md shadow-md w-full`}>
+                    <div
+                      className={`p-6 ${theme} bg-opacity-20 rounded-md shadow-md w-full`}
+                    >
                       <form>
                         <div className="mb-4">
                           <label className="block text-sm font-semibold text-gray-800">
@@ -92,14 +111,19 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
                             name="university"
                             value={universityName.pending}
                             onChange={(e) => {
-                              setUniversityName({ ...universityName, pending: e.target.value });
+                              setUniversityName({
+                                ...universityName,
+                                pending: e.target.value,
+                              });
                               setError(null);
-                            }
-                            }
+                            }}
                             placeholder="University of Sun*"
                             className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
                           />
-                          <p hidden={!error} className="instructions text-red-600 rounded text-sm italic pt-2">
+                          <p
+                            hidden={!error}
+                            className="instructions text-red-600 rounded text-sm italic pt-2"
+                          >
                             <FontAwesomeIcon icon={faInfoCircle} />
                             {error}
                           </p>
@@ -107,8 +131,12 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
                         <div className="flex justify-center">
                           <SubmitButton
                             handleSubmit={handleEdit}
-                            buttonDisabled={!universityName.pending.length>0 || universityName.pending===universityName.current
-                              ? false : true}
+                            buttonDisabled={
+                              !universityName.pending.length > 0 ||
+                              universityName.pending === universityName.current
+                                ? false
+                                : true
+                            }
                             processing={processing}
                             buttonTitle={"Save"}
                           />
@@ -119,9 +147,7 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
                 )}
 
                 {/* theme tab */}
-                {activeTab?.theme && (
-                  <ThemePick />
-                )}
+                {activeTab?.theme && <ThemePick />}
               </div>
             </div>
           </div>
@@ -130,6 +156,6 @@ const AdminSettingsModal = ({ setShowModal, university }) => {
       <div className={`${theme} opacity-70 fixed inset-0 top-0 z-30`}></div>
     </div>
   );
-}
+};
 
 export default AdminSettingsModal;
