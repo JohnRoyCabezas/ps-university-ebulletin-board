@@ -17,6 +17,7 @@ const RegisterPage = () => {
     role_id: '',
     avatar: `https://joeschmoe.io/api/v1/0`,
     university_id: parseInt(university_id),
+    mobile_number: '',
   };
 
   const EMAIL_REGEX = /\S+@\S+\.\S+/;
@@ -54,6 +55,14 @@ const RegisterPage = () => {
     } else setErrors({ ...errors, email: 'Not a valid email format' });
   }, [params.email]);
 
+  useEffect(() => {
+    if (params?.mobile_number === '' || /^[0-9]*$/.test(params?.mobile_number) && params?.mobile_number.length === 11) {
+      setErrors({});
+    } else if (params?.mobile_number === 'n/a' || params?.mobile_number === 'N/A') {
+      setErrors({});
+    } else setErrors({ ...errors, mobile_number: 'Invalid number' });
+  }, [params.mobile_number]);
+
   const handleAvatarChange = () => {
     setErrors({});
     const randomAvatar = `https://joeschmoe.io/api/v1/${Math.floor(Math.random() * 90000) + 10000
@@ -63,7 +72,7 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    if (params?.role_id === 1 || params?.role_id === 3 ) {
+    if (params?.role_id === 1 || params?.role_id === 3 || params?.role_id === 5  ) {
       setShowDeptDropdown(true);
     } else { setShowDeptDropdown(false) }
   }, [params])
@@ -250,13 +259,36 @@ const RegisterPage = () => {
                 />
               </div>
 
+              <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-800">
+                  Contact number
+                  {params.mobile_number === '' && (
+                    <span className="text-s italic font-light text-red-800">
+                      *
+                    </span>
+                  )}
+                  <span className="ml-2 text-s italic font-light text-red-800">
+                    {errors?.mobile_number}
+                  </span>
+                </label>
+                <input
+                  name="mobile_number"
+                  value={params?.mobile_number}
+                  onChange={handleInputChange}
+                  placeholder={`09123456789 or "n/a"`}
+                  className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500 input"
+                />
+              </div>
+
               <SubmitButton
                 handleSubmit={() => handleSubmit()}
                 buttonDisabled={!errors.email &&
+                  !errors.mobile_number &&
                   params.fullname &&
                   params.avatar &&
                   params.email &&
-                  params.role_id
+                  params.role_id &&
+                  params.mobile_number
                    ? true : false}
                 processing={processing}
                 buttonTitle={"Create Account"}

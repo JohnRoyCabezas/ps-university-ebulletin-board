@@ -13,13 +13,14 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import SubmitButton from "../components/submitButton";
 import { UserContext } from "../utils/UserContext";
 const EditUserPage = () => {
-  const { refetchUser } = useContext(UserContext);
+  const { refetchUser, user } = useContext(UserContext);
   const navigate = useNavigate();
   const initialParams = {
     fullname: "",
     email: "",
     department_id: "",
     role_id: "",
+    mobile_number: "",
   };
   const { id } = useParams();
   const [departments, setDepartments] = useState([]);
@@ -27,6 +28,7 @@ const EditUserPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [params, setParams] = useState(initialParams);
   const [valid, setValid] = useState({ format: false, size: false });
+  const [errors, setErrors] = useState({});
   const university_id = Cookies.get("universityid");
   const [processing, setProcessing] = useState(false);
   useEffect(() => {
@@ -44,6 +46,7 @@ const EditUserPage = () => {
         email: res.data?.email,
         department_id: res.data?.department_id ? res.data?.department_id : "",
         role_id: res.data?.role_user?.role?.id,
+        mobile_number: res?.data?.mobile_number
       });
     });
   }, []);
@@ -54,6 +57,15 @@ const EditUserPage = () => {
       JSON.stringify({ ...params, [e.target.name]: e.target.value })
     );
   };
+
+  useEffect(() => {
+    if (params?.mobile_number === '' || /^[0-9]*$/.test(params?.mobile_number) && params?.mobile_number.length === 11) {
+      setErrors({});
+    } else if (params?.mobile_number === 'n/a' || params?.mobile_number === 'N/A') {
+      setErrors({});
+    } else setErrors({ ...errors, mobile_number: 'Invalid number' });
+  }, [params.mobile_number]);
+
   const handleSelectChange = (type, item) => {
     if (type === "department") {
       setParams({ ...params, department_id: item.value });
@@ -110,6 +122,7 @@ const EditUserPage = () => {
     <div className="flex w-full">
       {showModal && (
         <SuccessModal
+          stayInPAge={true}
           title="Update User"
           message="Successfuly updated user information!"
           setShowModal={(e) => navigate("/manageusers")}
@@ -130,8 +143,8 @@ const EditUserPage = () => {
                 <div className="flex justify-center w-24 h-24">
                   <img
                     onError={(e) =>
-                      (e.target.src =
-                        "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
+                    (e.target.src =
+                      "https://cdn-icons-png.flaticon.com/512/1077/1077114.png?w=360")
                     }
                     src={params?.avatar}
                     className="rounded-full w-24"
@@ -177,33 +190,35 @@ const EditUserPage = () => {
                     </span>
                   ))}
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-800 mb-2">
-                  Department
-                </label>
-                <Dropdown
-                  selectedLabel={
-                    params.department_id &&
-                    departments[
-                      departments
-                        .map((obj) => obj.id)
-                        .indexOf(Number(params?.department_id))
-                    ]?.department
-                  }
-                  selectedValue={
-                    params.department_id &&
-                    departments[
-                      departments
-                        .map((obj) => obj.id)
-                        .indexOf(Number(params?.department_id))
-                    ]?.id
-                  }
-                  handleChange={handleSelectChange}
-                  type="department"
-                  label="department"
-                  data={departments}
-                />
-              </div>
+
+              {!(params?.role_id === 2) &&
+                <div className="mb-4">
+                  <label className="block text-sm font-semibold text-gray-800 mb-2">
+                    Department
+                  </label>
+                  <Dropdown
+                    selectedLabel={
+                      params.department_id &&
+                      departments[
+                        departments
+                          .map((obj) => obj.id)
+                          .indexOf(Number(params?.department_id))
+                      ]?.department
+                    }
+                    selectedValue={
+                      params.department_id &&
+                      departments[
+                        departments
+                          .map((obj) => obj.id)
+                          .indexOf(Number(params?.department_id))
+                      ]?.id
+                    }
+                    handleChange={handleSelectChange}
+                    type="department"
+                    label="department"
+                    data={departments}
+                  />
+                </div>}
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Role
@@ -243,6 +258,7 @@ const EditUserPage = () => {
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500  input"
                 />
               </div>
+
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-800">
                   Email
@@ -255,13 +271,31 @@ const EditUserPage = () => {
                   className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500 input"
                 />
               </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-800">
+                  Contact number
+                </label>
+                <input
+                  onChange={handleInputChange}
+                  value={params?.mobile_number}
+                  name="mobile_number"
+                  placeholder={`09123456789 or "n/a"`}
+                  className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-blue-500 focus:outline-blue-500 input"
+                />
+              </div>
+
               <div className="mt-16">
                 <SubmitButton
                   handleSubmit={handleSubmit}
                   buttonDisabled={
-                    !departments || !params.fullname || !params.email
-                      ? false
-                      : true
+                    !errors.mobile_number &&
+                      departments &&
+                      params.fullname &&
+                      params.email &&
+                      params?.mobile_number
+                      ? true
+                      : false
                   }
                   processing={processing}
                   buttonTitle={"Edit Account"}
