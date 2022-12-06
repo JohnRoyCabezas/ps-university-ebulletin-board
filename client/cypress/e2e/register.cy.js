@@ -1,0 +1,21 @@
+describe('empty spec', () => {
+  it('Register', () => {
+    cy.visit('https://ps-university-ebulletin-board.vercel.app/')
+    cy.adminLogin() 
+    cy.get('.sticky > .flex').trigger('mouseover')
+    cy.get('.sticky > .cursor-pointer').click()
+    cy.get('.h-full > :nth-child(1) > :nth-child(1) > .font-bold').click()
+    cy.get("button[type='button']").click()
+    cy.get('.mt-2 > .w-6').click()
+    cy.get('.mt-2 > .w-6').click()
+    cy.get(':nth-child(2) > :nth-child(2) > .css-b62m3t-container > .css-1s2u09g-control > .css-1wy0on6 > .css-tlfecz-indicatorContainer').click()
+    cy.get('#react-select-2-option-2').click()
+    cy.get(':nth-child(3) > :nth-child(2) > .css-b62m3t-container > .css-1s2u09g-control > .css-1wy0on6 > .css-tlfecz-indicatorContainer').click()
+    cy.contains('Admin').click()
+    cy.get(':nth-child(4) > .w-full').type('Franz Delos Santos')
+    cy.get(':nth-child(5) > .w-full').type('Franz@ebulletin.com')
+    cy.get('.mt-16 > .w-full').click()
+    cy.wait(5000)
+    
+  })
+})
